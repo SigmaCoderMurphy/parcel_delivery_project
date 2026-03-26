@@ -1,0 +1,524 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row min-vh-80 align-items-center">
+            <div class="col-lg-6 hero-content">
+                <h1 class="display-4 fw-bold mb-4">
+                    Fast & Reliable <span class="text-primary">Parcel Delivery</span> Across GTA
+                </h1>
+                <p class="lead mb-4">
+                    Professional delivery services for businesses. Same-day delivery, fleet of sprinter vans to box trucks. Serving Toronto, Mississauga, Brampton, and all GTA.
+                </p>
+                <div class="d-flex gap-3 mb-4">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <span>Same Day Delivery</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <span>Fleet of 12ft-26ft</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <span>Business Pricing</span>
+                    </div>
+                </div>
+                <div class="d-flex gap-3">
+                    <a href="#quote-form" class="btn btn-primary btn-lg">
+                        <i class="fas fa-calculator me-2"></i>Get Instant Quote
+                    </a>
+                    <a href="tel:+14165550123" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-phone-alt me-2"></i>Call Now
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="{% static 'images/hero-delivery2.jpg' %}" alt="Delivery Service" class="img-fluid rounded-3 shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trust Badges -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 col-6 mb-3">
+                <div class="trust-badge">
+                    <i class="fas fa-clock fa-2x text-primary mb-2"></i>
+                    <h6 class="mb-0">Same Day Delivery</h6>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="trust-badge">
+                    <i class="fas fa-truck fa-2x text-primary mb-2"></i>
+                    <h6 class="mb-0">Fleet of 20+ Vehicles</h6>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="trust-badge">
+                    <i class="fas fa-shield-alt fa-2x text-primary mb-2"></i>
+                    <h6 class="mb-0">Insured & Licensed</h6>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="trust-badge">
+                    <i class="fas fa-star fa-2x text-primary mb-2"></i>
+                    <h6 class="mb-0">5-Star Service</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Our Delivery Services</h2>
+            <p class="lead text-muted">Tailored solutions for every business type</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="service-card h-100">
+                    <div class="card-body text-center">
+                        <div class="service-icon">
+                            <i class="fas fa-store fa-3x"></i>
+                        </div>
+                        <h4>Retail & E-commerce</h4>
+                        <p class="text-muted">Same-day delivery for local retailers and online stores. Perfect for merchandise, clothing, and cosmetics.</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Same-day delivery</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Real-time tracking</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Business hours pickup</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="service-card h-100">
+                    <div class="card-body text-center">
+                        <div class="service-icon">
+                            <i class="fas fa-warehouse fa-3x "></i>
+                        </div>
+                        <h4>Warehouse & Distribution</h4>
+                        <p class="text-muted">Last-mile delivery solutions for warehouses and distribution centers. Handle merchandise and mid-bulky items.</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>12ft-26ft box trucks</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Loading assistance</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Scheduled deliveries</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="service-card h-100">
+                    <div class="card-body text-center">
+                        <div class="service-icon">
+                            <i class="fas fa-chair fa-3x "></i>
+                        </div>
+                        <h4>Furniture Delivery</h4>
+                        <p class="text-muted">Specialized furniture delivery service. We handle unassembled furniture, large items with care.</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Two-person teams</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Inside delivery</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Assembly available</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4 mt-2">
+            <div class="col-md-4">
+                <div class="service-card h-100">
+                    <div class="card-body text-center">
+                        <div class="service-icon">
+                            <i class="fas fa-pills fa-3x "></i>
+                        </div>
+                        <h4>Pharmacy Delivery</h4>
+                        <p class="text-muted">Secure and timely delivery for pharmacies. Temperature-controlled options available.</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>HIPAA compliant</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Express service</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Signature required</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="service-card h-100">
+                    <div class="card-body text-center">
+                        <div class="service-icon">
+                            <i class="fas fa-building fa-3x style="color:#1E90FF;"></i>
+                        </div>
+                        <h4>Office & Business</h4>
+                        <p class="text-muted">Reliable courier services for offices. Documents, packages, and supplies delivery.</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Scheduled routes</li>
+                            <li><i class="fas fa-check text-success me-2"></i>On-demand pickup</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Monthly billing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="service-card h-100">
+                    <div class="card-body text-center">
+                        <div class="service-icon">
+                            <i class="fas fa-truck-moving fa-3x icon-blue "></i>
+                        </div>
+                        
+                        <h4>Mid-Mile Logistics</h4>
+                        <p class="text-muted">26ft box trucks available for larger loads and mid-mile transportation.</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>26ft box trucks</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Longer distance</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Bulk shipments</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Fleet Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Our Fleet</h2>
+            <p class="lead text-muted">Modern vehicles for every delivery need</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="fleet-card">
+                    <img src="{% static 'images/Sprinter-van.jpg' %}" alt="Sprinter Van" class="img-fluid rounded-3">
+                    <h5 class="mt-3">Sprinter High Roof</h5>
+                    <p class="text-muted mb-1">12ft length • 3,500 lbs capacity</p>
+                    <p class="small">Perfect for retail, e-commerce, and local deliveries</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="fleet-card">
+                    <img src="{% static 'images/box-truck14ft.jpg' %}" alt="Box Truck" class="img-fluid rounded-3">
+                    <h5 class="mt-3">Bright Drop</h5>
+                    <p class="text-muted mb-1">14ft length • 5,000 lbs capacity</p>
+                    <p class="small">Ideal for furniture and bulk merchandise</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="fleet-card">
+                    <img src="{% static 'images/box-truck16ft.jpg' %}" alt="Box Truck" class="img-fluid rounded-3">
+                    <h5 class="mt-3">Light Duty Box Truck</h5>
+                    <p class="text-muted mb-1">16ft length • 8,000 lbs capacity</p>
+                    <p class="small">For larger loads and warehouse deliveries</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="fleet-card">
+                    <img src="{% static 'images/box-truck26ft.jpg' %}" alt="Box Truck" class="img-fluid rounded-3">
+                    <h5 class="mt-3">Medium Box Truck</h5>
+                    <p class="text-muted mb-1">26ft length • 12,000 lbs capacity</p>
+                    <p class="small">Mid-mile logistics and bulk transport</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Lead Capture Form -->
+<section class="py-5" id="quote-form">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-5">
+                        <h3 class="text-center mb-4">Get Your Free Quote Today</h3>
+                        <p class="text-center text-muted mb-4">Tell us about your delivery needs and we'll get back to you within 1 hour</p>
+                        
+                        <form method="post" action="{% url 'home' %}" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="company_name" class="form-label">Company Name *</label>
+                                    <input type="text" class="form-control" id="company_name" name="company_name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="contact_name" class="form-label">Contact Name *</label>
+                                    <input type="text" class="form-control" id="contact_name" name="contact_name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email *</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Phone *</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="business_type" class="form-label">Business Type *</label>
+                                    <select class="form-select" id="business_type" name="business_type" required>
+                                        <option value="">Select business type</option>
+                                        <option value="ecommerce">E-commerce Seller</option>
+                                        <option value="retail">Small Retailer</option>
+                                        <option value="pharmacy">Pharmacy</option>
+                                        <option value="warehouse">Warehouse</option>
+                                        <option value="furniture">Furniture Store</option>
+                                        <option value="office">Office/Service Provider</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="address" class="form-label">Business Address *</label>
+                                    <textarea class="form-control" id="address" name="address" rows="2" required></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="service_area" class="form-label">Delivery Areas Needed *</label>
+                                    <input type="text" class="form-control" id="service_area" name="service_area" placeholder="e.g., Toronto, Mississauga" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="delivery_frequency" class="form-label">Delivery Frequency</label>
+                                    <select class="form-select" id="delivery_frequency" name="delivery_frequency">
+                                        <option value="">Select frequency</option>
+                                        <option value="daily">Daily</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="bi-weekly">Bi-Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                        <option value="on-demand">On-demand</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="typical_items" class="form-label">Typical Items to Deliver</label>
+                                    <textarea class="form-control" id="typical_items" name="typical_items" rows="2" placeholder="e.g., clothing, electronics, furniture parts"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label for="notes" class="form-label">Additional Requirements</label>
+                                    <textarea class="form-control" id="notes" name="notes" rows="2"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                        <i class="fas fa-paper-plane me-2"></i>Request Quote
+                                    </button>
+                                </div>
+                                <div class="col-12">
+                                    <p class="small text-muted text-center mb-0">
+                                        <i class="fas fa-lock me-1"></i>Your information is secure. We'll respond within 1 hour.
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">What Our Clients Say</h2>
+            <p class="lead text-muted">Trusted by businesses across GTA</p>
+        </div>
+        
+        <div class="row g-4">
+            {% if testimonials %}
+            {% for testimonial in testimonials %}
+            <div class="col-md-4">
+                <div class="testimonial-card h-100">
+                    <div class="card-body">
+                        <div class="stars mb-3">
+                            {% for i in "12345"|make_list %}
+                                {% if forloop.counter <= testimonial.rating %}
+                                    <i class="fas fa-star text-warning"></i>
+                                {% else %}
+                                    <i class="far fa-star text-warning"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <p class="testimonial-text">"{{ testimonial.content }}"</p>
+                        <div class="d-flex align-items-center mt-3">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0">{{ testimonial.client_name }}</h6>
+                                <small class="text-muted">{{ testimonial.client_company }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-md-4">
+                <div class="testimonial-card h-100">
+                    <div class="card-body">
+                        <div class="stars mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="testimonial-text">"Fast pickups, friendly drivers, and reliable same‑day delivery across the GTA."</p>
+                        <div class="d-flex align-items-center mt-3">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0">Sample Client</h6>
+                                <small class="text-muted">Local Business</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card h-100">
+                    <div class="card-body">
+                        <div class="stars mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="testimonial-text">"Great communication and consistent on‑time deliveries—exactly what we needed."</p>
+                        <div class="d-flex align-items-center mt-3">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0">Sample Client</h6>
+                                <small class="text-muted">Operations Manager</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card h-100">
+                    <div class="card-body">
+                        <div class="stars mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="testimonial-text">"They handle fragile items carefully and the pricing is straightforward."</p>
+                        <div class="d-flex align-items-center mt-3">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0">Sample Client</h6>
+                                <small class="text-muted">Retail Store</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Frequently Asked Questions</h2>
+            <p class="lead text-muted">Everything you need to know about our services</p>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                What areas do you serve?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We serve the entire Greater Toronto Area (GTA) including Toronto, Mississauga, Brampton, Vaughan, Markham, Richmond Hill, Oakville, Burlington, and surrounding areas.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                What types of vehicles do you have?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We have a diverse fleet including Sprinter high roof vans (12ft), Bright Drop (14ft), light duty box trucks (16ft), and 26ft box trucks for larger loads.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Do you offer same-day delivery?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! We offer same-day delivery for most areas in GTA. Place your order before 11 AM for same-day delivery.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                What items can you deliver?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We deliver merchandise, mid-bulky items, beverages, clothing, cosmetics, and furniture (unassembled). We do not handle cold chain items requiring refrigeration.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                How do I get a quote?
+                            </button>
+                        </h2>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Fill out our quick quote form above, call us directly at (416) 555-0123, or message us on WhatsApp. We'll get back to you within 1 hour.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="display-5 fw-bold mb-4">Ready to Streamline Your Deliveries?</h2>
+        <p class="lead mb-4">Join hundreds of GTA businesses who trust us with their deliveries</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="#quote-form" class="btn btn-light btn-lg">
+                <i class="fas fa-calculator me-2"></i>Get Started Today
+            </a>
+            <a href="tel:+14165550123" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-phone-alt me-2"></i>Call Us Now
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

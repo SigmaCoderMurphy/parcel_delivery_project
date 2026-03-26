@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - GTA Parcel Delivery{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Contact Us</h1>
+        <p class="lead">Get in touch with our team</p>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="contact-info p-4 bg-light rounded-3 h-100">
+                    <h4 class="mb-4">Get In Touch</h4>
+                    
+                    <div class="d-flex mb-4">
+                        <div class="contact-icon me-3">
+                            <i class="fas fa-map-marker-alt fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold">Office Address</h6>
+                            <p class="mb-0">123 Business Avenue<br>Toronto, ON M5V 2T6</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex mb-4">
+                        <div class="contact-icon me-3">
+                            <i class="fas fa-phone-alt fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold">Phone Numbers</h6>
+                            <p class="mb-0">Sales: <a href="tel:+14165550123" class="text-decoration-none">(416) 555-0123</a><br>
+                            Support: <a href="tel:+14165550124" class="text-decoration-none">(416) 555-0124</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex mb-4">
+                        <div class="contact-icon me-3">
+                            <i class="fas fa-envelope fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold">Email</h6>
+                            <p class="mb-0">Info: <a href="mailto:info@gtaparceldelivery.com" class="text-decoration-none">info@gtaparceldelivery.com</a><br>
+                            Sales: <a href="mailto:sales@gtaparceldelivery.com" class="text-decoration-none">sales@gtaparceldelivery.com</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex mb-4">
+                        <div class="contact-icon me-3">
+                            <i class="fas fa-clock fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold">Business Hours</h6>
+                            <p class="mb-0">Monday-Friday: 8am - 8pm<br>
+                            Saturday: 9am - 5pm<br>
+                            Sunday: Closed (Emergency Only)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links mt-4">
+                        <a href="#" class="btn btn-outline-primary btn-sm me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="btn btn-outline-primary btn-sm me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="btn btn-outline-primary btn-sm me-2"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="btn btn-outline-primary btn-sm"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-8 mb-4">
+                <div class="contact-form p-4 bg-white rounded-3 shadow">
+                    <h4 class="mb-4">Send Us a Message</h4>
+                    
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="company_name" class="form-label">Company Name *</label>
+                                <input type="text" class="form-control" id="company_name" name="company_name" required>
+                                <div class="invalid-feedback">Please enter your company name.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="contact_name" class="form-label">Contact Name *</label>
+                                <input type="text" class="form-control" id="contact_name" name="contact_name" required>
+                                <div class="invalid-feedback">Please enter your name.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                                <div class="invalid-feedback">Please enter a valid email.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone *</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                                <div class="invalid-feedback">Please enter your phone number.</div>
+                            </div>
+                            <div class="col-12">
+                                <label for="business_type" class="form-label">Business Type *</label>
+                                <select class="form-select" id="business_type" name="business_type" required>
+                                    <option value="">Select business type</option>
+                                    <option value="ecommerce">E-commerce Seller</option>
+                                    <option value="retail">Small Retailer</option>
+                                    <option value="pharmacy">Pharmacy</option>
+                                    <option value="warehouse">Warehouse</option>
+                                    <option value="furniture">Furniture Store</option>
+                                    <option value="office">Office/Service Provider</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <div class="invalid-feedback">Please select your business type.</div>
+                            </div>
+                            <div class="col-12">
+                                <label for="address" class="form-label">Business Address *</label>
+                                <textarea class="form-control" id="address" name="address" rows="2" required></textarea>
+                                <div class="invalid-feedback">Please enter your business address.</div>
+                            </div>
+                            <div class="col-12">
+                                <label for="message" class="form-label">Message *</label>
+                                <textarea class="form-control" id="notes" name="notes" rows="4" required></textarea>
+                                <div class="invalid-feedback">Please enter your message.</div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paper-plane me-2"></i>Send Message
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d184551.909772694!2d-79.5428684397437!3d43.71837095788568!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d7c63ba5%3A0x323555502ab4c477!2sToronto%2C%20ON!5e0!3m2!1sen!2sca!4v1635953574606!5m2!1sen!2sca" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

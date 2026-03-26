@@ -1,0 +1,337 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Settings - GTA Parcel Delivery{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="fw-bold mb-4">Dashboard Settings</h2>
+
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="list-group">
+                <a href="#general" class="list-group-item list-group-item-action active" data-bs-toggle="list">
+                    <i class="fas fa-sliders-h me-2"></i>General Settings
+                </a>
+                <a href="#users" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                    <i class="fas fa-users me-2"></i>User Management
+                </a>
+                <a href="#notifications" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                    <i class="fas fa-bell me-2"></i>Notifications
+                </a>
+                <a href="#email" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                    <i class="fas fa-envelope me-2"></i>Email Templates
+                </a>
+                <a href="#fleet" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                    <i class="fas fa-truck me-2"></i>Fleet Management
+                </a>
+                <a href="#services" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                    <i class="fas fa-concierge-bell me-2"></i>Services
+                </a>
+                <a href="#backup" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                    <i class="fas fa-database me-2"></i>Backup & Export
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="tab-content">
+                <!-- General Settings -->
+                <div class="tab-pane active" id="general">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">General Settings</h4>
+                        <form method="post" action="{% url 'dashboard_settings' %}">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Company Name</label>
+                                    <input type="text" name="company_name" class="form-control" value="{{ site_settings.site_name }}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="text" name="phone" class="form-control" value="{{ site_settings.site_phone }}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" name="email" class="form-control" value="{{ site_settings.site_email }}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Service Area</label>
+                                    <input type="text" name="service_area" class="form-control" value="{{ site_settings.service_area }}">
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">Address</label>
+                                    <textarea name="address" class="form-control" rows="2">{{ site_settings.site_address }}</textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- User Management -->
+                <div class="tab-pane" id="users">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">User Management</h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Last Login</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                    <tr>
+                                        <td>{{ user.username }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>
+                                            {% if user.is_superuser %}
+                                            <span class="badge bg-danger">Admin</span>
+                                            {% elif user.is_staff %}
+                                            <span class="badge bg-primary">Staff</span>
+                                            {% else %}
+                                            <span class="badge bg-secondary">User</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ user.last_login|date:"M d, Y"|default:"Never" }}</td>
+                                        <td>
+                                            {% if user.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">Inactive</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Disable</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-success mt-3">
+                            <i class="fas fa-user-plus me-1"></i>Add New User
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="tab-pane" id="notifications">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">Notification Settings</h4>
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label">Email Notifications</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="notifyNewLead" checked>
+                                    <label class="form-check-label" for="notifyNewLead">New lead created</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="notifyFollowup" checked>
+                                    <label class="form-check-label" for="notifyFollowup">Follow-up reminders</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="notifyStatusChange">
+                                    <label class="form-check-label" for="notifyStatusChange">Lead status changes</label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">WhatsApp Notifications</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="whatsappNewLead">
+                                    <label class="form-check-label" for="whatsappNewLead">New lead WhatsApp alert</label>
+                                </div>
+                                <div class="mt-2">
+                                    <label class="form-label">WhatsApp Number</label>
+                                    <input type="text" class="form-control" placeholder="+1234567890" value="{{ settings.TWILIO_PHONE_NUMBER }}">
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Save Notification Settings</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Email Templates -->
+                <div class="tab-pane" id="email">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">Email Templates</h4>
+                        <ul class="nav nav-tabs mb-3">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#welcomeEmail">Welcome Email</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#quoteEmail">Quote Email</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#followupEmail">Follow-up Email</a>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="welcomeEmail">
+                                <form>
+                                    <div class="mb-3">
+                                        <label class="form-label">Subject</label>
+                                        <input type="text" class="form-control" value="Welcome to GTA Parcel Delivery!">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Body</label>
+                                        <textarea class="form-control" rows="10">
+Dear {{ contact_name }},
+
+Thank you for your interest in GTA Parcel Delivery! We've received your inquiry and will get back to you shortly.
+
+In the meantime, here's what you can expect:
+- A personalized quote within 1 hour
+- Consultation on your delivery needs
+- Flexible scheduling options
+
+Best regards,
+The GTA Parcel Delivery Team
+                                        </textarea>
+                                    </div>
+                                    <button class="btn btn-primary">Save Template</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fleet Management -->
+                <div class="tab-pane" id="fleet">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">Fleet Management</h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Vehicle</th>
+                                        <th>Type</th>
+                                        <th>Capacity</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for vehicle in fleet %}
+                                    <tr>
+                                        <td>{{ vehicle.name }}</td>
+                                        <td>{{ vehicle.get_vehicle_type_display }}</td>
+                                        <td>{{ vehicle.capacity }}</td>
+                                        <td>
+                                            {% if vehicle.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">Inactive</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Deactivate</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-success mt-3">
+                            <i class="fas fa-plus me-1"></i>Add Vehicle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Services -->
+                <div class="tab-pane" id="services">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">Service Management</h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Service</th>
+                                        <th>Description</th>
+                                        <th>Featured</th>
+                                        <th>Order</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for service in services %}
+                                    <tr>
+                                        <td>{{ service.title }}</td>
+                                        <td>{{ service.short_description|truncatechars:50 }}</td>
+                                        <td>
+                                            {% if service.is_featured %}
+                                            <span class="badge bg-success">Yes</span>
+                                            {% else %}
+                                            <span class="badge bg-secondary">No</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ service.order }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-success mt-3">
+                            <i class="fas fa-plus me-1"></i>Add Service
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Backup & Export -->
+                <div class="tab-pane" id="backup">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">Backup & Export</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Export Data</h5>
+                                        <p class="card-text">Download all your data in various formats</p>
+                                        <button class="btn btn-primary" onclick="exportLeads()">
+                                            <i class="fas fa-file-excel me-1"></i>Export Leads (Excel)
+                                        </button>
+                                        <button class="btn btn-secondary mt-2">
+                                            <i class="fas fa-file-csv me-1"></i>Export as CSV
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Database Backup</h5>
+                                        <p class="card-text">Create and download database backups</p>
+                                        <button class="btn btn-warning">
+                                            <i class="fas fa-database me-1"></i>Create Backup
+                                        </button>
+                                        <p class="text-muted mt-2 small">
+                                            Last backup: Never
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

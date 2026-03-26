@@ -1,0 +1,399 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Lead Details - {{ lead.company_name }} - GTA Parcel Delivery{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header with Actions -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a href="{% url 'leads_list' %}" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-arrow-left"></i> Back to Leads
+            </a>
+            <h2 class="d-inline-block fw-bold ms-2">{{ lead.company_name }}</h2>
+            <span class="badge bg-{{ lead.get_status_color }} ms-2 fs-6">{{ lead.get_status_display }}</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateStatusModal">
+                <i class="fas fa-edit me-1"></i>Update Status
+            </button>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addFollowupModal">
+                <i class="fas fa-clock me-1"></i>Schedule Follow-up
+            </button>
+            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addCommunicationModal">
+                <i class="fas fa-phone me-1"></i>Log Communication
+            </button>
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#createQuoteModal">
+                <i class="fas fa-file-invoice me-1"></i>Create Quote
+            </button>
+        </div>
+    </div>
+
+    <!-- Lead Information Cards -->
+    <div class="row">
+        <!-- Contact Information -->
+        <div class="col-md-4 mb-4">
+            <div class="dashboard-card h-100">
+                <h5 class="card-title mb-3">
+                    <i class="fas fa-user-circle text-primary me-2"></i>Contact Information
+                </h5>
+                <table class="table table-sm">
+                    <tr>
+                        <th class="text-muted">Contact Name:</th>
+                        <td>{{ lead.contact_name }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Email:</th>
+                        <td><a href="mailto:{{ lead.email }}">{{ lead.email }}</a></td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Phone:</th>
+                        <td>
+                            <a href="tel:{{ lead.phone }}">{{ lead.phone }}</a>
+                            {% if lead.alternative_phone %}
+                            <br><small class="text-muted">Alt: {{ lead.alternative_phone }}</small>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Website:</th>
+                        <td>
+                            {% if lead.website %}
+                            <a href="{{ lead.website }}" target="_blank">{{ lead.website|truncatechars:30 }}</a>
+                            {% else %}
+                            <span class="text-muted">Not provided</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Business Information -->
+        <div class="col-md-4 mb-4">
+            <div class="dashboard-card h-100">
+                <h5 class="card-title mb-3">
+                    <i class="fas fa-building text-primary me-2"></i>Business Details
+                </h5>
+                <table class="table table-sm">
+                    <tr>
+                        <th class="text-muted">Business Type:</th>
+                        <td>{{ lead.get_business_type_display }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Address:</th>
+                        <td>{{ lead.address|linebreaks }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Service Area:</th>
+                        <td>{{ lead.service_area }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Delivery Frequency:</th>
+                        <td>{{ lead.delivery_frequency|default:"Not specified" }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Lead Information -->
+        <div class="col-md-4 mb-4">
+            <div class="dashboard-card h-100">
+                <h5 class="card-title mb-3">
+                    <i class="fas fa-tag text-primary me-2"></i>Lead Details
+                </h5>
+                <table class="table table-sm">
+                    <tr>
+                        <th class="text-muted">Source:</th>
+                        <td><span class="badge bg-info">{{ lead.get_source_display }}</span></td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Assigned To:</th>
+                        <td>{{ lead.assigned_to|default:"Unassigned" }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Created:</th>
+                        <td>{{ lead.created_at|date:"M d, Y H:i" }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Last Contact:</th>
+                        <td>
+                            {% if lead.last_contacted %}
+                            {{ lead.last_contacted|date:"M d, Y" }}
+                            {% else %}
+                            <span class="text-warning">Not contacted yet</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delivery Requirements -->
+    {% if lead.typical_items or lead.monthly_volume %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <h5 class="card-title mb-3">
+                    <i class="fas fa-truck text-primary me-2"></i>Delivery Requirements
+                </h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Typical Items:</strong>
+                        <p>{{ lead.typical_items|default:"Not specified"|linebreaks }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Monthly Volume:</strong>
+                        <p>{{ lead.monthly_volume|default:"Not specified" }} deliveries</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Notes -->
+    {% if lead.notes or lead.internal_notes %}
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <h5 class="card-title mb-3">
+                    <i class="fas fa-sticky-note text-primary me-2"></i>Notes
+                </h5>
+                <p>{{ lead.notes|default:"No notes"|linebreaks }}</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <h5 class="card-title mb-3">
+                    <i class="fas fa-lock text-primary me-2"></i>Internal Notes
+                </h5>
+                <p>{{ lead.internal_notes|default:"No internal notes"|linebreaks }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Timeline -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="dashboard-card">
+                <h5 class="card-title mb-3">
+                    <i class="fas fa-history text-primary me-2"></i>Communication History
+                </h5>
+                <div class="timeline">
+                    {% for comm in communications %}
+                    <div class="timeline-item">
+                        <div class="timeline-badge bg-{% if comm.direction == 'out' %}primary{% else %}info{% endif %}">
+                            <i class="fas fa-{% if comm.communication_type == 'call' %}phone{% elif comm.communication_type == 'email' %}envelope{% elif comm.communication_type == 'whatsapp' %}comment{% else %}exchange-alt{% endif %}"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h6>{{ comm.subject }}</h6>
+                            <p>{{ comm.content|truncatechars:100 }}</p>
+                            <small class="text-muted">
+                                {{ comm.created_at|date:"M d, Y H:i" }} by {{ comm.staff_member }}
+                                <span class="badge bg-{% if comm.direction == 'out' %}primary{% else %}info{% endif %} ms-2">
+                                    {{ comm.get_direction_display }}
+                                </span>
+                            </small>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted text-center">No communication history</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="dashboard-card">
+                <h5 class="card-title mb-3">
+                    <i class="fas fa-calendar-check text-primary me-2"></i>Scheduled Follow-ups
+                </h5>
+                <div class="timeline">
+                    {% for followup in followups %}
+                    <div class="timeline-item">
+                        <div class="timeline-badge {% if followup.is_completed %}bg-success{% else %}bg-warning{% endif %}">
+                            <i class="fas fa-{% if followup.is_completed %}check{% else %}clock{% endif %}"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h6>{{ followup.get_followup_type_display }}</h6>
+                            <p>{{ followup.notes|truncatechars:100 }}</p>
+                            <small class="text-muted">
+                                Scheduled: {{ followup.scheduled_date|date:"M d, Y H:i" }}
+                                {% if followup.is_completed %}
+                                <span class="badge bg-success ms-2">Completed</span>
+                                {% else %}
+                                <button class="btn btn-sm btn-success ms-2" onclick="completeFollowup({{ followup.id }})" type="button">
+                                    Mark Complete
+                                </button>
+                                {% endif %}
+                            </small>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted text-center">No follow-ups scheduled</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quotes -->
+    {% if quotes %}
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="dashboard-card">
+                <h5 class="card-title mb-3">
+                    <i class="fas fa-file-invoice-dollar text-primary me-2"></i>Quotes
+                </h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Quote #</th>
+                                <th>Amount</th>
+                                <th>Valid Until</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for quote in quotes %}
+                            <tr>
+                                <td>{{ quote.quote_number }}</td>
+                                <td>${{ quote.amount|floatformat:2 }}</td>
+                                <td>{{ quote.valid_until|date:"M d, Y" }}</td>
+                                <td>
+                                    <span class="badge bg-{% if quote.status == 'accepted' %}success{% elif quote.status == 'rejected' %}danger{% elif quote.status == 'sent' %}info{% else %}warning{% endif %}">
+                                        {{ quote.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>{{ quote.created_at|date:"M d, Y" }}</td>
+                                <td>
+                                    {% if quote.pdf_file %}
+                                    <a href="{{ quote.pdf_file.url }}" class="btn btn-sm btn-primary" target="_blank">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Update Status Modal -->
+<div class="modal fade" id="updateStatusModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Lead Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{% url 'update_lead_status' lead.id %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Current Status: <span class="badge bg-{{ lead.get_status_color }}">{{ lead.get_status_display }}</span></label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">New Status</label>
+                        <select name="status" class="form-select">
+                            {% for key, value in lead.LEAD_STATUS %}
+                            <option value="{{ key }}" {% if lead.status == key %}selected{% endif %}>{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Follow-up Modal -->
+<div class="modal fade" id="addFollowupModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Schedule Follow-up</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="add_followup" value="1">
+                <div class="modal-body">
+                    {{ followup_form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Schedule</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Communication Modal -->
+<div class="modal fade" id="addCommunicationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Log Communication</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="add_communication" value="1">
+                <div class="modal-body">
+                    {{ communication_form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Communication</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.timeline {
+    position: relative;
+    padding: 20px 0;
+}
+.timeline-item {
+    position: relative;
+    padding-left: 60px;
+    margin-bottom: 30px;
+}
+.timeline-badge {
+    position: absolute;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+.timeline-content {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,58 @@
+from django.contrib import admin
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+from .models import Lead, FollowUp, CommunicationLog, Quote
+
+class LeadResource(resources.ModelResource):
+    class Meta:
+        model = Lead
+        fields = ('id', 'company_name', 'contact_name', 'email', 'phone', 
+                 'business_type', 'status', 'source', 'created_at')
+
+@admin.register(Lead)
+class LeadAdmin(ImportExportModelAdmin):
+    resource_class = LeadResource
+    list_display = ['company_name', 'contact_name', 'email', 'phone', 'business_type', 'status', 'source', 'created_at']
+    list_filter = ['status', 'source', 'business_type', 'created_at']
+    search_fields = ['company_name', 'contact_name', 'email', 'phone']
+    date_hierarchy = 'created_at'
+    readonly_fields = ['created_at', 'updated_at']
+    
+    fieldsets = (
+        ('Contact Information', {
+            'fields': ('company_name', 'contact_name', 'email', 'phone', 'alternative_phone')
+        }),
+        ('Business Details', {
+            'fields': ('business_type', 'website', 'address', 'service_area')
+        }),
+        ('Lead Information', {
+            'fields': ('status', 'source', 'assigned_to')
+        }),
+        ('Delivery Requirements', {
+            'fields': ('delivery_frequency', 'typical_items', 'monthly_volume')
+        }),
+        ('Notes', {
+            'fields': ('notes', 'internal_notes')
+        }),
+        ('Tracking', {
+            'fields': ('created_at', 'updated_at', 'last_contacted')
+        }),
+    )
+
+@admin.register(FollowUp)
+class FollowUpAdmin(admin.ModelAdmin):
+    list_display = ['lead', 'followup_type', 'scheduled_date', 'is_completed', 'created_at']
+    list_filter = ['followup_type', 'is_completed', 'scheduled_date']
+    search_fields = ['lead__company_name', 'notes']
+
+@admin.register(CommunicationLog)
+class CommunicationLogAdmin(admin.ModelAdmin):
+    list_display = ['lead', 'communication_type', 'direction', 'subject', 'created_at']
+    list_filter = ['communication_type', 'direction', 'created_at']
+    search_fields = ['lead__company_name', 'subject', 'content']
+
+@admin.register(Quote)
+class QuoteAdmin(admin.ModelAdmin):
+    list_display = ['quote_number', 'lead', 'amount', 'valid_until', 'status', 'created_at']
+    list_filter = ['status', 'created_at']
+    search_fields = ['quote_number', 'lead__company_name']

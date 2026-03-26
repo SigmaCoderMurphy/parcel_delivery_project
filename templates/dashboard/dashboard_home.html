@@ -1,0 +1,393 @@
+
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - GTA Parcel Delivery{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="fw-bold mb-1">Welcome back, {{ request.user.first_name|default:request.user.username }}!</h2>
+                    <p class="text-muted mb-0">{{ current_date|date:"l, F j, Y" }}</p>
+                </div>
+                <div>
+                    <span class="badge bg-primary p-3">
+                        <i class="fas fa-calendar me-2"></i>{{ current_date|date:"M d, Y" }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="stat-card" style="background: linear-gradient(135deg, #2563eb, #1e40af);">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-white-50 mb-1">Total Leads</p>
+                        <h2 class="text-white mb-0">{{ total_leads|default:"0" }}</h2>
+                        <small class="text-white-50">
+                            <i class="fas fa-arrow-up me-1"></i>
+                            {{ new_leads_week|default:"0" }} this week
+                        </small>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-users fa-3x opacity-50"></i>
+                    </div>
+                </div>
+                <div class="progress mt-3" style="height: 6px;">
+                    <div class="progress-bar bg-white" style="width: {{ total_leads_progress|default:'0' }}%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="stat-card" style="background: linear-gradient(135deg, #10b981, #059669);">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-white-50 mb-1">Qualified Leads</p>
+                        <h2 class="text-white mb-0">{{ qualified_leads|default:"0" }}</h2>
+                        <small class="text-white-50">
+                            <i class="fas fa-percentage me-1"></i>
+                            {{ qualified_percentage|default:"0" }}% conversion
+                        </small>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle fa-3x opacity-50"></i>
+                    </div>
+                </div>
+                <div class="progress mt-3" style="height: 6px;">
+                    <div class="progress-bar bg-white" style="width: {{ qualified_percentage|default:'0' }}%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-white-50 mb-1">Pending Follow-ups</p>
+                        <h2 class="text-white mb-0">{{ pending_followups|default:"0" }}</h2>
+                        <small class="text-white-50">
+                            <i class="fas fa-exclamation-circle me-1"></i>
+                            {{ overdue_followups|default:"0" }} overdue
+                        </small>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-clock fa-3x opacity-50"></i>
+                    </div>
+                </div>
+                <div class="progress mt-3" style="height: 6px;">
+                    <div class="progress-bar bg-white" style="width: {{ pending_percentage|default:'0' }}%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="stat-card" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-white-50 mb-1">Won Deals</p>
+                        <h2 class="text-white mb-0">{{ won_leads|default:"0" }}</h2>
+                        <small class="text-white-50">
+                            <i class="fas fa-dollar-sign me-1"></i>
+                            ${{ total_revenue|default:"0"|floatformat:0 }}
+                        </small>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy fa-3x opacity-50"></i>
+                    </div>
+                </div>
+                <div class="progress mt-3" style="height: 6px;">
+                    <div class="progress-bar bg-white" style="width: {{ won_percentage|default:'0' }}%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Charts Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+            <div class="dashboard-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0">Leads Trend</h5>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-primary active" onclick="changeChartPeriod('week')">Week</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="changeChartPeriod('month')">Month</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="changeChartPeriod('year')">Year</button>
+                    </div>
+                </div>
+                <canvas id="leadsTrendChart" height="100"></canvas>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="dashboard-card">
+                <h5 class="mb-4">Leads by Source</h5>
+                <canvas id="leadsBySourceChart" height="250"></canvas>
+                <div class="mt-4">
+                    {% for source in leads_by_source %}
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>
+                            <span class="badge bg-{{ source.color }} me-2" style="width: 12px; height: 12px;">&nbsp;</span>
+                            {{ source.name }}
+                        </span>
+                        <span class="fw-bold">{{ source.count }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Activity Row -->
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="dashboard-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0">Recent Leads</h5>
+                    <a href="{% url 'leads_list' %}" class="btn btn-sm btn-primary">View All</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Contact</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for lead in recent_leads %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'lead_detail' lead.id %}" class="text-decoration-none fw-bold">
+                                        {{ lead.company_name|truncatechars:20 }}
+                                    </a>
+                                </td>
+                                <td>{{ lead.contact_name }}</td>
+                                <td>
+                                    <span class="badge bg-{% if lead.status == 'new' %}primary{% elif lead.status == 'contacted' %}info{% elif lead.status == 'qualified' %}success{% elif lead.status == 'won' %}success{% elif lead.status == 'lost' %}danger{% else %}warning{% endif %}">
+                                        {{ lead.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>{{ lead.created_at|date:"M d" }}</td>
+                                <td>
+                                    <a href="{% url 'lead_detail' lead.id %}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    <i class="fas fa-inbox fa-2x mb-2"></i>
+                                    <p>No leads yet</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="dashboard-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0">Today's Follow-ups</h5>
+                    <a href="{% url 'follow_ups' %}" class="btn btn-sm btn-primary">View All</a>
+                </div>
+                <div class="timeline">
+                    {% for followup in todays_followups %}
+                    <div class="timeline-item">
+                        <div class="timeline-badge {% if followup.is_completed %}bg-success{% else %}bg-warning{% endif %}">
+                            <i class="fas fa-{% if followup.is_completed %}check{% else %}clock{% endif %}"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">
+                                        <a href="{% url 'lead_detail' followup.lead.id %}" class="text-decoration-none">
+                                            {{ followup.lead.company_name }}
+                                        </a>
+                                    </h6>
+                                    <p class="mb-1 small">{{ followup.notes|truncatechars:50 }}</p>
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock me-1"></i>{{ followup.scheduled_date|date:"H:i" }}
+                                        ({{ followup.get_followup_type_display }})
+                                    </small>
+                                </div>
+                                {% if not followup.is_completed %}
+                                <button class="btn btn-sm btn-success" onclick="completeFollowup({{ followup.id }})">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-calendar-check fa-3x mb-3"></i>
+                        <p>No follow-ups scheduled for today</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Performance Metrics -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <h5 class="mb-4">Performance Metrics</h5>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h3 class="fw-bold text-primary">{{ avg_response_time|default:"< 1" }}h</h3>
+                            <p class="text-muted mb-0">Avg Response Time</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h3 class="fw-bold text-success">{{ conversion_rate|default:"0" }}%</h3>
+                            <p class="text-muted mb-0">Conversion Rate</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h3 class="fw-bold text-info">{{ avg_deal_value|default:"0"|floatformat:0 }}</h3>
+                            <p class="text-muted mb-0">Avg Deal Value</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h3 class="fw-bold text-warning">{{ active_customers|default:"0" }}</h3>
+                            <p class="text-muted mb-0">Active Customers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Chart data from backend
+const sourceLabels = [{% for item in leads_by_source %}'{{ item.name|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}];
+const sourceData = [{% for item in leads_by_source %}{{ item.count|default:'0' }}{% if not forloop.last %},{% endif %}{% endfor %}];
+const sourceColors = [{% for item in leads_by_source %}'{{ item.color|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}];
+
+const trendLabels = [{% for date in trend_dates %}'{{ date|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}];
+const trendData = [{% for count in trend_counts %}{{ count|default:'0' }}{% if not forloop.last %},{% endif %}{% endfor %}];
+
+// Initialize charts when document is ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Leads by Source Chart (Doughnut)
+    const sourceCtx = document.getElementById('leadsBySourceChart').getContext('2d');
+    new Chart(sourceCtx, {
+        type: 'doughnut',
+        data: {
+            labels: sourceLabels,
+            datasets: [{
+                data: sourceData,
+                backgroundColor: sourceColors,
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            cutout: '70%'
+        }
+    });
+    
+    // Leads Trend Chart (Line)
+    const trendCtx = document.getElementById('leadsTrendChart').getContext('2d');
+    window.leadsTrendChart = new Chart(trendCtx, {
+        type: 'line',
+        data: {
+            labels: trendLabels,
+            datasets: [{
+                label: 'New Leads',
+                data: trendData,
+                borderColor: '#2563eb',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#2563eb',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        display: true,
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+});
+
+// Change chart period
+function changeChartPeriod(period) {
+    // Update active button
+    document.querySelectorAll('.btn-group .btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Show loading
+    showLoading();
+    
+    // Fetch new data
+    fetch(`/dashboard/chart-data/?period=${period}`)
+        .then(response => response.json())
+        .then(data => {
+            window.leadsTrendChart.data.labels = data.labels;
+            window.leadsTrendChart.data.datasets[0].data = data.data;
+            window.leadsTrendChart.update();
+            hideLoading();
+        })
+        .catch(error => {
+            hideLoading();
+            console.error('Error fetching chart data:', error);
+        });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - GTA Parcel Delivery{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold">About GTA Parcel Delivery</h1>
+        <p class="lead">Your trusted partner for local delivery services</p>
+    </div>
+</section>
+
+<!-- Our Story -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Our Story</h2>
+                <p class="lead">Founded in 2024, GTA Parcel Delivery was created to fill a gap in the local delivery market.</p>
+                <p>We noticed that businesses in the Greater Toronto Area needed a reliable, flexible delivery partner that could handle everything from small parcels to furniture, without the complexity and high minimums of national carriers.</p>
+                <p>Starting with just two sprinter vans, we've grown to a diverse fleet of vehicles serving hundreds of businesses across the GTA. Our focus remains the same: provide exceptional service, reliable delivery, and personalized attention to every client.</p>
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <div class="stat-box text-center p-3 bg-light rounded">
+                            <h3 class="fw-bold text-primary">500+</h3>
+                            <p class="mb-0">Happy Clients</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-box text-center p-3 bg-light rounded">
+                            <h3 class="fw-bold text-primary">20+</h3>
+                            <p class="mb-0">Fleet Vehicles</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="{% static 'images/about-us.jpeg' %}" alt="About Us" class="img-fluid rounded-3 shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Why Choose GTA Parcel Delivery?</h2>
+            <p class="lead text-muted">The advantages of partnering with us</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-4" style="width: 80px; height: 80px; line-height: 80px;">
+                        <i class="fas fa-clock fa-2x"></i>
+                    </div>
+                    <h4>Reliability</h4>
+                    <p class="text-muted">99.5% on-time delivery rate. We understand that in business, timing is everything.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-4" style="width: 80px; height: 80px; line-height: 80px;">
+                        <i class="fas fa-truck fa-2x"></i>
+                    </div>
+                    <h4>Versatile Fleet</h4>
+                    <p class="text-muted">From sprinter vans to 26ft box trucks, we have the right vehicle for every delivery.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-4" style="width: 80px; height: 80px; line-height: 80px;">
+                        <i class="fas fa-shield-alt fa-2x"></i>
+                    </div>
+                    <h4>Fully Insured</h4>
+                    <p class="text-muted">$2 million liability insurance and cargo coverage for your peace of mind.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-4" style="width: 80px; height: 80px; line-height: 80px;">
+                        <i class="fas fa-map-marked-alt fa-2x"></i>
+                    </div>
+                    <h4>Local Expertise</h4>
+                    <p class="text-muted">We know GTA streets, traffic patterns, and the fastest routes.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-4" style="width: 80px; height: 80px; line-height: 80px;">
+                        <i class="fas fa-mobile-alt fa-2x"></i>
+                    </div>
+                    <h4>Real-Time Tracking</h4>
+                    <p class="text-muted">Track your deliveries in real-time with our mobile app and portal.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-4" style="width: 80px; height: 80px; line-height: 80px;">
+                        <i class="fas fa-headset fa-2x"></i>
+                    </div>
+                    <h4>24/7 Support</h4>
+                    <p class="text-muted">Our customer support team is available around the clock.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Our Leadership Team</h2>
+            <p class="lead text-muted">Experienced professionals dedicated to your success</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card text-center">
+                    <img src="{% static 'images/team-1.jpg' %}" class="card-img-top rounded-circle mx-auto mt-4" style="width: 150px; height: 150px; object-fit: cover;" alt="Team Member">
+                    <div class="card-body">
+                        <h5 class="card-title">John Smith</h5>
+                        <p class="text-primary">Founder & CEO</p>
+                        <p class="card-text">15+ years in logistics and supply chain management. Former operations manager at major courier company.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card text-center">
+                    <img src="{% static 'images/team-1.jpg' %}" class="card-img-top rounded-circle mx-auto mt-4" style="width: 150px; height: 150px; object-fit: cover;" alt="Team Member">
+                    <div class="card-body">
+                        <h5 class="card-title">Sarah Johnson</h5>
+                        <p class="text-primary">Operations Director</p>
+                        <p class="card-text">Expert in fleet management and route optimization. Ensures your deliveries are always on time.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card text-center">
+                    <img src="{% static 'images/team-1.jpg' %}" class="card-img-top rounded-circle mx-auto mt-4" style="width: 150px; height: 150px; object-fit: cover;" alt="Team Member">
+                    <div class="card-body">
+                        <h5 class="card-title">Mike Chen</h5>
+                        <p class="text-primary">Customer Success Manager</p>
+                        <p class="card-text">Dedicated to ensuring clients get the best possibe service and support from our years of delivery industry experience.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+{% if testimonials %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">What Our Clients Say</h2>
+            <p class="lead text-muted">Trusted by businesses across the GTA</p>
+        </div>
+        
+        <div class="row">
+            {% for testimonial in testimonials %}
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card h-100">
+                    <div class="stars mb-3">
+                        {% for i in "12345"|make_list %}
+                            {% if forloop.counter <= testimonial.rating %}
+                                <i class="fas fa-star text-warning"></i>
+                            {% else %}
+                                <i class="far fa-star text-warning"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <p class="testimonial-text">"{{ testimonial.content }}"</p>
+                    <div class="d-flex align-items-center mt-4">
+                        <div>
+                            <h6 class="mb-0 fw-bold">{{ testimonial.client_name }}</h6>
+                            <small class="text-muted">{{ testimonial.client_company }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

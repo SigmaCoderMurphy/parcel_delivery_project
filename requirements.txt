@@ -1,0 +1,14 @@
+Django==4.2.7
+Pillow==10.1.0
+python-decouple==3.8
+whitenoise==6.6.0
+django-crispy-forms==2.1
+crispy-bootstrap5==0.7
+django-allauth==0.58.2
+django-import-export==3.3.1
+openpyxl==3.1.2
+twilio==8.10.0
+phonenumbers==8.13.27
+django-celery-results==2.5.1
+redis==5.0.1
+celery==5.3.4
