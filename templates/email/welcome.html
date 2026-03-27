@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #2563eb; color: white; padding: 20px; text-align: center; }
+        .content { padding: 20px; }
+        .button { display: inline-block; padding: 10px 20px; background: #2563eb; color: white; text-decoration: none; border-radius: 5px; }
+        .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to GTA Parcel Delivery!</h1>
+        </div>
+        <div class="content">
+            <p>Dear {{ lead.contact_name }},</p>
+            
+            <p>Thank you for choosing GTA Parcel Delivery for your business delivery needs! We're excited to help you streamline your delivery operations.</p>
+            
+            <h3>Here's what happens next:</h3>
+            <ol>
+                <li>Our team will review your requirements within 1 hour</li>
+                <li>We'll prepare a customized quote based on your needs</li>
+                <li>A delivery specialist will contact you to discuss details</li>
+                <li>We'll schedule your first delivery</li>
+            </ol>
+            
+            <p>In the meantime, feel free to:</p>
+            <ul>
+                <li>Call us at {{ company.phone }} for immediate assistance</li>
+                <li>Visit our website: <a href="{{ company.website }}">{{ company.website }}</a></li>
+                <li>Check out our services on Google Business</li>
+            </ul>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="{{ company.website }}" class="button">Learn More About Our Services</a>
+            </div>
+            
+            <p>We look forward to serving your business!</p>
+            
+            <p>Best regards,<br>
+            The GTA Parcel Delivery Team</p>
+        </div>
+        <div class="footer">
+            <p>GTA Parcel Delivery | 123 Business Ave, Toronto, ON | {{ company.phone }}</p>
+            <p>This email was sent to {{ lead.email }}. You received this because you requested a quote.</p>
+        </div>
+    </div>
+</body>
+</html>

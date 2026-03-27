@@ -1,0 +1,99 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}Call Logs{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="fw-bold mb-4">Call Logs</h2>
+    
+    <div class="dashboard-card">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Date/Time</th>
+                        <th>Lead</th>
+                        <th>Phone Number</th>
+                        <th>Duration</th>
+                        <th>Type</th>
+                        <th>Sentiment</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for call in calls %}
+                    <tr>
+                        <td>{{ call.created_at|date:"M d, Y H:i" }}</td>
+                        <td>
+                            {% if call.lead %}
+                            <a href="{% url 'lead_detail' call.lead.id %}">
+                                {{ call.lead.company_name }}
+                            </a>
+                            {% else %}
+                            <span class="text-muted">Unknown</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ call.caller_number }}</td>
+                        <td>{{ call.call_duration }} seconds</td>
+                        <td>
+                            <span class="badge bg-{% if call.call_type == 'incoming' %}success{% elif call.call_type == 'outgoing' %}info{% else %}warning{% endif %}">
+                                {{ call.get_call_type_display }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if call.analysis %}
+                            <span class="badge bg-{% if call.analysis.sentiment_score == 'positive' %}success{% elif call.analysis.sentiment_score == 'negative' %}danger{% else %}secondary{% endif %}">
+                                {{ call.analysis.sentiment_score|title }}
+                            </span>
+                            {% else %}
+                            <span class="text-muted">Not analyzed</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#callModal{{ call.id }}">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    
+                    <!-- Call Details Modal -->
+                    <div class="modal fade" id="callModal{{ call.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Call Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Caller:</strong> {{ call.caller_number }}</p>
+                                    <p><strong>Duration:</strong> {{ call.call_duration }} seconds</p>
+                                    <p><strong>Type:</strong> {{ call.get_call_type_display }}</p>
+                                    <p><strong>Notes:</strong> {{ call.call_notes|default:"No notes" }}</p>
+                                    {% if call.recording_url %}
+                                    <p><strong>Recording:</strong> <a href="{{ call.recording_url }}" target="_blank">Listen</a></p>
+                                    {% endif %}
+                                    {% if call.analysis %}
+                                    <hr>
+                                    <h6>Call Analysis</h6>
+                                    <p><strong>Sentiment:</strong> {{ call.analysis.sentiment_score|title }}</p>
+                                    <p><strong>Keywords:</strong> {{ call.analysis.keywords_extracted|default:"None" }}</p>
+                                    <p><strong>Conversion Likelihood:</strong> {{ call.analysis.conversion_likelihood }}%</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">
+                            <i class="fas fa-phone-slash fa-3x mb-3"></i>
+                            <p>No call logs yet</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

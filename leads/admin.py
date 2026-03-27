@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-from .models import Lead, FollowUp, CommunicationLog, Quote
+from .models import Lead, FollowUp, CommunicationLog, Quote, CallLog, CallAnalysis, ScheduledEmail
 
 class LeadResource(resources.ModelResource):
     class Meta:
@@ -56,3 +56,36 @@ class QuoteAdmin(admin.ModelAdmin):
     list_display = ['quote_number', 'lead', 'amount', 'valid_until', 'status', 'created_at']
     list_filter = ['status', 'created_at']
     search_fields = ['quote_number', 'lead__company_name']
+
+@admin.register(CallLog)
+class CallLogAdmin(admin.ModelAdmin):
+    list_display = ['caller_number', 'lead', 'call_type', 'call_duration', 'created_at']
+    list_filter = ['call_type', 'created_at']
+    search_fields = ['lead__company_name', 'caller_number', 'call_notes']
+    readonly_fields = ['created_at', 'call_sid']
+
+@admin.register(CallAnalysis)
+class CallAnalysisAdmin(admin.ModelAdmin):
+    list_display = ['call', 'sentiment_score', 'conversion_likelihood', 'created_at']
+    list_filter = ['sentiment_score', 'created_at']
+    search_fields = ['call__caller_number', 'keywords_extracted']
+    readonly_fields = ['created_at']
+
+@admin.register(ScheduledEmail)
+class ScheduledEmailAdmin(admin.ModelAdmin):
+    list_display = ['lead', 'email_type', 'scheduled_date', 'sent', 'sent_at']
+    list_filter = ['sent', 'scheduled_date', 'email_type']
+    search_fields = ['lead__company_name', 'subject']
+    readonly_fields = ['created_at', 'sent_at']
+    
+    fieldsets = (
+        ('Email Information', {
+            'fields': ('lead', 'email_type', 'subject')
+        }),
+        ('Scheduling', {
+            'fields': ('scheduled_date', 'template_path')
+        }),
+        ('Status', {
+            'fields': ('sent', 'sent_at', 'created_at')
+        }),
+    )

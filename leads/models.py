@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from datetime import datetime
 
 class Lead(models.Model):
     LEAD_STATUS = [
@@ -143,3 +144,58 @@ class Quote(models.Model):
     
     def __str__(self):
         return f"Quote {self.quote_number} - {self.lead.company_name}"
+    
+
+# Add these new models after your existing models:
+
+class CallLog(models.Model):
+    CALL_TYPES = [
+        ('incoming', 'Incoming Call'),
+        ('outgoing', 'Outgoing Call'),
+        ('missed', 'Missed Call'),
+    ]
+    
+    lead = models.ForeignKey(Lead, on_delete=models.SET_NULL, null=True, blank=True, related_name='calls')
+    call_sid = models.CharField(max_length=100, unique=True)
+    caller_number = models.CharField(max_length=20)
+    call_duration = models.IntegerField(help_text="Duration in seconds", default=0)
+    call_notes = models.TextField(blank=True)
+    recording_url = models.URLField(blank=True, null=True)
+    call_type = models.CharField(max_length=20, choices=CALL_TYPES, default='incoming')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Call from {self.caller_number} - {self.created_at}"
+
+class CallAnalysis(models.Model):
+    call = models.OneToOneField(CallLog, on_delete=models.CASCADE, related_name='analysis')
+    sentiment_score = models.CharField(max_length=20, choices=[
+        ('positive', 'Positive'),
+        ('neutral', 'Neutral'),
+        ('negative', 'Negative'),
+    ])
+    keywords_extracted = models.CharField(max_length=500, blank=True)
+    conversion_likelihood = models.IntegerField(default=0, help_text="0-100")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Analysis for call {self.call.call_sid}"
+
+class ScheduledEmail(models.Model):
+    lead = models.ForeignKey(Lead, on_delete=models.CASCADE, related_name='scheduled_emails')
+    email_type = models.CharField(max_length=50)
+    subject = models.CharField(max_length=200)
+    scheduled_date = models.DateTimeField()
+    sent = models.BooleanField(default=False)
+    sent_at = models.DateTimeField(null=True, blank=True)
+    template_path = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['scheduled_date']
+    
+    def __str__(self):
+        return f"Email for {self.lead.company_name} - {self.email_type}"

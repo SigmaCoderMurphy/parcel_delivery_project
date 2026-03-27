@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #10b981; color: white; padding: 20px; text-align: center; }
+        .content { padding: 20px; }
+        .quote-details { background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 20px 0; }
+        .button { display: inline-block; padding: 12px 24px; background: #10b981; color: white; text-decoration: none; border-radius: 5px; margin: 10px 0; }
+        .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Your Quote is Ready!</h1>
+        </div>
+        <div class="content">
+            <p>Dear {{ lead.contact_name }},</p>
+            
+            <p>Great news! We've prepared a customized quote for your delivery needs based on your requirements.</p>
+            
+            <div class="quote-details">
+                <h3>Quote Summary:</h3>
+                <p><strong>Quote #:</strong> {{ quote.quote_number }}</p>
+                <p><strong>Amount:</strong> ${{ quote.amount|floatformat:2 }}</p>
+                <p><strong>Valid Until:</strong> {{ quote.valid_until|date:"F d, Y" }}</p>
+                <p><strong>Business Type:</strong> {{ lead.get_business_type_display }}</p>
+                <p><strong>Service Area:</strong> {{ lead.service_area }}</p>
+            </div>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="{{ company.website }}/dashboard/leads/{{ lead.id }}/" class="button">View Full Quote</a>
+                <br><br>
+                <a href="tel:{{ company.phone }}" style="color: #10b981;">Or call us at {{ company.phone }}</a>
+            </div>
+            
+            <p>This quote includes:</p>
+            <ul>
+                <li>Professional delivery service across GTA</li>
+                <li>Real-time tracking and notifications</li>
+                <li>Flexible scheduling options</li>
+                <li>Dedicated account manager</li>
+            </ul>
+            
+            <p>To accept this quote or discuss modifications, please:</p>
+            <ol>
+                <li>Reply to this email, or</li>
+                <li>Call us at {{ company.phone }}, or</li>
+                <li>Visit our office to sign the contract</li>
+            </ol>
+            
+            <p>We're ready to start delivering for you!</p>
+            
+            <p>Best regards,<br>
+            The GTA Parcel Delivery Team</p>
+        </div>
+        <div class="footer">
+            <p>GTA Parcel Delivery | 123 Business Ave, Toronto, ON</p>
+            <p>Phone: {{ company.phone }} | Email: {{ company.email }}</p>
+        </div>
+    </div>
+</body>
+</html>

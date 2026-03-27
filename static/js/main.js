@@ -19,30 +19,31 @@
     });
 })();
 
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
+// Smooth scrolling for anchor links - DISABLED to fix auto-scroll issue
+// This was causing scrolling on href="#" buttons (modals, dropdowns)
+// document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+//     anchor.addEventListener('click', function(e) {
+//         e.preventDefault();
+//         
+//         const target = document.querySelector(this.getAttribute('href'));
+//         if (target) {
+//             target.scrollIntoView({
+//                 behavior: 'smooth',
+//                 block: 'start'
+//             });
+//         }
+//     });
+// });
 
-// Navbar scroll effect
-window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.classList.add('navbar-scrolled');
-    } else {
-        navbar.classList.remove('navbar-scrolled');
-    }
-});
+// Navbar scroll effect - temporarily disabled to test auto-scroll issue
+// window.addEventListener('scroll', function() {
+//     const navbar = document.querySelector('.navbar');
+//     if (window.scrollY > 50) {
+//         navbar.classList.add('navbar-scrolled');
+//     } else {
+//         navbar.classList.remove('navbar-scrolled');
+//     }
+// });
 
 // Phone number formatting
 const phoneInputs = document.querySelectorAll('input[type="tel"]');
@@ -90,24 +91,24 @@ function animateCounter(element, start, end, duration) {
     window.requestAnimationFrame(step);
 }
 
-// Trigger counter animation when element comes into view
-const observerOptions = {
-    threshold: 0.5
-};
+// Trigger counter animation when element comes into view - temporarily disabled
+// const observerOptions = {
+//     threshold: 0.5
+// };
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const counters = entry.target.querySelectorAll('.counter');
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-target'));
-                animateCounter(counter, 0, target, 2000);
-            });
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
+// const observer = new IntersectionObserver((entries) => {
+//     entries.forEach(entry => {
+//         if (entry.isIntersecting) {
+//             const counters = entry.target.querySelectorAll('.counter');
+//             counters.forEach(counter => {
+//                 const target = parseInt(counter.getAttribute('data-target'));
+//                 animateCounter(counter, 0, target, 2000);
+//             });
+//             observer.unobserve(entry.target);
+//         }
+//     });
+// }, observerOptions);
 
-document.querySelectorAll('.stats-section').forEach(section => {
-    observer.observe(section);
-});
+// document.querySelectorAll('.stats-section').forEach(section => {
+//     observer.observe(section);
+// });

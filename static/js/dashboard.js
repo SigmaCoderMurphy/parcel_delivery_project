@@ -152,13 +152,13 @@ document.addEventListener('DOMContentLoaded', function() {
         dateFormat: 'Y-m-d'
     });
     
-    // DataTables initialization
-    $('.data-table').DataTable({
-        pageLength: 25,
-        responsive: true,
-        language: {
-            search: "_INPUT_",
-            searchPlaceholder: "Search..."
-        }
-    });
+    // DataTables initialization - temporarily disabled to test auto-scroll issue
+    // $('.data-table').DataTable({
+    //     pageLength: 25,
+    //     responsive: true,
+    //     language: {
+    //         search: "_INPUT_",
+    //         searchPlaceholder: "Search..."
+    //     }
+    // });
 });
