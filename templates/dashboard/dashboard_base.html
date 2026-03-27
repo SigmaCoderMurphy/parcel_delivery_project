@@ -31,22 +31,10 @@
             --primary-color: #2563eb;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html, body {
-            height: 100%;
-            scroll-behavior: smooth;
-        }
-        
         body {
             font-family: 'Inter', sans-serif;
             background: #f3f4f6;
             overflow-x: hidden;
-            overflow-y: auto;
         }
         
         /* Sidebar */
@@ -61,20 +49,6 @@
             overflow-y: auto;
             transition: all 0.3s ease;
             z-index: 1000;
-        }
-        
-        /* Custom scrollbar for sidebar */
-        .dashboard-sidebar::-webkit-scrollbar {
-            width: 5px;
-        }
-        
-        .dashboard-sidebar::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.1);
-        }
-        
-        .dashboard-sidebar::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 5px;
         }
         
         .sidebar-header {
@@ -129,12 +103,11 @@
         }
         
         .sidebar-footer {
-            position: sticky;
+            position: absolute;
             bottom: 0;
             width: 100%;
             padding: 20px;
             border-top: 1px solid rgba(255,255,255,0.1);
-            background: var(--sidebar-bg);
         }
         
         .user-info {
@@ -178,7 +151,6 @@
             margin-left: var(--sidebar-width);
             min-height: 100vh;
             transition: all 0.3s ease;
-            position: relative;
         }
         
         .dashboard-navbar {
@@ -187,19 +159,11 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             position: sticky;
             top: 0;
-            z-index: 99;
-            transition: all 0.3s ease;
-        }
-        
-        /* Navbar scroll effect - this will be applied via JS */
-        .dashboard-navbar.scrolled {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            background: rgba(255,255,255,0.98);
+            z-index: 100;
         }
         
         .dashboard-content {
             padding: 30px;
-            min-height: calc(100vh - 80px);
         }
         
         /* Cards */
@@ -269,7 +233,6 @@
             padding: 8px 16px;
             font-weight: 500;
             border-radius: 8px;
-            transition: all 0.3s ease;
         }
         
         .btn-primary {
@@ -280,7 +243,6 @@
         .btn-primary:hover {
             background: #1d4ed8;
             border-color: #1d4ed8;
-            transform: translateY(-2px);
         }
         
         .btn-sm {
@@ -323,7 +285,6 @@
         .form-control:focus, .form-select:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-            outline: none;
         }
         
         .form-label {
@@ -337,18 +298,6 @@
             border: none;
             border-radius: 10px;
             padding: 16px 20px;
-            animation: slideIn 0.3s ease;
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
         }
         
         /* Responsive */
@@ -399,18 +348,6 @@
             position: relative;
             padding-left: 60px;
             margin-bottom: 30px;
-            animation: fadeInUp 0.5s ease;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
         }
         
         .timeline-badge {
@@ -461,6 +398,7 @@
         <!-- Sidebar -->
         <div class="dashboard-sidebar">
             <div class="sidebar-header">
+                <!-- FIX 1: Changed from logo1.png to logo.png -->
                 <img src="{% static 'images/logo.png' %}" 
                      alt="GTA Parcel Delivery" 
                      height="50"
@@ -548,6 +486,7 @@
                         </p>
                     </div>
                 </div>
+                <!-- FIX 2: Changed from 'logout' to 'admin:logout' -->
                 <a href="{% url 'admin:logout' %}" class="btn btn-outline-light w-100 mt-3">
                     <i class="fas fa-sign-out-alt me-2"></i>Logout
                 </a>
@@ -557,7 +496,7 @@
         <!-- Main Content -->
         <div class="dashboard-main">
             <!-- Top Navigation -->
-            <nav class="dashboard-navbar" id="mainNavbar">
+            <nav class="dashboard-navbar">
                 <div class="d-flex justify-content-between align-items-center">
                     <button class="btn btn-link sidebar-toggle d-lg-none p-0" style="display: none;">
                         <i class="fas fa-bars fa-2x text-dark"></i>
@@ -718,50 +657,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     
     <script>
-        // ==================== SCROLL EFFECT ====================
-        // This is the scroll effect that was missing!
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.getElementById('mainNavbar');
-            const dashboardContent = document.querySelector('.dashboard-content');
-            
-            // Navbar scroll effect
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            });
-            
-            // Prevent body scroll when modal is open
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                modal.addEventListener('show.bs.modal', function() {
-                    document.body.style.overflow = 'hidden';
-                });
-                modal.addEventListener('hidden.bs.modal', function() {
-                    document.body.style.overflow = '';
-                });
-            });
-            
-            // Smooth scroll for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
-                    if (href !== '#' && href !== '#!') {
-                        e.preventDefault();
-                        const target = document.querySelector(href);
-                        if (target) {
-                            target.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-                        }
-                    }
-                });
-            });
-        });
-        
         // Toggle sidebar on mobile
         document.querySelector('.sidebar-toggle')?.addEventListener('click', function() {
             document.querySelector('.dashboard-sidebar').classList.toggle('active');
