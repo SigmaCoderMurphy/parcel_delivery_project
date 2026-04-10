@@ -1,34 +1,98 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Thank You - GTA Parcel Delivery{% endblock %}
+{% block title %}Thank You - Eastern Logistics{% endblock %}
 
 {% block content %}
 <!-- Thank You Section -->
 <section class="py-5">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-6 text-center">
+            <div class="col-lg-7 text-center">
+                <!-- Success Icon -->
                 <div class="thank-you-icon mb-4">
-                    <i class="fas fa-check-circle fa-5x text-success"></i>
+                    <i class="fas fa-check-circle fa-5x text-success" style="animation: bounce 1s infinite;"></i>
                 </div>
-                <h1 class="display-4 fw-bold mb-4">Thank You!</h1>
-                <p class="lead mb-4">Your request has been received. Our team will contact you within 1 business hour.</p>
-                <div class="card bg-light p-4 mb-4">
-                    <h5>What happens next?</h5>
+                
+                <!-- Main Message -->
+                <h1 class="display-3 fw-bold mb-3">Thank You!</h1>
+                <p class="lead text-muted mb-4">Your request has been successfully received. We truly appreciate your interest in our delivery services!</p>
+                
+                <!-- Confirmation Details -->
+                <div class="card bg-light border-0 shadow-sm p-4 mb-4">
+                    <div class="row text-start">
+                        <div class="col-sm-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle text-success me-3 fs-5"></i>
+                                <div>
+                                    <small class="text-muted">Status</small>
+                                    <p class="mb-0 fw-600">Request Received</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-clock text-primary me-3 fs-5"></i>
+                                <div>
+                                    <small class="text-muted">Response Time</small>
+                                    <p class="mb-0 fw-600">Within 1 hour</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-envelope text-info me-3 fs-5"></i>
+                                <div>
+                                    <small class="text-muted">Confirmation</small>
+                                    <p class="mb-0 fw-600">Email Sent</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-phone text-warning me-3 fs-5"></i>
+                                <div>
+                                    <small class="text-muted">Follow-up</small>
+                                    <p class="mb-0 fw-600">By Phone</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- What Happens Next -->
+                <div class="card bg-white border-0 shadow-sm p-4 mb-4">
+                    <h5 class="fw-bold mb-3 text-start">What Happens Next?</h5>
                     <ul class="list-unstyled text-start">
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>We'll review your requirements</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Prepare a customized quote</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Contact you to discuss details</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Schedule your first delivery</li>
+                        <li class="mb-3 d-flex">
+                            <span class="badge bg-success rounded-circle me-3" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">1</span>
+                            <span>We'll carefully review your requirements and delivery needs</span>
+                        </li>
+                        <li class="mb-3 d-flex">
+                            <span class="badge bg-success rounded-circle me-3" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">2</span>
+                            <span>Our team will prepare a customized quote tailored to your business</span>
+                        </li>
+                        <li class="mb-3 d-flex">
+                            <span class="badge bg-success rounded-circle me-3" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">3</span>
+                            <span>We'll contact you via phone to discuss details and answer any questions</span>
+                        </li>
+                        <li class="d-flex">
+                            <span class="badge bg-success rounded-circle me-3" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">4</span>
+                            <span>Schedule your first delivery and get started with us</span>
+                        </li>
                     </ul>
                 </div>
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="{% url 'home' %}" class="btn btn-primary">
+                
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="{% url 'home' %}" class="btn btn-primary px-4 py-3">
                         <i class="fas fa-home me-2"></i>Back to Home
                     </a>
-                    <a href="{% url 'services' %}" class="btn btn-outline-primary">
+                    <a href="{% url 'services' %}" class="btn btn-outline-primary px-4 py-3">
                         <i class="fas fa-truck me-2"></i>View Services
+                    </a>
+                    <a href="tel:+14167100361" class="btn btn-outline-success px-4 py-3">
+                        <i class="fas fa-phone-alt me-2"></i>Call Us Now
                     </a>
                 </div>
             </div>
@@ -39,35 +103,59 @@
 <!-- Quick Contact -->
 <section class="py-5 bg-light">
     <div class="container">
+        <h3 class="fw-bold mb-4 text-center">Need Immediate Assistance?</h3>
         <div class="row">
-            <div class="col-md-4 mb-3">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-phone-alt fa-2x text-primary me-3"></i>
-                    <div>
-                        <h6 class="mb-0">Call Us</h6>
-                        <a href="tel:+14165550123" class="text-decoration-none">(416) 555-0123</a>
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm h-100 hover-card">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-phone-alt fa-2x text-primary mb-3"></i>
+                        <h6 class="fw-bold mb-2 fs-5">Call Us</h6>
+                        <a href="tel:+14167100361" class="text-decoration-none fw-600">416-710-0361</a>
+                        <p class="text-muted small mt-2 mb-0">Available 24/7</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-envelope fa-2x text-primary me-3"></i>
-                    <div>
-                        <h6 class="mb-0">Email Us</h6>
-                        <a href="mailto:info@gtaparceldelivery.com" class="text-decoration-none">info@gtaparceldelivery.com</a>
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm h-100 hover-card">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-envelope fa-2x text-primary mb-3"></i>
+                        <h6 class="fw-bold mb-2 fs-5">Email Us</h6>
+                        <a href="mailto:support@easternlogistics.app" class="text-decoration-none fw-600">support@easternlogistics.app</a>
+                        <p class="text-muted small mt-2 mb-0">We respond quickly</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="d-flex align-items-center">
-                    <i class="fab fa-whatsapp fa-2x text-primary me-3"></i>
-                    <div>
-                        <h6 class="mb-0">WhatsApp</h6>
-                        <a href="https://wa.me/14165550123" class="text-decoration-none">+1 (416) 555-0123</a>
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm h-100 hover-card">
+                    <div class="card-body text-center p-4">
+                        <i class="fab fa-whatsapp fa-2x text-success mb-3"></i>
+                        <h6 class="fw-bold mb-2 fs-5">WhatsApp</h6>
+                        <a href="https://wa.me/14167100361" class="text-decoration-none fw-600">416-710-0361 (WhatsApp)</a>
+                        <p class="text-muted small mt-2 mb-0">Chat with us anytime</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<style>
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-15px);
+        }
+    }
+    
+    .hover-card {
+        transition: all 0.3s ease;
+    }
+    
+    .hover-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+    }
+</style>
 {% endblock %}

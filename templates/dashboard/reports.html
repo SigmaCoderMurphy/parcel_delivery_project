@@ -1,7 +1,7 @@
 {% extends 'dashboard/dashboard_base.html' %}
 {% load static %}
 
-{% block title %}Reports & Analytics - GTA Parcel Delivery{% endblock %}
+{% block title %}Reports & Analytics - Eastern Logistics{% endblock %}
 
 {% block content %}
 <div class="container-fluid px-0">
@@ -104,7 +104,11 @@
                     </h5>
                 </div>
                 <div class="card-body">
+                    {% if total_leads > 0 %}
                     <canvas id="sourceChart" width="400" height="300"></canvas>
+                    {% else %}
+                    <p class="text-muted text-center py-5 mb-0">No leads yet — charts will populate once leads are captured.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -118,7 +122,11 @@
                     </h5>
                 </div>
                 <div class="card-body">
+                    {% if total_leads > 0 %}
                     <canvas id="businessChart" width="400" height="300"></canvas>
+                    {% else %}
+                    <p class="text-muted text-center py-5 mb-0">No leads yet — charts will populate once leads are captured.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -148,11 +156,15 @@
                                 {% for source in leads_by_source %}
                                 <tr>
                                     <td>
-                                        <span class="badge bg-primary">{{ source.source|title }}</span>
+                                        <span class="badge bg-primary">{{ source.label }}</span>
                                     </td>
                                     <td>{{ source.count }}</td>
                                     <td>
-                                        {% widthratio source.count total_leads 100 %}%
+                                        {% if total_leads %}
+                                            {% widthratio source.count total_leads 100 %}%
+                                        {% else %}
+                                            0%
+                                        {% endif %}
                                     </td>
                                 </tr>
                                 {% empty %}
@@ -189,11 +201,15 @@
                                 {% for business in leads_by_business %}
                                 <tr>
                                     <td>
-                                        <span class="badge bg-success">{{ business.business_type|title }}</span>
+                                        <span class="badge bg-success">{{ business.label }}</span>
                                     </td>
                                     <td>{{ business.count }}</td>
                                     <td>
-                                        {% widthratio business.count total_leads 100 %}%
+                                        {% if total_leads %}
+                                            {% widthratio business.count total_leads 100 %}%
+                                        {% else %}
+                                            0%
+                                        {% endif %}
                                     </td>
                                 </tr>
                                 {% empty %}
@@ -215,13 +231,19 @@
             <div class="dashboard-card">
                 <div class="card-body text-center">
                     <h6 class="mb-3">Export Reports</h6>
-                    <div class="btn-group" role="group">
+                    <div class="btn-group mb-3" role="group">
                         <a href="{% url 'export_leads_excel' %}" class="btn btn-outline-primary">
                             <i class="fas fa-file-excel me-2"></i>Export Leads (Excel)
                         </a>
-                        <button class="btn btn-outline-secondary" disabled>
+                        <a href="{{ export_reports_pdf_url }}" class="btn btn-outline-danger">
                             <i class="fas fa-file-pdf me-2"></i>Export Report (PDF)
-                        </button>
+                        </a>
+                    </div>
+                    <div class="text-center">
+                        <a href="{% url 'custom_reports' %}" class="btn btn-primary">
+                            <i class="fas fa-cogs me-2"></i>Advanced Custom Reports
+                        </a>
+                        <p class="text-muted small mt-2">Create filtered reports with custom date ranges, status filters, and analytics</p>
                     </div>
                 </div>
             </div>
@@ -229,61 +251,58 @@
     </div>
 </div>
 
+{% if total_leads > 0 %}
 <!-- Chart.js Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Source Chart
-    const sourceCtx = document.getElementById('sourceChart').getContext('2d');
-    const sourceData = {
-        labels: [{% for source in leads_by_source %}'{{ source.source|title }}',{% endfor %}],
-        datasets: [{
-            data: [{% for source in leads_by_source %}{{ source.count }},{% endfor %}],
-            backgroundColor: [
-                '#2563eb', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4'
-            ],
-            borderWidth: 0
-        }]
-    };
+    var sourceLabels = [{% for source in leads_by_source %}'{{ source.label|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}];
+    var sourceCounts = [{% for source in leads_by_source %}{{ source.count }}{% if not forloop.last %},{% endif %}{% endfor %}];
+    var businessLabels = [{% for business in leads_by_business %}'{{ business.label|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}];
+    var businessCounts = [{% for business in leads_by_business %}{{ business.count }}{% if not forloop.last %},{% endif %}{% endfor %}];
 
-    new Chart(sourceCtx, {
-        type: 'doughnut',
-        data: sourceData,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'bottom',
+    var sourceCtx = document.getElementById('sourceChart');
+    if (sourceCtx && sourceLabels.length) {
+        new Chart(sourceCtx.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: sourceLabels,
+                datasets: [{
+                    data: sourceCounts,
+                    backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#64748b'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
                 }
             }
-        }
-    });
+        });
+    }
 
-    // Business Type Chart
-    const businessCtx = document.getElementById('businessChart').getContext('2d');
-    const businessData = {
-        labels: [{% for business in leads_by_business %}'{{ business.business_type|title }}',{% endfor %}],
-        datasets: [{
-            data: [{% for business in leads_by_business %}{{ business.count }},{% endfor %}],
-            backgroundColor: [
-                '#059669', '#dc2626', '#7c3aed', '#ea580c', '#0891b2', '#be123c'
-            ],
-            borderWidth: 0
-        }]
-    };
-
-    new Chart(businessCtx, {
-        type: 'doughnut',
-        data: businessData,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'bottom',
+    var businessCtx = document.getElementById('businessChart');
+    if (businessCtx && businessLabels.length) {
+        new Chart(businessCtx.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: businessLabels,
+                datasets: [{
+                    data: businessCounts,
+                    backgroundColor: ['#059669', '#dc2626', '#7c3aed', '#ea580c', '#0891b2', '#be123c', '#64748b'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
                 }
             }
-        }
-    });
+        });
+    }
 });
 </script>
+{% endif %}
 {% endblock %}

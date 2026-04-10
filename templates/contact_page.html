@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Contact Us - Eastern Logistics{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Contact Us</h1>
+        <p class="lead">Send us a message and we will get back to you soon</p>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Left Card: Contact Details -->
+            <div class="col-lg-4">
+                <div class="card contact-details-card border-0 h-100">
+                    <div class="card-body p-4">
+                        <h3 class="contact-details-title mb-4">Get In Touch</h3>
+
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon-nocircle">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <div class="contact-info-label">Office Address</div>
+                                <div class="contact-info-value">
+                                    828 Eastern Ave<br>
+                                    Toronto, ON M4L 1A1, Canada
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon-nocircle">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <div class="contact-info-label">Phone</div>
+                                <div class="contact-info-value">
+                                    {% if site_settings.contact_phone_1 %}
+                                        <a href="tel:{{ site_settings.contact_phone_1|phone_to_tel }}">{{ site_settings.contact_phone_1|format_phone_display }}</a>
+                                        {% if site_settings.contact_phone_2 %}<br>{% endif %}
+                                    {% endif %}
+                                    {% if site_settings.contact_phone_2 %}
+                                        <a href="tel:{{ site_settings.contact_phone_2|phone_to_tel }}">{{ site_settings.contact_phone_2|format_phone_display }}</a>
+                                    {% endif %}
+                                    {% if not site_settings.contact_phone_1 and not site_settings.contact_phone_2 %}
+                                        <a href="tel:+14167100361">+1 (416) 710-0361</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon-nocircle">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <div class="contact-info-label">Email</div>
+                                <div class="contact-info-value">
+                                    {% if site_settings.contact_email_1 %}
+                                        <a href="mailto:{{ site_settings.contact_email_1 }}">{{ site_settings.contact_email_1 }}</a>
+                                        {% if site_settings.contact_email_2 %}<br>{% endif %}
+                                    {% endif %}
+                                    {% if site_settings.contact_email_2 %}
+                                        <a href="mailto:{{ site_settings.contact_email_2 }}">{{ site_settings.contact_email_2 }}</a>
+                                    {% endif %}
+                                    {% if not site_settings.contact_email_1 and not site_settings.contact_email_2 %}
+                                        <a href="mailto:support@easternlogistics.app">support@easternlogistics.app</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item mb-4">
+                            <div class="contact-info-icon-circle">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <div class="contact-info-label">Business Hours</div>
+                                <div class="contact-info-value">
+                                    {% if site_settings and site_settings.business_hours %}
+                                        {{ site_settings.business_hours|linebreaksbr }}
+                                    {% else %}
+                                        Monday–Sunday: 6 AM – 6 PM<br>
+                                        <span class="text-muted small">Holiday hours (e.g. Good Friday, Easter Sunday, Easter Monday) may differ—confirm on {% if google_business_url_resolved %}<a href="{{ google_business_url_resolved }}" target="_blank" rel="noopener">Google Maps</a>{% else %}Google Maps{% endif %} or call us.</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Heading above Social Media -->
+                        <h5 class="mt-4 mb-3 fw-bold text-primary">Connect With Us</h5>
+                        <p class="text-muted small mb-3">Follow us on social media or reach out through your preferred channel</p>
+
+                        <div class="contact-social-row">
+                            {% if site_settings.facebook_url %}
+                                <a class="contact-social-circle" href="{{ site_settings.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            {% else %}
+                                <span class="contact-social-circle"><i class="fab fa-facebook-f"></i></span>
+                            {% endif %}
+
+                            {% if site_settings.twitter_url %}
+                                <a class="contact-social-circle" href="{{ site_settings.twitter_url }}" target="_blank" rel="noopener" aria-label="Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            {% else %}
+                                <span class="contact-social-circle"><i class="fab fa-twitter"></i></span>
+                            {% endif %}
+
+                            {% if site_settings.linkedin_url %}
+                                <a class="contact-social-circle" href="{{ site_settings.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            {% else %}
+                                <span class="contact-social-circle"><i class="fab fa-linkedin-in"></i></span>
+                            {% endif %}
+
+                            {% if site_settings.instagram_url %}
+                                <a class="contact-social-circle" href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            {% else %}
+                                <span class="contact-social-circle"><i class="fab fa-instagram"></i></span>
+                            {% endif %}
+
+                            {% if google_business_url_resolved %}
+                                <a class="contact-social-circle" href="{{ google_business_url_resolved }}" target="_blank" rel="noopener" aria-label="Google Maps listing">
+                                    <i class="fab fa-google"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Card: Contact Form -->
+            <div class="col-lg-8" id="contact-quote-form">
+                <div class="card contact-form-card shadow-lg border-0">
+                    <div class="card-body p-5">
+                        <h3 class="text-center mb-4">Send Us a Message</h3>
+                        <p class="text-center text-muted mb-4">Tell us about your delivery needs and we'll get back to you within 1 hour.</p>
+
+                        <form method="post" action="{% url 'contact' %}" class="needs-validation" novalidate id="contact-form">
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="id_company_name" class="form-label">Company Name *</label>
+                                    <input type="text" name="company_name" id="id_company_name" class="form-control" placeholder="Your company name" required>
+                                    <div class="invalid-feedback">Please enter your company name.</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_contact_name" class="form-label">Contact Name *</label>
+                                    <input type="text" name="contact_name" id="id_contact_name" class="form-control" placeholder="Your name" required>
+                                    <div class="invalid-feedback">Please enter your name.</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_email" class="form-label">Email *</label>
+                                    <input type="email" name="email" id="id_email" class="form-control" placeholder="your.email@example.com" required>
+                                    <div class="invalid-feedback">Please enter a valid email.</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_phone" class="form-label">Phone *</label>
+                                    <input type="text" name="phone" id="id_phone" class="form-control" placeholder="416-710-0361" required>
+                                    <div class="invalid-feedback">Please enter your phone number.</div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="id_business_type" class="form-label">Business Type *</label>
+                                    <select name="business_type" id="id_business_type" class="form-select" required>
+                                        <option value="">Select business type</option>
+                                        <option value="ecommerce">E-commerce Seller</option>
+                                        <option value="retail">Small Retailer</option>
+                                        <option value="pharmacy">Pharmacy</option>
+                                        <option value="warehouse">Warehouse</option>
+                                        <option value="furniture">Furniture Store</option>
+                                        <option value="office">Office / Service Provider</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select your business type.</div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="id_address" class="form-label">Business Address *</label>
+                                    <textarea name="address" id="id_address" class="form-control" rows="2" placeholder="Your business address" required></textarea>
+                                    <div class="invalid-feedback">Please enter your business address.</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_service_area" class="form-label">Delivery Areas Needed *</label>
+                                    <input type="text" name="service_area" id="id_service_area" class="form-control" placeholder="e.g., Toronto, Mississauga, GTA" required>
+                                    <div class="invalid-feedback">Please enter the service areas you need.</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_delivery_frequency" class="form-label">Delivery Frequency *</label>
+                                    <select name="delivery_frequency" id="id_delivery_frequency" class="form-select" required>
+                                        <option value="">Select delivery type</option>
+                                        <option value="on_demand">On Demand</option>
+                                        <option value="daily">Daily</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a delivery type.</div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="id_typical_items" class="form-label">Typical Items to Deliver</label>
+                                    <textarea name="typical_items" id="id_typical_items" class="form-control" rows="2" placeholder="e.g., clothing, electronics, furniture parts..."></textarea>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="id_notes" class="form-label">Additional Requirements</label>
+                                    <textarea name="notes" id="id_notes" class="form-control" rows="4" placeholder="Tell us more about your delivery needs..."></textarea>
+                                </div>
+
+                                <div class="col-12">
+                                    {{ form.captcha }}
+                                    {% if form.captcha.errors %}
+                                        <div class="alert alert-danger alert-sm" role="alert">
+                                            {{ form.captcha.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                        <i class="fas fa-paper-plane me-2"></i>Request a Quote
+                                    </button>
+                                </div>
+
+                                <div class="col-12">
+                                    <p class="small text-muted text-center mb-0">
+                                        <i class="fas fa-lock me-1"></i>Your information is secure. We'll respond within 1 hour.
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-2">
+            <div class="col-12">
+                <div class="card contact-form-card border-0">
+                    <div class="card-body p-4">
+                        <h4 class="fw-bold mb-2">Toronto office &amp; service area</h4>
+                        <p class="contact-map-caption mb-3">
+                            Our location is pinned at <strong>828 Eastern Ave, Toronto, ON M4L 1A1, Canada</strong>.
+                            {% if google_maps_api_key %}
+                                The blue circle shows typical GTA service coverage (about {{ map_service_radius_km }}&nbsp;km from our office).
+                            {% else %}
+                                We serve Toronto and the Greater Toronto Area (GTA).
+                            {% endif %}
+                        </p>
+                        <div class="contact-map-wrap">
+                            {% if google_maps_api_key %}
+                                <div id="contact-map" class="contact-map-canvas" role="region" aria-label="Map of Toronto office and service area"></div>
+                            {% else %}
+                                <iframe
+                                    title="Map — Eastern Logistics, 828 Eastern Ave, Toronto"
+                                    src="https://www.google.com/maps?q={{ map_embed_address|urlencode }}&z=14&output=embed"
+                                    width="100%"
+                                    height="420"
+                                    style="border:0;"
+                                    allowfullscreen=""
+                                    loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            {% endif %}
+                        </div>
+                        {% if google_business_url_resolved %}
+                        <p class="small mt-3 mb-0">
+                            <a href="{{ google_business_url_resolved }}" target="_blank" rel="noopener" class="text-decoration-none"><i class="fas fa-external-link-alt me-1"></i>Open our Google Maps listing (directions &amp; reviews)</a>
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+{% if google_maps_api_key %}
+{{ contact_map_config|json_script:"contact-map-config" }}
+<script>
+window.initContactMap = function () {
+    var el = document.getElementById('contact-map');
+    var raw = document.getElementById('contact-map-config');
+    if (!el || !raw || !window.google || !google.maps) {
+        return;
+    }
+    var cfg = JSON.parse(raw.textContent);
+    var center = { lat: Number(cfg.lat), lng: Number(cfg.lng) };
+    var radiusM = Number(cfg.radiusM);
+    var title = cfg.markerTitle || 'Toronto office';
+    var map = new google.maps.Map(el, {
+        center: center,
+        zoom: 11,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: true,
+        gestureHandling: 'cooperative',
+    });
+    new google.maps.Marker({
+        position: center,
+        map: map,
+        title: title,
+    });
+    var circle = new google.maps.Circle({
+        strokeColor: '#0d6efd',
+        strokeOpacity: 0.95,
+        strokeWeight: 3,
+        fillColor: '#0d6efd',
+        fillOpacity: 0.14,
+        map: map,
+        center: center,
+        radius: radiusM,
+    });
+    map.fitBounds(circle.getBounds(), 56);
+};
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?callback=initContactMap&loading=async&key={{ google_maps_api_key }}"></script>
+{% endif %}
+{% endblock %}
+

@@ -25,7 +25,8 @@ function completeFollowup(followupId) {
     fetch(`/dashboard/followups/${followupId}/complete/`, {
         method: 'POST',
         headers: {
-            'X-CSRFToken': getCookie('csrftoken')
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Accept': 'application/json'
         }
     })
     .then(response => response.json())

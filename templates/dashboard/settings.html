@@ -1,0 +1,746 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Settings - Eastern Logistics{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <h2 class="fw-bold mb-4">Dashboard Settings</h2>
+
+    <!-- Quick Actions button removed from settings page -->
+
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="list-group">
+                <a href="#general" class="list-group-item list-group-item-action active" data-bs-toggle="list">
+                    <i class="fas fa-sliders-h me-2"></i>General Settings
+                </a>
+                <a href="#users" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                    <i class="fas fa-users me-2"></i>User Management
+                </a>
+                <a href="#notifications" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                    <i class="fas fa-bell me-2"></i>Notifications
+                </a>
+                <a href="#email" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                    <i class="fas fa-envelope me-2"></i>Email Templates
+                </a>
+                <a href="#fleet" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                    <i class="fas fa-truck me-2"></i>Fleet Management
+                </a>
+                <a href="#services" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                    <i class="fas fa-concierge-bell me-2"></i>Services
+                </a>
+                <a href="#backup" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                    <i class="fas fa-database me-2"></i>Backup & Export
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="tab-content">
+                <!-- General Settings -->
+                <div class="tab-pane active" id="general">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">General Settings</h4>
+
+        <form method="post" action="{% url 'dashboard_settings' %}">
+            {% csrf_token %}
+            
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Company Name</label>
+                    <input type="text" name="company_name" class="form-control" value="{{ site_settings.site_name }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Service Area</label>
+                    <input type="text" name="service_area" class="form-control" value="{{ site_settings.service_area }}">
+                </div>
+                <div class="col-12 mb-3">
+                    <label class="form-label">Address</label>
+                    <textarea name="address" class="form-control" rows="2">{{ site_settings.site_address }}</textarea>
+                </div>
+                <div class="col-12 mb-3">
+                    <label class="form-label">Phone Numbers for Contact Page</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small">Contact Phone 1</label>
+                            <input type="text" name="contact_phone_1" class="form-control" value="{{ site_settings.contact_phone_1 }}" placeholder="+1 (416) 710-0361">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small">Contact Phone 2</label>
+                            <input type="text" name="contact_phone_2" class="form-control" value="{{ site_settings.contact_phone_2 }}" placeholder="+1 (416) 555-1234">
+                        </div>
+                    </div>
+                    <p class="form-text text-muted small mb-3">Enter phone numbers in format: +1 (XXX) XXX-XXXX. These will display on the contact page.</p>
+                </div>
+                <div class="col-12 mb-3">
+                    <label class="form-label">Email Addresses for Contact Page</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small">Contact Email 1</label>
+                            <input type="email" name="contact_email_1" class="form-control" value="{{ site_settings.contact_email_1 }}" placeholder="support@easternlogistics.app">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small">Contact Email 2</label>
+                            <input type="email" name="contact_email_2" class="form-control" value="{{ site_settings.contact_email_2 }}" placeholder="info@easternlogistics.app">
+                        </div>
+                    </div>
+                    <p class="form-text text-muted small mb-0">Enter email addresses. These will display on the contact page.</p>
+                </div>
+                <div class="col-12 mb-3">
+                    <label class="form-label">Business Hours (contact page)</label>
+                    <textarea name="business_hours" class="form-control" rows="4" placeholder="One line per row; shown under Business Hours on Contact.">{{ site_settings.business_hours }}</textarea>
+                    <p class="form-text text-muted small mb-0">Line breaks are preserved. Example: weekday lines, then a blank line, then holiday note.</p>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <h5 class="mb-3 text-primary"><i class="fas fa-share-alt me-2"></i>Social Media Profiles</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Facebook URL</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fab fa-facebook-f text-primary"></i></span>
+                        <input type="url" name="facebook_url" class="form-control" value="{{ site_settings.facebook_url }}" placeholder="https://facebook.com/yourpage">
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Instagram URL</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fab fa-instagram text-danger"></i></span>
+                        <input type="url" name="instagram_url" class="form-control" value="{{ site_settings.instagram_url }}" placeholder="https://instagram.com/yourprofile">
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">LinkedIn URL</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fab fa-linkedin-in text-primary"></i></span>
+                        <input type="url" name="linkedin_url" class="form-control" value="{{ site_settings.linkedin_url }}" placeholder="https://linkedin.com/company/yourpage">
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Google Business URL</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fab fa-google text-success"></i></span>
+                        <input type="url" name="google_business_url" class="form-control" value="{{ site_settings.google_business_url }}" placeholder="https://maps.app.goo.gl/...">
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Twitter (X) URL</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fab fa-twitter text-info"></i></span>
+                        <input type="url" name="twitter_url" class="form-control" value="{{ site_settings.twitter_url }}" placeholder="https://twitter.com/yourhandle">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-primary btn-lg px-5">Save All Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+                        
+                            
+
+
+
+                           
+
+                <!-- User Management -->
+                <div class="tab-pane" id="users">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">User Management</h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Last Login</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                    <tr>
+                                        <td>{{ user.username }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>
+                                            {% if user.is_superuser %}
+                                            <span class="badge bg-danger">Admin</span>
+                                            {% elif user.is_staff %}
+                                            <span class="badge bg-primary">Staff</span>
+                                            {% else %}
+                                            <span class="badge bg-secondary">User</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ user.last_login|date:"M d, Y"|default:"Never" }}</td>
+                                        <td>
+                                            {% if user.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">Inactive</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-nowrap">
+                                            <a class="btn btn-sm btn-primary"
+                                               href="{% url 'admin:auth_user_change' user.id %}">Edit</a>
+
+                                            {% if user.is_active %}
+                                                {% if user.is_superuser %}
+                                                    <button type="button" class="btn btn-sm btn-danger" disabled>Disable</button>
+                                                {% else %}
+                                                    <form method="post" action="{% url 'dashboard_toggle_user_active' user.id %}" style="display:inline-block;">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="is_active" value="false">
+                                                        <button type="submit" class="btn btn-sm btn-danger">Disable</button>
+                                                    </form>
+                                                {% endif %}
+                                            {% else %}
+                                                <form method="post" action="{% url 'dashboard_toggle_user_active' user.id %}" style="display:inline-block;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="is_active" value="true">
+                                                    <button type="submit" class="btn btn-sm btn-success">Enable</button>
+                                                </form>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <a class="btn btn-success mt-3" href="{% url 'admin:auth_user_add' %}">
+                            <i class="fas fa-user-plus me-1"></i>Add New User
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="tab-pane" id="notifications">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">Notification Settings</h4>
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label">Email Notifications</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="notifyNewLead" checked>
+                                    <label class="form-check-label" for="notifyNewLead">New lead created</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="notifyFollowup" checked>
+                                    <label class="form-check-label" for="notifyFollowup">Follow-up reminders</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="notifyStatusChange">
+                                    <label class="form-check-label" for="notifyStatusChange">Lead status changes</label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">WhatsApp Notifications</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="whatsappNewLead">
+                                    <label class="form-check-label" for="whatsappNewLead">New lead WhatsApp alert</label>
+                                </div>
+                                <div class="mt-2">
+                                    <label class="form-label">WhatsApp Number</label>
+                                    <input type="text" class="form-control" placeholder="+1234567890" value="{{ settings.TWILIO_PHONE_NUMBER }}">
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Save Notification Settings</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Email Templates -->
+                <div class="tab-pane" id="email">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">Email Templates</h4>
+                        <ul class="nav nav-tabs mb-3">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#welcomeEmail">Welcome Email</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#quoteEmail">Quote Email</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#followupEmail">Follow-up Email</a>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="welcomeEmail">
+                                <form method="post" action="{% url 'dashboard_save_email_template' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="template_type" value="welcome">
+                                    <div class="mb-3">
+                                        <label class="form-label">Subject</label>
+                                        <input type="text" name="subject" class="form-control" value="{{ welcome_template.subject|default:welcome_subject_default }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Body</label>
+                                        <textarea name="body" class="form-control" rows="10">{{ welcome_template.body|default:welcome_body_default }}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save Template</button>
+                                </form>
+                            </div>
+
+                            <div class="tab-pane" id="quoteEmail">
+                                <form method="post" action="{% url 'dashboard_save_email_template' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="template_type" value="quote">
+                                    <div class="mb-3">
+                                        <label class="form-label">Subject</label>
+                                        <input type="text" name="subject" class="form-control" value="{{ quote_template.subject|default:quote_subject_default }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Body</label>
+                                        <textarea name="body" class="form-control" rows="10">{{ quote_template.body|default:quote_body_default }}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save Template</button>
+                                </form>
+                            </div>
+
+                            <div class="tab-pane" id="followupEmail">
+                                <form method="post" action="{% url 'dashboard_save_email_template' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="template_type" value="followup">
+                                    <div class="mb-3">
+                                        <label class="form-label">Subject</label>
+                                        <input type="text" name="subject" class="form-control" value="{{ followup_template.subject|default:followup_subject_default }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Body</label>
+                                        <textarea name="body" class="form-control" rows="10">{{ followup_template.body|default:followup_body_default }}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save Template</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fleet Management -->
+                <div class="tab-pane" id="fleet">
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h4 class="mb-2">Fleet Management</h4>
+                                <p class="text-muted small mb-0">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Active fleets: <strong>{{ active_fleet_count }}/4</strong>
+                                    {% if active_fleet_count >= 4 %}
+                                    <span class="badge bg-warning ms-2">Max Reached</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <a class="btn btn-success" href="{% url 'admin:core_fleet_add' %}">
+                                <i class="fas fa-plus me-1"></i>Add Vehicle
+                            </a>
+                        </div>
+
+                        <!-- Fleet Management Table (consistent with Services table) -->
+                        {% if fleets %}
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Vehicle</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                        <th>Featured</th>
+                                        <th>Order</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for vehicle in fleets %}
+                                    <tr>
+                                        <td>{{ vehicle.name }}</td>
+                                        <td>{{ vehicle.vehicle_type }}</td>
+                                        <td>{{ vehicle.short_description|default:""|truncatechars:50 }}</td>
+                                        <td>
+                                            {% if vehicle.is_featured %}
+                                            <span class="badge bg-success">Yes</span>
+                                            {% else %}
+                                            <span class="badge bg-secondary">No</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ vehicle.order }}</td>
+                                        <td>
+                                            <a class="btn btn-sm btn-primary"
+                                               href="{% url 'admin:core_fleet_change' vehicle.id %}">Edit</a>
+
+                                            {% if vehicle.is_active %}
+                                                <form method="post" action="{% url 'dashboard_toggle_fleet_active' vehicle.id %}" style="display:inline-block;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="is_active" value="false">
+                                                    <button type="submit" class="btn btn-sm btn-warning ms-2">Deactivate</button>
+                                                </form>
+                                            {% else %}
+                                                <form method="post" action="{% url 'dashboard_toggle_fleet_active' vehicle.id %}" style="display:inline-block;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="is_active" value="true">
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-success ms-2"
+                                                            {% if active_fleet_count >= 4 %}disabled{% endif %}
+                                                            title="{% if active_fleet_count >= 4 %}Max 4 active fleets reached{% else %}Activate{% endif %}">
+                                                        Activate
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+
+                                            <form method="post" action="{% url 'dashboard_delete_fleet' vehicle.id %}" style="display:inline-block;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-sm btn-danger ms-2">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-info mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            No vehicles added yet. Click "Add Vehicle" to get started.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Services -->
+                <div class="tab-pane" id="services">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">Service Management</h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Service</th>
+                                        <th>Description</th>
+                                        <th>Featured</th>
+                                        <th>Order</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for service in services %}
+                                    <tr>
+                                        <td>{{ service.title }}</td>
+                                        <td>{{ service.short_description|truncatechars:50 }}</td>
+                                        <td>
+                                            {% if service.is_featured %}
+                                            <span class="badge bg-success">Yes</span>
+                                            {% else %}
+                                            <span class="badge bg-secondary">No</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ service.order }}</td>
+                                        <td>
+                                            <a class="btn btn-sm btn-primary"
+                                               href="{% url 'admin:core_service_change' service.id %}">Edit</a>
+
+                                            {% if service.is_active %}
+                                                <form method="post" action="{% url 'dashboard_toggle_service_active' service.id %}" style="display:inline-block;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="is_active" value="false">
+                                                    <button type="submit" class="btn btn-sm btn-warning">Deactivate</button>
+                                                </form>
+                                            {% else %}
+                                                <form method="post" action="{% url 'dashboard_toggle_service_active' service.id %}" style="display:inline-block;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="is_active" value="true">
+                                                    <button type="submit" class="btn btn-sm btn-success">Activate</button>
+                                                </form>
+                                            {% endif %}
+
+                                            <form method="post" action="{% url 'dashboard_delete_service' service.id %}" style="display:inline-block;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <a class="btn btn-success mt-3" href="{% url 'admin:core_service_add' %}">
+                            <i class="fas fa-plus me-1"></i>Add Service
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Backup & Export -->
+                <div class="tab-pane" id="backup">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">Backup & Export</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Export Data</h5>
+                                        <p class="card-text">Download all your data in various formats</p>
+                                        <a class="btn btn-primary" href="{% url 'export_leads_excel' %}">
+                                            <i class="fas fa-file-excel me-1"></i>Export Leads (Excel)
+                                        </a>
+                                        <a class="btn btn-secondary mt-2" href="{% url 'export_leads_csv' %}">
+                                            <i class="fas fa-file-csv me-1"></i>Export as CSV
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Database Backup</h5>
+                                        <p class="card-text">Create and download database backups</p>
+                                        <a class="btn btn-warning" href="{% url 'dashboard_backup_database' %}">
+                                            <i class="fas fa-database me-1"></i>Create Backup
+                                        </a>
+                                        <p class="text-muted mt-2 small">
+                                            Last backup: Never
+                                        </p>
+
+                                        <hr class="my-3">
+
+                                        <h6 class="mb-2">Restore Backup</h6>
+                                        <form method="post" action="{% url 'dashboard_restore_database' %}" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <input type="file" name="backup_file" accept=".json" class="form-control mb-2" required>
+                                            <button type="submit" class="btn btn-outline-danger w-100">
+                                                <i class="fas fa-undo me-1"></i>Restore
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Fleet Card Styling */
+    .fleet-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+    }
+
+    .fleet-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .fleet-card.fleet-active {
+        border: 1px solid #e8f4f8;
+        background: linear-gradient(135deg, #f8fafb 0%, #ffffff 100%);
+    }
+
+    .fleet-card .ratio.ratio-4x3 {
+        overflow: hidden;
+    }
+
+    .fleet-card .ratio.ratio-4x3 img {
+        transition: transform 0.3s ease;
+    }
+
+    .fleet-card:hover .ratio.ratio-4x3 img {
+        transform: scale(1.05);
+    }
+
+    .fleet-card .card-body {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .fleet-card .specification-info {
+        flex-grow: 1;
+    }
+
+    .fleet-card .card-text {
+        line-height: 1.4;
+        min-height: 2.8em;
+    }
+
+    .fleet-card .btn-group {
+        margin-top: 0.5rem;
+    }
+
+    /* Responsive Grid */
+    @media (max-width: 1199px) {
+        .col-lg-3 {
+            flex: 0 0 calc(25% - 1rem);
+        }
+    }
+
+    @media (max-width: 991px) {
+        .col-lg-3 {
+            flex: 0 0 calc(33.333% - 1rem);
+        }
+        
+        .col-sm-6 {
+            flex: 0 0 calc(50% - 1rem);
+        }
+    }
+
+    @media (max-width: 575px) {
+        .col-lg-3,
+        .col-sm-6 {
+            flex: 0 0 100%;
+        }
+
+        .fleet-card .card-body {
+            padding: 0.75rem;
+        }
+
+        .fleet-card .btn {
+            font-size: 0.75rem;
+            padding: 0.35rem 0.5rem;
+        }
+    }
+
+    /* Badge styling for active status */
+    .fleet-card .badge {
+        font-size: 0.7rem;
+        padding: 0.35rem 0.6rem;
+    }
+
+    /* Modal styling */
+    .modal-content {
+        border: none;
+        border-top: 4px solid;
+    }
+
+    .modal-header.bg-danger {
+        border-top-color: #dc3545;
+    }
+
+    /* Quick Actions styling */
+    .fleet-card .btn-outline-primary,
+    .fleet-card .btn-outline-warning,
+    .fleet-card .btn-outline-danger {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    /* Smooth transitions for form submissions */
+    .fleet-card form {
+        display: inline-flex;
+        width: 100%;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Inactive fleet section styling */
+    .table-sm td {
+        vertical-align: middle;
+        padding: 0.75rem;
+    }
+
+    /* Card dimensions consistency */
+    .fleet-card {
+        min-height: 500px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .fleet-card .card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Tab navigation
+    var hash = window.location.hash;
+    if (hash) {
+        var trigger = document.querySelector('.list-group a.list-group-item[href="' + hash + '"]');
+        if (trigger && window.bootstrap && window.bootstrap.Tab) {
+            try {
+                window.bootstrap.Tab.getOrCreateInstance(trigger).show();
+            } catch (e) {
+                trigger.click();
+            }
+        }
+    }
+
+    // Auto-save for contact page fields
+    const autoSaveFields = [
+        'contact_phone_1',
+        'contact_phone_2',
+        'contact_email_1',
+        'contact_email_2'
+    ];
+
+    let autoSaveTimeout;
+    const form = document.querySelector('form[action*="dashboard_settings"]');
+    
+    if (form) {
+        autoSaveFields.forEach(fieldName => {
+            const field = form.querySelector(`[name="${fieldName}"]`);
+            if (field) {
+                field.addEventListener('change', function () {
+                    clearTimeout(autoSaveTimeout);
+                    autoSaveTimeout = setTimeout(() => {
+                        // Show saving indicator
+                        const btn = form.querySelector('button[type="submit"]');
+                        const originalText = btn.textContent;
+                        btn.textContent = 'Saving...';
+                        btn.disabled = true;
+
+                        const formData = new FormData(form);
+                        
+                        fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                btn.textContent = 'Saved ✓';
+                                btn.classList.add('btn-success');
+                                btn.classList.remove('btn-primary');
+                                setTimeout(() => {
+                                    btn.textContent = originalText;
+                                    btn.classList.remove('btn-success');
+                                    btn.classList.add('btn-primary');
+                                    btn.disabled = false;
+                                }, 2000);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Save failed:', error);
+                            btn.textContent = 'Error - Try again';
+                            btn.disabled = false;
+                            setTimeout(() => {
+                                btn.textContent = originalText;
+                            }, 2000);
+                        });
+                    }, 1000); // Wait 1 second after user stops typing
+                });
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

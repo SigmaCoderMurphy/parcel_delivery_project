@@ -1,152 +1,700 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Contact Us - GTA Parcel Delivery{% endblock %}
+{% block title %}Contact - Eastern Logistics{% endblock %}
 
 {% block content %}
+
 <!-- Page Header -->
 <section class="page-header bg-primary text-white py-5">
     <div class="container">
-        <h1 class="display-4 fw-bold">Contact Us</h1>
-        <p class="lead">Get in touch with our team</p>
+        <h1 class="display-4 fw-bold">Our Services</h1>
+        <p class="lead">Fast, reliable delivery solutions across the GTA</p>
     </div>
 </section>
 
-<!-- Contact Section -->
+<!-- Main Services Section -->
 <section class="py-5">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-4 mb-4">
-                <div class="contact-info p-4 bg-light rounded-3 h-100">
-                    <h4 class="mb-4">Get In Touch</h4>
-                    
-                    <div class="d-flex mb-4">
-                        <div class="contact-icon me-3">
-                            <i class="fas fa-map-marker-alt fa-2x text-primary"></i>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold">Office Address</h6>
-                            <p class="mb-0">123 Business Avenue<br>Toronto, ON M5V 2T6</p>
-                        </div>
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-primary">What We Offer</h2>
+            <p class="lead text-muted">Comprehensive delivery solutions tailored to your business needs</p>
+            <div class="divider mx-auto" style="width: 80px; height: 3px; background: linear-gradient(90deg, #0d6efd, #0dcaf0);"></div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Service 1 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-lg hover-card text-center p-4">
+                    <div class="service-icon mb-3">
+                        <i class="fas fa-shipping-fast fa-3x text-primary"></i>
                     </div>
-                    
-                    <div class="d-flex mb-4">
-                        <div class="contact-icon me-3">
-                            <i class="fas fa-phone-alt fa-2x text-primary"></i>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold">Phone Numbers</h6>
-                            <p class="mb-0">Sales: <a href="tel:+14165550123" class="text-decoration-none">(416) 555-0123</a><br>
-                            Support: <a href="tel:+14165550124" class="text-decoration-none">(416) 555-0124</a></p>
-                        </div>
-                    </div>
-                    
-                    <div class="d-flex mb-4">
-                        <div class="contact-icon me-3">
-                            <i class="fas fa-envelope fa-2x text-primary"></i>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold">Email</h6>
-                            <p class="mb-0">Info: <a href="mailto:info@gtaparceldelivery.com" class="text-decoration-none">info@gtaparceldelivery.com</a><br>
-                            Sales: <a href="mailto:sales@gtaparceldelivery.com" class="text-decoration-none">sales@gtaparceldelivery.com</a></p>
-                        </div>
-                    </div>
-                    
-                    <div class="d-flex mb-4">
-                        <div class="contact-icon me-3">
-                            <i class="fas fa-clock fa-2x text-primary"></i>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold">Business Hours</h6>
-                            <p class="mb-0">Monday-Friday: 8am - 8pm<br>
-                            Saturday: 9am - 5pm<br>
-                            Sunday: Closed (Emergency Only)</p>
-                        </div>
-                    </div>
-                    
-                    <div class="social-links mt-4">
-                        <a href="#" class="btn btn-outline-primary btn-sm me-2"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="btn btn-outline-primary btn-sm me-2"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="btn btn-outline-primary btn-sm me-2"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="btn btn-outline-primary btn-sm"><i class="fab fa-instagram"></i></a>
-                    </div>
+                    <h4 class="fw-bold mb-3">Same Day Delivery</h4>
+                    <p class="text-muted">Urgent deliveries within the GTA. Guaranteed same-day delivery for orders placed before 12 PM.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check-circle text-success me-2"></i> 2-4 hour delivery window</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Real-time tracking</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> 100% satisfaction guaranteed</li>
+                    </ul>
                 </div>
             </div>
             
-            <div class="col-lg-8 mb-4">
-                <div class="contact-form p-4 bg-white rounded-3 shadow">
-                    <h4 class="mb-4">Send Us a Message</h4>
-                    
-                    <form method="post" class="needs-validation" novalidate>
-                        {% csrf_token %}
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="company_name" class="form-label">Company Name *</label>
-                                <input type="text" class="form-control" id="company_name" name="company_name" required>
-                                <div class="invalid-feedback">Please enter your company name.</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="contact_name" class="form-label">Contact Name *</label>
-                                <input type="text" class="form-control" id="contact_name" name="contact_name" required>
-                                <div class="invalid-feedback">Please enter your name.</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="email" class="form-label">Email *</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                                <div class="invalid-feedback">Please enter a valid email.</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="phone" class="form-label">Phone *</label>
-                                <input type="tel" class="form-control" id="phone" name="phone" required>
-                                <div class="invalid-feedback">Please enter your phone number.</div>
-                            </div>
-                            <div class="col-12">
-                                <label for="business_type" class="form-label">Business Type *</label>
-                                <select class="form-select" id="business_type" name="business_type" required>
-                                    <option value="">Select business type</option>
-                                    <option value="ecommerce">E-commerce Seller</option>
-                                    <option value="retail">Small Retailer</option>
-                                    <option value="pharmacy">Pharmacy</option>
-                                    <option value="warehouse">Warehouse</option>
-                                    <option value="furniture">Furniture Store</option>
-                                    <option value="office">Office/Service Provider</option>
-                                    <option value="other">Other</option>
-                                </select>
-                                <div class="invalid-feedback">Please select your business type.</div>
-                            </div>
-                            <div class="col-12">
-                                <label for="address" class="form-label">Business Address *</label>
-                                <textarea class="form-control" id="address" name="address" rows="2" required></textarea>
-                                <div class="invalid-feedback">Please enter your business address.</div>
-                            </div>
-                            <div class="col-12">
-                                <label for="message" class="form-label">Message *</label>
-                                <textarea class="form-control" id="notes" name="notes" rows="4" required></textarea>
-                                <div class="invalid-feedback">Please enter your message.</div>
-                            </div>
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-paper-plane me-2"></i>Send Message
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+            <!-- Service 2 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-lg hover-card text-center p-4">
+                    <div class="service-icon mb-3">
+                        <i class="fas fa-calendar-day fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Next Day Delivery</h4>
+                    <p class="text-muted">Cost-effective next-day delivery across Toronto, Mississauga, Brampton, and surrounding areas.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check-circle text-success me-2"></i> 24-hour delivery guarantee</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Competitive pricing</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Business day delivery</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Service 3 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-lg hover-card text-center p-4">
+                    <div class="service-icon mb-3">
+                        <i class="fas fa-boxes fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Freight & Logistics</h4>
+                    <p class="text-muted">Heavy and bulk item transportation with our fleet of box trucks and cargo vans.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Up to 12,000 lbs capacity</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Liftgate service available</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> White glove delivery</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Service 4 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-lg hover-card text-center p-4">
+                    <div class="service-icon mb-3">
+                        <i class="fas fa-store fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Retail Distribution</h4>
+                    <p class="text-muted">Multi-stop delivery solutions for retail chains and e-commerce businesses.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Route optimization</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Scheduled deliveries</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Proof of delivery</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Service 5 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-lg hover-card text-center p-4">
+                    <div class="service-icon mb-3">
+                        <i class="fas fa-temperature-low fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Cold Chain Logistics</h4>
+                    <p class="text-muted">Temperature-controlled deliveries for perishable goods and sensitive items.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Refrigerated vehicles</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Temperature monitoring</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> HACCP compliant</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Service 6 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-lg hover-card text-center p-4">
+                    <div class="service-icon mb-3">
+                        <i class="fas fa-chart-line fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Custom Logistics</h4>
+                    <p class="text-muted">Tailored delivery solutions for unique business requirements.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Dedicated account manager</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Custom reporting</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> API integration available</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Map Section -->
+<!-- Fleet Showcase Section -->
 <section class="py-5 bg-light">
     <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="map-container">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d184551.909772694!2d-79.5428684397437!3d43.71837095788568!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d7c63ba5%3A0x323555502ab4c477!2sToronto%2C%20ON!5e0!3m2!1sen!2sca!4v1635953574606!5m2!1sen!2sca" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Our Delivery Fleet</h2>
+            <p class="lead text-muted">The right vehicle for every delivery</p>
+        </div>
+        
+        <div class="row g-4">
+            {% for vehicle in fleet_vehicles %}
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <div class="ratio ratio-4x3 bg-white">
+                        {% if vehicle.image %}
+                        <picture>
+                            <source srcset="{{ vehicle.image.url|add:'.webp' }}" type="image/webp">
+                            <img src="{{ vehicle.image.url }}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        </picture>
+                        {% else %}
+                            {% if vehicle.vehicle_type == 'sprinter' %}
+                        <picture>
+                            <source srcset="{% static 'images/sprinter-van.webp' %}" type="image/webp">
+                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        </picture>
+                            {% elif vehicle.vehicle_type == 'brightdrop' %}
+                        <picture>
+                            <source srcset="{% static 'images/box-truck14ft.webp' %}" type="image/webp">
+                            <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        </picture>
+                            {% elif vehicle.vehicle_type == 'light_box' %}
+                        <picture>
+                            <source srcset="{% static 'images/box-truck16ft.webp' %}" type="image/webp">
+                            <img src="{% static 'images/box-truck16ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        </picture>
+                            {% elif vehicle.vehicle_type == 'medium_box' %}
+                        <picture>
+                            <source srcset="{% static 'images/box-truck26ft.webp' %}" type="image/webp">
+                            <img src="{% static 'images/box-truck26ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        </picture>
+                            {% else %}
+                        <picture>
+                            <source srcset="{% static 'images/sprinter-van.webp' %}" type="image/webp">
+                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        </picture>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+                            <h5 class="card-title mb-0">{{ vehicle.name }}</h5>
+                            <span class="badge text-bg-primary">{{ vehicle.vehicle_type }}</span>
+                        </div>
+
+                        <div class="small text-muted mb-0">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <i class="fas fa-weight-hanging text-primary"></i>
+                                <span><strong>Capacity:</strong> {{ vehicle.capacity }}</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="fas fa-ruler-combined text-primary"></i>
+                                <span><strong>Dimensions:</strong> {{ vehicle.dimensions }}</span>
+                            </div>
+                        </div>
+
+                        {% if vehicle.description %}
+                        <p class="card-text small text-muted mb-0">{{ vehicle.description|truncatewords:22 }}</p>
+                        {% else %}
+                        <p class="card-text small text-muted mb-0">Ideal for business deliveries across the GTA.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <div class="ratio ratio-4x3 bg-white">
+                        <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" style="object-fit: cover;" alt="Sprinter High Roof Van">
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-2">Sprinter High Roof Van</h5>
+                        <p class="small text-muted mb-1"><strong>Capacity:</strong> 3,500 lbs</p>
+                        <p class="small text-muted mb-0"><strong>Dimensions:</strong> 12ft L x 6ft W x 6ft H</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <div class="ratio ratio-4x3 bg-white">
+                        <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100" style="object-fit: cover;" alt="Bright Drop 14ft">
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-2">Bright Drop</h5>
+                        <p class="small text-muted mb-1"><strong>Capacity:</strong> 5,000 lbs</p>
+                        <p class="small text-muted mb-0"><strong>Dimensions:</strong> 14ft L x 7ft W x 7ft H</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <div class="ratio ratio-4x3 bg-white">
+                        <img src="{% static 'images/box-truck16ft.jpg' %}" class="w-100 h-100" style="object-fit: cover;" alt="Light Duty Box Truck 16ft">
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-2">Light Duty Box Truck</h5>
+                        <p class="small text-muted mb-1"><strong>Capacity:</strong> 8,000 lbs</p>
+                        <p class="small text-muted mb-0"><strong>Dimensions:</strong> 16ft L x 8ft W x 8ft H</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <div class="ratio ratio-4x3 bg-white">
+                        <img src="{% static 'images/box-truck26ft.jpg' %}" class="w-100 h-100" style="object-fit: cover;" alt="Medium Box Truck 26ft">
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-2">Medium Box Truck</h5>
+                        <p class="small text-muted mb-1"><strong>Capacity:</strong> 12,000 lbs</p>
+                        <p class="small text-muted mb-0"><strong>Dimensions:</strong> 26ft L x 8ft W x 8ft H</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+                            </div>
+                            <div class="card-footer bg-transparent border-0 pb-4 text-center">
+                                <span class="badge bg-info px-3 py-2">Popular Choice</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fleet-card">
+                        <div class="card h-100 border-0 shadow-lg hover-card">
+                            <div class="card-img-top-wrapper bg-gradient-warning text-white text-center py-5">
+                                <i class="fas fa-truck-ramp-box fa-5x"></i>
+                            </div>
+                            <div class="card-body p-4">
+                                <h4 class="card-title fw-bold text-primary mb-3">Medium Box Truck</h4>
+                                <div class="fleet-specs">
+                                    <div class="spec-item mb-2">
+                                        <i class="fas fa-weight-hanging text-primary me-2"></i>
+                                        <strong>Capacity:</strong> 12,000 lbs
+                                    </div>
+                                    <div class="spec-item mb-2">
+                                        <i class="fas fa-arrows-alt text-primary me-2"></i>
+                                        <strong>Dimensions:</strong> 26ft L x 8ft W x 8ft H
+                                    </div>
+                                    <div class="spec-item">
+                                        <i class="fas fa-gas-pump text-primary me-2"></i>
+                                        <strong>Fuel:</strong> Diesel
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-transparent border-0 pb-4 text-center">
+                                <span class="badge bg-warning text-dark px-3 py-2">Heavy Duty</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carousel Indicators -->
+            <div class="carousel-indicators-custom mt-4 text-center" id="fleetIndicators"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-primary">Why Choose Eastern Logistics</h2>
+            <p class="lead text-muted">We're committed to excellence in every delivery</p>
+            <div class="divider mx-auto" style="width: 80px; height: 3px; background: linear-gradient(90deg, #0d6efd, #0dcaf0);"></div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3 text-center">
+                <div class="feature-box p-4">
+                    <i class="fas fa-clock fa-3x text-primary mb-3"></i>
+                    <h5 class="fw-bold">On-Time Delivery</h5>
+                    <p class="text-muted">99.9% on-time delivery rate across all services</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3 text-center">
+                <div class="feature-box p-4">
+                    <i class="fas fa-map-marked-alt fa-3x text-primary mb-3"></i>
+                    <h5 class="fw-bold">Real-Time Tracking</h5>
+                    <p class="text-muted">Live GPS tracking for every delivery</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3 text-center">
+                <div class="feature-box p-4">
+                    <i class="fas fa-headset fa-3x text-primary mb-3"></i>
+                    <h5 class="fw-bold">24/7 Support</h5>
+                    <p class="text-muted">Dedicated customer support team</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3 text-center">
+                <div class="feature-box p-4">
+                    <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                    <h5 class="fw-bold">Insured Deliveries</h5>
+                    <p class="text-muted">Full cargo insurance coverage</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="display-5 fw-bold mb-3">Ready to Get Started?</h2>
+        <p class="lead mb-4">Contact us today for a free quote tailored to your delivery needs</p>
+        <a href="{% url 'contact' %}" class="btn btn-light btn-lg px-5 py-3 fw-bold">
+            <i class="fas fa-paper-plane me-2"></i>Request a Quote
+        </a>
+    </div>
+</section>
+
+<style>
+    /* Hover Card Effects */
+    .hover-card {
+        transition: all 0.3s ease;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+    
+    .hover-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
+    }
+    
+    .service-icon {
+        transition: transform 0.3s ease;
+    }
+    
+    .hover-card:hover .service-icon {
+        transform: scale(1.1);
+    }
+    
+    .feature-box {
+        transition: all 0.3s ease;
+        border-radius: 12px;
+    }
+    
+    .feature-box:hover {
+        background: #f8f9fa;
+        transform: translateY(-5px);
+    }
+    
+    /* Fleet Carousel Styles */
+    .fleet-carousel-container {
+        position: relative;
+        padding: 0 50px;
+    }
+    
+    .fleet-carousel-wrapper {
+        overflow: hidden;
+        cursor: grab;
+    }
+    
+    .fleet-carousel-wrapper:active {
+        cursor: grabbing;
+    }
+    
+    .fleet-carousel-track {
+        display: flex;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        gap: 24px;
+    }
+    
+    .fleet-card {
+        flex: 0 0 auto;
+        width: calc(33.333% - 16px);
+        transition: transform 0.3s ease;
+    }
+    
+    /* Responsive breakpoints */
+    @media (max-width: 1200px) {
+        .fleet-card {
+            width: calc(50% - 12px);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .fleet-carousel-container {
+            padding: 0 30px;
+        }
+        .fleet-card {
+            width: calc(100% - 0px);
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .fleet-carousel-container {
+            padding: 0 20px;
+        }
+    }
+    
+    /* Card gradient backgrounds */
+    .card-img-top-wrapper {
+        border-radius: 16px 16px 0 0;
+        padding: 40px 20px;
+    }
+    
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .bg-gradient-success {
+        background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+    }
+    
+    .bg-gradient-info {
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    }
+    
+    .bg-gradient-warning {
+        background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+    }
+    
+    .spec-item {
+        font-size: 0.95rem;
+        color: #555;
+        padding: 5px 0;
+    }
+    
+    /* Custom Carousel Controls */
+    .carousel-control-prev-custom,
+    .carousel-control-next-custom {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        color: #0d6efd;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s ease;
+        padding: 0;
+        opacity: 0.7;
+    }
+    
+    .carousel-control-prev-custom:hover,
+    .carousel-control-next-custom:hover {
+        opacity: 1;
+        transform: translateY(-50%) scale(1.1);
+    }
+    
+    .carousel-control-prev-custom {
+        left: -10px;
+    }
+    
+    .carousel-control-next-custom {
+        right: -10px;
+    }
+    
+    @media (max-width: 768px) {
+        .carousel-control-prev-custom {
+            left: -15px;
+        }
+        .carousel-control-next-custom {
+            right: -15px;
+        }
+        .carousel-control-prev-custom i,
+        .carousel-control-next-custom i {
+            font-size: 2rem;
+        }
+    }
+    
+    /* Indicators */
+    .carousel-indicators-custom {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .indicator-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #ccc;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        padding: 0;
+    }
+    
+    .indicator-dot.active {
+        width: 30px;
+        border-radius: 5px;
+        background: #0d6efd;
+    }
+    
+    .indicator-dot:hover {
+        background: #0d6efd;
+        transform: scale(1.2);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fleet Carousel Logic
+        const track = document.getElementById('fleetCarouselTrack');
+        const prevBtn = document.getElementById('fleetPrevBtn');
+        const nextBtn = document.getElementById('fleetNextBtn');
+        const indicatorsContainer = document.getElementById('fleetIndicators');
+        
+        if (!track || !prevBtn || !nextBtn) return;
+        
+        let cards = Array.from(document.querySelectorAll('.fleet-card'));
+        let currentIndex = 0;
+        let cardWidth = 0;
+        let visibleCards = 3;
+        let maxIndex = 0;
+        let startX = 0;
+        let isDragging = false;
+        
+        // Calculate visible cards based on screen width
+        function updateVisibleCards() {
+            if (window.innerWidth <= 768) {
+                visibleCards = 1;
+            } else if (window.innerWidth <= 1200) {
+                visibleCards = 2;
+            } else {
+                visibleCards = 3;
+            }
+            updateMaxIndex();
+        }
+        
+        // Update maximum index
+        function updateMaxIndex() {
+            maxIndex = Math.max(0, cards.length - visibleCards);
+            if (currentIndex > maxIndex) {
+                currentIndex = maxIndex;
+            }
+            updateIndicators();
+            updateCarousel();
+        }
+        
+        // Get current card width
+        function getCardWidth() {
+            if (cards.length === 0) return 0;
+            const card = cards[0];
+            const style = window.getComputedStyle(card);
+            const marginRight = parseInt(style.marginRight) || 0;
+            const marginLeft = parseInt(style.marginLeft) || 0;
+            return card.offsetWidth + marginRight + marginLeft + 24; // 24px gap
+        }
+        
+        // Update carousel position
+        function updateCarousel() {
+            cardWidth = getCardWidth();
+            const translateX = -currentIndex * cardWidth;
+            track.style.transform = `translateX(${translateX}px)`;
+        }
+        
+        // Update indicators
+        function updateIndicators() {
+            if (!indicatorsContainer) return;
+            
+            const totalIndicators = maxIndex + 1;
+            indicatorsContainer.innerHTML = '';
+            
+            for (let i = 0; i <= maxIndex; i++) {
+                const dot = document.createElement('button');
+                dot.classList.add('indicator-dot');
+                if (i === currentIndex) {
+                    dot.classList.add('active');
+                }
+                dot.addEventListener('click', () => {
+                    currentIndex = i;
+                    updateCarousel();
+                    updateIndicators();
+                });
+                indicatorsContainer.appendChild(dot);
+            }
+        }
+        
+        // Next slide
+        function nextSlide() {
+            if (currentIndex < maxIndex) {
+                currentIndex++;
+                updateCarousel();
+                updateIndicators();
+            }
+        }
+        
+        // Previous slide
+        function prevSlide() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCarousel();
+                updateIndicators();
+            }
+        }
+        
+        // Drag functionality
+        function handleDragStart(e) {
+            isDragging = true;
+            startX = e.type === 'mousedown' ? e.pageX : e.touches[0].pageX;
+            track.style.transition = 'none';
+        }
+        
+        function handleDragMove(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.type === 'mousemove' ? e.pageX : e.touches[0].pageX;
+            const diff = x - startX;
+            const moveX = -currentIndex * cardWidth + diff;
+            track.style.transform = `translateX(${moveX}px)`;
+        }
+        
+        function handleDragEnd(e) {
+            if (!isDragging) return;
+            isDragging = false;
+            track.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            
+            const endX = e.type === 'mouseup' ? e.pageX : (e.changedTouches ? e.changedTouches[0].pageX : startX);
+            const diff = endX - startX;
+            const threshold = cardWidth * 0.2;
+            
+            if (Math.abs(diff) > threshold) {
+                if (diff > 0 && currentIndex > 0) {
+                    prevSlide();
+                } else if (diff < 0 && currentIndex < maxIndex) {
+                    nextSlide();
+                } else {
+                    updateCarousel();
+                }
+            } else {
+                updateCarousel();
+            }
+        }
+        
+        // Event listeners for drag
+        track.addEventListener('mousedown', handleDragStart);
+        track.addEventListener('mousemove', handleDragMove);
+        track.addEventListener('mouseup', handleDragEnd);
+        track.addEventListener('touchstart', handleDragStart);
+        track.addEventListener('touchmove', handleDragMove);
+        track.addEventListener('touchend', handleDragEnd);
+        
+        // Prevent default drag behavior
+        track.addEventListener('dragstart', (e) => e.preventDefault());
+        
+        // Button event listeners
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+        
+        // Handle window resize
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                cards = Array.from(document.querySelectorAll('.fleet-card'));
+                updateVisibleCards();
+                updateCarousel();
+                updateIndicators();
+            }, 250);
+        });
+        
+        // Initialize
+        updateVisibleCards();
+        updateCarousel();
+    });
+</script>
+
 {% endblock %}

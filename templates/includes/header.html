@@ -1,42 +1,58 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
-    <div class="container">
-        <a class="navbar-brand" href="{% url 'home' %}">
-            <img src="{% static 'images/logo.svg' %}" alt="GTA Parcel Delivery" height="50">
-            <span class="brand-text ms-2">GTA Parcel Delivery</span>
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm navbar-custom">
+    <div class="container-fluid px-4">
+        <!-- Left: Logo & Name -->
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+           
+            <span class="brand-text ms-2 fw-bold">{{ site_settings.site_name|default:"Eastern Logistics" }}</span>
         </a>
-        
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+
+        <!-- Mobile Nav Toggle Button -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+            <i class="fas fa-bars fs-4"></i>
         </button>
-        
+
+        <!-- Navigation Menu -->
         <div class="collapse navbar-collapse" id="navbarMain">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-3">
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link nav-main-link {% if active_page == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'services' %}active{% endif %}" href="{% url 'services' %}">Services</a>
+                    <a class="nav-link nav-main-link {% if active_page == 'services' %}active{% endif %}" href="{% url 'services' %}">Services</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'about' %}active{% endif %}" href="{% url 'about' %}">About Us</a>
+                    <a class="nav-link nav-main-link {% if active_page == 'about' %}active{% endif %}" href="{% url 'about' %}">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
+                    <a class="nav-link nav-main-link {% if active_page == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
                 </li>
             </ul>
             
-            <div class="d-flex ms-lg-3">
-                <a href="tel:+14165550123" class="btn btn-outline-primary me-2">
-                    <i class="fas fa-phone-alt"></i> Call Now
+            <!-- Action Buttons -->
+            <div class="navbar-buttons d-flex align-items-center gap-2">
+                <a href="tel:+14167100361" class="btn btn-outline-primary">
+                    <i class="fas fa-phone-alt"></i> <span class="d-none d-lg-inline">Call Now</span>
                 </a>
-                <a href="#quote-form" class="btn btn-primary">
-                    <i class="fas fa-paper-plane"></i> Get Quote
+                <a href="{% if active_page == 'home' %}{% url 'home' %}#quote-form{% elif active_page == 'services' %}{% url 'services' %}#quote-form{% elif active_page == 'contact' %}#contact-quote-form{% elif active_page == 'about' %}{% url 'contact' %}#contact-quote-form{% else %}{% url 'contact' %}#contact-quote-form{% endif %}" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> <span class="d-none d-lg-inline">Get Quote</span>
                 </a>
             </div>
         </div>
     </div>
 </nav>
 
-<!-- Spacer for fixed navbar -->
 <div style="height: 80px;"></div>
+
+<script>
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+            if (navbarCollapse.classList.contains('show')) {
+                const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                bsCollapse.hide();
+            }
+        });
+    });
+</script>

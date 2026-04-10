@@ -1,22 +1,33 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="en-CA">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}GTA Parcel Delivery - Professional Delivery Services{% endblock %}</title>
+    <title>{% block title %}Eastern Logistics - Courier &amp; Delivery GTA{% endblock %}</title>
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Professional parcel delivery services in GTA. Same-day delivery, local courier services for businesses. Serving Toronto, Mississauga, Brampton, and more.">
-    <meta name="keywords" content="parcel delivery GTA, same day delivery Toronto, courier service Mississauga, local delivery Brampton">
-    <meta name="author" content="GTA Parcel Delivery">
+    <meta name="description" content="{% block meta_description %}Eastern Logistics — professional courier and last-mile delivery in Toronto and the GTA. Same-day options, B2B logistics, sprinter vans to box trucks.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}courier Toronto, parcel delivery GTA, same day delivery Toronto, local courier near me, Leslieville courier{% endblock %}">
+    <meta name="author" content="Eastern Logistics">
+    <meta name="robots" content="index, follow">
     
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="GTA Parcel Delivery - Professional Delivery Services">
-    <meta property="og:description" content="Fast and reliable parcel delivery services across GTA. Perfect for businesses.">
-    <meta property="og:image" content="{% static 'images/og-image.jpg' %}">
+    <!-- Open Graph -->
+    <meta property="og:title" content="{% block og_title %}Eastern Logistics - Courier &amp; Delivery GTA{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Eastern Logistics — reliable courier and last-mile delivery across Toronto and the GTA.{% endblock %}">
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/hero-delivery2.webp' %}">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_CA">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}Eastern Logistics - Courier &amp; Delivery GTA{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Same-day and scheduled parcel delivery across Toronto and the GTA.{% endblock %}">
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
@@ -27,12 +38,15 @@
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts (display=swap helps LCP / CLS) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extra_css %}{% endblock %}
+    {% if local_business_json_ld %}
+    <script type="application/ld+json">{{ local_business_json_ld|safe }}</script>
+    {% endif %}
 </head>
 <body>
     <!-- Header -->
@@ -56,14 +70,10 @@
     <!-- Footer -->
     {% include 'includes/footer.html' %}
     
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    
-    <!-- Custom JS -->
-    <script src="{% static 'js/main.js' %}"></script>
+    <!-- Deferred: order preserved — jQuery, then Bootstrap, then site JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="{% static 'js/main.js' %}" defer></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

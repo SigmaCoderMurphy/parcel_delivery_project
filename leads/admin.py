@@ -1,17 +1,27 @@
 from django.contrib import admin
-from import_export import resources
-from import_export.admin import ImportExportModelAdmin
+from django.conf import settings
 from .models import Lead, FollowUp, CommunicationLog, Quote, CallLog, CallAnalysis, ScheduledEmail
 
-class LeadResource(resources.ModelResource):
-    class Meta:
-        model = Lead
-        fields = ('id', 'company_name', 'contact_name', 'email', 'phone', 
-                 'business_type', 'status', 'source', 'created_at')
+IMPORT_EXPORT_ENABLED = "import_export" in settings.INSTALLED_APPS
+
+if IMPORT_EXPORT_ENABLED:
+    from import_export import resources
+    from import_export.admin import ImportExportModelAdmin
+else:
+    resources = None
+    ImportExportModelAdmin = admin.ModelAdmin
+
+if resources is not None:
+    class LeadResource(resources.ModelResource):
+        class Meta:
+            model = Lead
+            fields = ('id', 'company_name', 'contact_name', 'email', 'phone',
+                     'business_type', 'status', 'source', 'created_at')
 
 @admin.register(Lead)
 class LeadAdmin(ImportExportModelAdmin):
-    resource_class = LeadResource
+    if resources is not None:
+        resource_class = LeadResource
     list_display = ['company_name', 'contact_name', 'email', 'phone', 'business_type', 'status', 'source', 'created_at']
     list_filter = ['status', 'source', 'business_type', 'created_at']
     search_fields = ['company_name', 'contact_name', 'email', 'phone']

@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
+{% endblock %}
+
+{% block nav-global %}
+<div style="padding: 10px 40px 0 0;">
+  <a href="{% url 'dashboard_home' %}"
+     style="display: inline-block; background: #417690; color: #fff; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-weight: 600;">
+    {% trans "Open staff dashboard" %}
+  </a>
+</div>
+{% endblock %}

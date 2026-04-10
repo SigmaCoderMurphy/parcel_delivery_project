@@ -1,337 +1,392 @@
 {% extends 'dashboard/dashboard_base.html' %}
 {% load static %}
 
-{% block title %}Dashboard Settings - GTA Parcel Delivery{% endblock %}
+{% block title %}Follow-ups - Eastern Logistics{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <h2 class="fw-bold mb-4">Dashboard Settings</h2>
 
-    <div class="row">
-        <div class="col-md-3 mb-4">
-            <div class="list-group">
-                <a href="#general" class="list-group-item list-group-item-action active" data-bs-toggle="list">
-                    <i class="fas fa-sliders-h me-2"></i>General Settings
-                </a>
-                <a href="#users" class="list-group-item list-group-item-action" data-bs-toggle="list">
-                    <i class="fas fa-users me-2"></i>User Management
-                </a>
-                <a href="#notifications" class="list-group-item list-group-item-action" data-bs-toggle="list">
-                    <i class="fas fa-bell me-2"></i>Notifications
-                </a>
-                <a href="#email" class="list-group-item list-group-item-action" data-bs-toggle="list">
-                    <i class="fas fa-envelope me-2"></i>Email Templates
-                </a>
-                <a href="#fleet" class="list-group-item list-group-item-action" data-bs-toggle="list">
-                    <i class="fas fa-truck me-2"></i>Fleet Management
-                </a>
-                <a href="#services" class="list-group-item list-group-item-action" data-bs-toggle="list">
-                    <i class="fas fa-concierge-bell me-2"></i>Services
-                </a>
-                <a href="#backup" class="list-group-item list-group-item-action" data-bs-toggle="list">
-                    <i class="fas fa-database me-2"></i>Backup & Export
-                </a>
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold mb-1 text-primary">Follow-ups Management</h2>
+            <p class="text-muted mb-0">Track, filter, and manage all your scheduled, overdue, and completed follow-ups in one place.</p>
+        </div>
+    </div>
+    <!-- Statistics Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <div class="display-4 text-primary mb-2">{{ stats.upcoming_count }}</div>
+                    <h6 class="text-muted mb-0">Upcoming</h6>
+                </div>
             </div>
         </div>
-
-        <div class="col-md-9">
-            <div class="tab-content">
-                <!-- General Settings -->
-                <div class="tab-pane active" id="general">
-                    <div class="dashboard-card">
-                        <h4 class="mb-4">General Settings</h4>
-                        <form method="post" action="{% url 'dashboard_settings' %}">
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Company Name</label>
-                                    <input type="text" name="company_name" class="form-control" value="{{ site_settings.site_name }}">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Phone Number</label>
-                                    <input type="text" name="phone" class="form-control" value="{{ site_settings.site_phone }}">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Email</label>
-                                    <input type="email" name="email" class="form-control" value="{{ site_settings.site_email }}">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Service Area</label>
-                                    <input type="text" name="service_area" class="form-control" value="{{ site_settings.service_area }}">
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <label class="form-label">Address</label>
-                                    <textarea name="address" class="form-control" rows="2">{{ site_settings.site_address }}</textarea>
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <div class="display-4 text-danger mb-2">{{ stats.overdue_count }}</div>
+                    <h6 class="text-muted mb-0">Overdue</h6>
                 </div>
-
-                <!-- User Management -->
-                <div class="tab-pane" id="users">
-                    <div class="dashboard-card">
-                        <h4 class="mb-4">User Management</h4>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Username</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Last Login</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for user in users %}
-                                    <tr>
-                                        <td>{{ user.username }}</td>
-                                        <td>{{ user.email }}</td>
-                                        <td>
-                                            {% if user.is_superuser %}
-                                            <span class="badge bg-danger">Admin</span>
-                                            {% elif user.is_staff %}
-                                            <span class="badge bg-primary">Staff</span>
-                                            {% else %}
-                                            <span class="badge bg-secondary">User</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ user.last_login|date:"M d, Y"|default:"Never" }}</td>
-                                        <td>
-                                            {% if user.is_active %}
-                                            <span class="badge bg-success">Active</span>
-                                            {% else %}
-                                            <span class="badge bg-danger">Inactive</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-sm btn-primary">Edit</button>
-                                            <button class="btn btn-sm btn-danger">Disable</button>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                        <button class="btn btn-success mt-3">
-                            <i class="fas fa-user-plus me-1"></i>Add New User
-                        </button>
-                    </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <div class="display-4 text-success mb-2">{{ stats.completed_today_count }}</div>
+                    <h6 class="text-muted mb-0">Completed Today</h6>
                 </div>
-
-                <!-- Notifications -->
-                <div class="tab-pane" id="notifications">
-                    <div class="dashboard-card">
-                        <h4 class="mb-4">Notification Settings</h4>
-                        <form>
-                            <div class="mb-3">
-                                <label class="form-label">Email Notifications</label>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="notifyNewLead" checked>
-                                    <label class="form-check-label" for="notifyNewLead">New lead created</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="notifyFollowup" checked>
-                                    <label class="form-check-label" for="notifyFollowup">Follow-up reminders</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="notifyStatusChange">
-                                    <label class="form-check-label" for="notifyStatusChange">Lead status changes</label>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">WhatsApp Notifications</label>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="whatsappNewLead">
-                                    <label class="form-check-label" for="whatsappNewLead">New lead WhatsApp alert</label>
-                                </div>
-                                <div class="mt-2">
-                                    <label class="form-label">WhatsApp Number</label>
-                                    <input type="text" class="form-control" placeholder="+1234567890" value="{{ settings.TWILIO_PHONE_NUMBER }}">
-                                </div>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary">Save Notification Settings</button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Email Templates -->
-                <div class="tab-pane" id="email">
-                    <div class="dashboard-card">
-                        <h4 class="mb-4">Email Templates</h4>
-                        <ul class="nav nav-tabs mb-3">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#welcomeEmail">Welcome Email</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#quoteEmail">Quote Email</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#followupEmail">Follow-up Email</a>
-                            </li>
-                        </ul>
-                        
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="welcomeEmail">
-                                <form>
-                                    <div class="mb-3">
-                                        <label class="form-label">Subject</label>
-                                        <input type="text" class="form-control" value="Welcome to GTA Parcel Delivery!">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Email Body</label>
-                                        <textarea class="form-control" rows="10">
-Dear {{ contact_name }},
-
-Thank you for your interest in GTA Parcel Delivery! We've received your inquiry and will get back to you shortly.
-
-In the meantime, here's what you can expect:
-- A personalized quote within 1 hour
-- Consultation on your delivery needs
-- Flexible scheduling options
-
-Best regards,
-The GTA Parcel Delivery Team
-                                        </textarea>
-                                    </div>
-                                    <button class="btn btn-primary">Save Template</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fleet Management -->
-                <div class="tab-pane" id="fleet">
-                    <div class="dashboard-card">
-                        <h4 class="mb-4">Fleet Management</h4>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Vehicle</th>
-                                        <th>Type</th>
-                                        <th>Capacity</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for vehicle in fleet %}
-                                    <tr>
-                                        <td>{{ vehicle.name }}</td>
-                                        <td>{{ vehicle.get_vehicle_type_display }}</td>
-                                        <td>{{ vehicle.capacity }}</td>
-                                        <td>
-                                            {% if vehicle.is_active %}
-                                            <span class="badge bg-success">Active</span>
-                                            {% else %}
-                                            <span class="badge bg-danger">Inactive</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-sm btn-primary">Edit</button>
-                                            <button class="btn btn-sm btn-danger">Deactivate</button>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                        <button class="btn btn-success mt-3">
-                            <i class="fas fa-plus me-1"></i>Add Vehicle
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Services -->
-                <div class="tab-pane" id="services">
-                    <div class="dashboard-card">
-                        <h4 class="mb-4">Service Management</h4>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Service</th>
-                                        <th>Description</th>
-                                        <th>Featured</th>
-                                        <th>Order</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for service in services %}
-                                    <tr>
-                                        <td>{{ service.title }}</td>
-                                        <td>{{ service.short_description|truncatechars:50 }}</td>
-                                        <td>
-                                            {% if service.is_featured %}
-                                            <span class="badge bg-success">Yes</span>
-                                            {% else %}
-                                            <span class="badge bg-secondary">No</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ service.order }}</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-primary">Edit</button>
-                                            <button class="btn btn-sm btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                        <button class="btn btn-success mt-3">
-                            <i class="fas fa-plus me-1"></i>Add Service
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Backup & Export -->
-                <div class="tab-pane" id="backup">
-                    <div class="dashboard-card">
-                        <h4 class="mb-4">Backup & Export</h4>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Export Data</h5>
-                                        <p class="card-text">Download all your data in various formats</p>
-                                        <button class="btn btn-primary" onclick="exportLeads()">
-                                            <i class="fas fa-file-excel me-1"></i>Export Leads (Excel)
-                                        </button>
-                                        <button class="btn btn-secondary mt-2">
-                                            <i class="fas fa-file-csv me-1"></i>Export as CSV
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Database Backup</h5>
-                                        <p class="card-text">Create and download database backups</p>
-                                        <button class="btn btn-warning">
-                                            <i class="fas fa-database me-1"></i>Create Backup
-                                        </button>
-                                        <p class="text-muted mt-2 small">
-                                            Last backup: Never
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <div class="display-4 text-info mb-2">{{ stats.total_active }}</div>
+                    <h6 class="text-muted mb-0">Total Active</h6>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Action Bar -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#createFollowupModal">
+                        <i class="fas fa-plus me-1"></i>Create Follow-up
+                    </button>
+                    <button type="button" class="btn btn-success me-2" id="bulkCompleteBtn" style="display: none;">
+                        <i class="fas fa-check me-1"></i>Complete Selected
+                    </button>
+                </div>
+                <div>
+                    <a href="?status=all" class="btn btn-outline-secondary btn-sm me-1 {% if status_filter == 'all' %}active{% endif %}">All</a>
+                    <a href="?status=upcoming" class="btn btn-outline-primary btn-sm me-1 {% if status_filter == 'upcoming' %}active{% endif %}">Upcoming</a>
+                    <a href="?status=overdue" class="btn btn-outline-danger btn-sm me-1 {% if status_filter == 'overdue' %}active{% endif %}">Overdue</a>
+                    <a href="?status=completed" class="btn btn-outline-success btn-sm {% if status_filter == 'completed' %}active{% endif %}">Completed</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0"><i class="fas fa-filter me-2"></i>Filters</h6>
+                </div>
+                <div class="card-body">
+                    <form method="GET" class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Date From</label>
+                            <input type="date" name="date_from" value="{{ filter_params.date_from }}" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Date To</label>
+                            <input type="date" name="date_to" value="{{ filter_params.date_to }}" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Type</label>
+                            <select name="followup_type" class="form-select">
+                                <option value="">All Types</option>
+                                <option value="call" {% if filter_params.followup_type == 'call' %}selected{% endif %}>Phone Call</option>
+                                <option value="email" {% if filter_params.followup_type == 'email' %}selected{% endif %}>Email</option>
+                                <option value="whatsapp" {% if filter_params.followup_type == 'whatsapp' %}selected{% endif %}>WhatsApp</option>
+                                <option value="meeting" {% if filter_params.followup_type == 'meeting' %}selected{% endif %}>Meeting</option>
+                                <option value="quote" {% if filter_params.followup_type == 'quote' %}selected{% endif %}>Quote Sent</option>
+                                <option value="other" {% if filter_params.followup_type == 'other' %}selected{% endif %}>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Assigned To</label>
+                            <input type="text" name="assigned_to" value="{{ filter_params.assigned_to }}" class="form-control" placeholder="Username">
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary me-2">
+                                <i class="fas fa-search me-1"></i>Apply Filters
+                            </button>
+                            <a href="{% url 'follow_ups' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-1"></i>Clear Filters
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Follow-ups Content -->
+    <form method="POST" id="bulkForm">
+        {% csrf_token %}
+        <div class="row g-4 mb-4">
+            <!-- Upcoming Follow-ups -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-primary text-white d-flex align-items-center">
+                        <i class="fas fa-calendar-check me-2"></i>
+                        <span class="fw-semibold">Upcoming Follow-ups</span>
+                        <span class="badge bg-light text-dark ms-auto">{{ upcoming|length }}</span>
+                    </div>
+                    <div class="card-body">
+                        {% if upcoming %}
+                            <div class="list-group list-group-flush">
+                                {% for followup in upcoming %}
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="form-check me-3">
+                                        <input class="form-check-input followup-checkbox" type="checkbox" name="selected_followups" value="{{ followup.pk }}" id="check_{{ followup.pk }}">
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <span class="fw-bold">{{ followup.lead.contact_name }}</span>
+                                                <span class="badge bg-light text-dark ms-2">{{ followup.lead.company_name }}</span>
+                                                <div class="small text-muted mt-1">{{ followup.notes|truncatechars:80 }}</div>
+                                            </div>
+                                            <div class="text-end">
+                                                <span class="badge bg-secondary mb-1">{{ followup.scheduled_date|date:"M d, Y H:i" }}</span><br>
+                                                <div class="btn-group btn-group-sm">
+                                                    <a href="{% url 'lead_detail' followup.lead.pk %}" class="btn btn-outline-primary">View</a>
+                                                    <button type="button" class="btn btn-success complete-single" data-followup-id="{{ followup.pk }}">Complete</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted mb-0">No upcoming follow-ups scheduled.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overdue Follow-ups -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-danger text-white d-flex align-items-center">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <span class="fw-semibold">Overdue Follow-ups</span>
+                        <span class="badge bg-light text-dark ms-auto">{{ overdue|length }}</span>
+                    </div>
+                    <div class="card-body">
+                        {% if overdue %}
+                            <div class="list-group list-group-flush">
+                                {% for followup in overdue %}
+                                <div class="list-group-item d-flex align-items-center bg-light-danger">
+                                    <div class="form-check me-3">
+                                        <input class="form-check-input followup-checkbox" type="checkbox" name="selected_followups" value="{{ followup.pk }}" id="check_{{ followup.pk }}">
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <span class="fw-bold text-danger">{{ followup.lead.contact_name }}</span>
+                                                <span class="badge bg-light text-dark ms-2">{{ followup.lead.company_name }}</span>
+                                                <div class="small text-muted mt-1">{{ followup.notes|truncatechars:80 }}</div>
+                                            </div>
+                                            <div class="text-end">
+                                                <span class="badge bg-danger mb-1">{{ followup.scheduled_date|date:"M d, Y H:i" }}</span><br>
+                                                <div class="btn-group btn-group-sm">
+                                                    <a href="{% url 'lead_detail' followup.lead.pk %}" class="btn btn-outline-primary">View</a>
+                                                    <button type="button" class="btn btn-success complete-single" data-followup-id="{{ followup.pk }}">Complete</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted mb-0">No overdue follow-ups.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completed Follow-ups -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-success text-white d-flex align-items-center">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <span class="fw-semibold">Recently Completed Follow-ups</span>
+                        <span class="badge bg-light text-dark ms-auto">{{ completed|length }}</span>
+                    </div>
+                    <div class="card-body">
+                        {% if completed %}
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Lead</th>
+                                            <th>Company</th>
+                                            <th>Type</th>
+                                            <th>Notes</th>
+                                            <th>Completed Date</th>
+                                            <th>Completed By</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for followup in completed %}
+                                        <tr>
+                                            <td><a href="{% url 'lead_detail' followup.lead.pk %}" class="text-decoration-none fw-bold">{{ followup.lead.contact_name }}</a></td>
+                                            <td>{{ followup.lead.company_name }}</td>
+                                            <td><span class="badge bg-secondary">{{ followup.get_followup_type_display }}</span></td>
+                                            <td class="small">{{ followup.notes|truncatechars:50 }}</td>
+                                            <td>{{ followup.completed_date|date:"M d, Y H:i" }}</td>
+                                            <td>{{ followup.completed_by.get_full_name|default:followup.completed_by.username }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="text-muted mb-0">No completed follow-ups yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
+
+<!-- Create Follow-up Modal -->
+<div class="modal fade" id="createFollowupModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Follow-up</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="createFollowupForm">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Lead *</label>
+                            <select name="lead" class="form-select" required>
+                                <option value="">Select a lead...</option>
+                                {% for lead in leads %}
+                                <option value="{{ lead.pk }}">{{ lead.company_name }} - {{ lead.contact_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Follow-up Type *</label>
+                            <select name="followup_type" class="form-select" required>
+                                <option value="call">Phone Call</option>
+                                <option value="email">Email</option>
+                                <option value="whatsapp">WhatsApp</option>
+                                <option value="meeting">In-person Meeting</option>
+                                <option value="quote">Quote Sent</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Scheduled Date & Time *</label>
+                            <input type="datetime-local" name="scheduled_date" class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Notes *</label>
+                            <textarea name="notes" class="form-control" rows="3" required placeholder="Enter follow-up details..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Follow-up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle checkbox changes for bulk actions
+    const checkboxes = document.querySelectorAll('.followup-checkbox');
+    const bulkCompleteBtn = document.getElementById('bulkCompleteBtn');
+
+    function updateBulkButton() {
+        const checkedBoxes = document.querySelectorAll('.followup-checkbox:checked');
+        bulkCompleteBtn.style.display = checkedBoxes.length > 0 ? 'inline-block' : 'none';
+    }
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateBulkButton);
+    });
+
+    // Handle single follow-up completion
+    document.querySelectorAll('.complete-single').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const followupId = this.dataset.followupId;
+            if (confirm('Mark this follow-up as completed?')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `{% url 'complete_followup' 0 %}`.replace('0', followupId);
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = 'csrfmiddlewaretoken';
+                csrfInput.value = csrfToken;
+                form.appendChild(csrfInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    });
+
+    // Handle bulk completion
+    bulkCompleteBtn.addEventListener('click', function() {
+        const checkedBoxes = document.querySelectorAll('.followup-checkbox:checked');
+        if (checkedBoxes.length === 0) return;
+
+        if (confirm(`Mark ${checkedBoxes.length} follow-up(s) as completed?`)) {
+            const form = document.getElementById('bulkForm');
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'bulk_complete';
+            hiddenInput.value = '1';
+            form.appendChild(hiddenInput);
+            form.submit();
+        }
+    });
+
+    // Handle create follow-up form
+    document.getElementById('createFollowupForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+
+        fetch('{% url "create_followup" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error creating follow-up: ' + JSON.stringify(data.errors));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while creating the follow-up.');
+        });
+    });
+});
+</script>
+{% endblock %}
+

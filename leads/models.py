@@ -15,7 +15,7 @@ class Lead(models.Model):
     ]
     
     LEAD_SOURCE = [
-        ('website', 'Website Form'),
+        ('website', 'Website Leads'),
         ('call', 'Phone Call'),
         ('whatsapp', 'WhatsApp'),
         ('google', 'Google Business'),

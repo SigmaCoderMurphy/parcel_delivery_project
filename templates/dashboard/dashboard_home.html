@@ -2,7 +2,27 @@
 {% extends 'dashboard/dashboard_base.html' %}
 {% load static %}
 
-{% block title %}Dashboard - GTA Parcel Delivery{% endblock %}
+{% block title %}Dashboard - Eastern Logistics{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Fixed height so line chart matches doughnut card proportions (Chart.js needs explicit parent size when maintainAspectRatio is false) */
+    .leads-trend-chart-container,
+    .leads-source-chart-container {
+        position: relative;
+        height: 260px;
+        max-height: 40vh;
+        width: 100%;
+    }
+    @media (min-width: 992px) {
+        .leads-trend-chart-container,
+        .leads-source-chart-container {
+            height: 280px;
+            max-height: none;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="container-fluid px-0">
@@ -41,7 +61,7 @@
                     </div>
                 </div>
                 <div class="progress mt-3" style="height: 6px;">
-                    <div class="progress-bar bg-white" style="width: {{ total_leads_progress|default:'0' }}%"></div>
+                    <div class="progress-bar bg-white" style="width: {{ total_leads_progress|default:'0'|add:'%' }}"></div>
                 </div>
             </div>
         </div>
@@ -50,19 +70,19 @@
             <div class="stat-card" style="background: linear-gradient(135deg, #10b981, #059669);">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <p class="text-white-50 mb-1">Qualified Leads</p>
-                        <h2 class="text-white mb-0">{{ qualified_leads|default:"0" }}</h2>
+                        <p class="text-white-50 mb-1">New Leads</p>
+                        <h2 class="text-white mb-0">{{ new_leads|default:"0" }}</h2>
                         <small class="text-white-50">
                             <i class="fas fa-percentage me-1"></i>
-                            {{ qualified_percentage|default:"0" }}% conversion
+                            {{ new_leads_percentage|default:"0" }}% of all leads
                         </small>
                     </div>
                     <div class="stat-icon">
-                        <i class="fas fa-check-circle fa-3x opacity-50"></i>
+                        <i class="fas fa-plus-circle fa-3x opacity-50"></i>
                     </div>
                 </div>
                 <div class="progress mt-3" style="height: 6px;">
-                    <div class="progress-bar bg-white" style="width: {{ qualified_percentage|default:'0' }}%"></div>
+                    <div class="progress-bar bg-white" style="width: {{ new_leads_percentage|default:'0' }}%"></div>
                 </div>
             </div>
         </div>
@@ -71,19 +91,19 @@
             <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <p class="text-white-50 mb-1">Pending Follow-ups</p>
-                        <h2 class="text-white mb-0">{{ pending_followups|default:"0" }}</h2>
+                        <p class="text-white-50 mb-1">Qualified</p>
+                        <h2 class="text-white mb-0">{{ qualified_leads|default:"0" }}</h2>
                         <small class="text-white-50">
-                            <i class="fas fa-exclamation-circle me-1"></i>
-                            {{ overdue_followups|default:"0" }} overdue
+                            <i class="fas fa-percentage me-1"></i>
+                            {{ qualified_percentage|default:"0" }}% of all leads
                         </small>
                     </div>
                     <div class="stat-icon">
-                        <i class="fas fa-clock fa-3x opacity-50"></i>
+                        <i class="fas fa-check-circle fa-3x opacity-50"></i>
                     </div>
                 </div>
                 <div class="progress mt-3" style="height: 6px;">
-                    <div class="progress-bar bg-white" style="width: {{ pending_percentage|default:'0' }}%"></div>
+                    <div class="progress-bar bg-white" style="width: {{ qualified_percentage|default:'0' }}%"></div>
                 </div>
             </div>
         </div>
@@ -109,43 +129,12 @@
             </div>
         </div>
     </div>
-    
-    <!-- Charts Row -->
-    <div class="row g-4 mb-4">
-        <div class="col-lg-8">
-            <div class="dashboard-card">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="mb-0">Leads Trend</h5>
-                    <div class="btn-group">
-                        <button class="btn btn-sm btn-outline-primary active" onclick="changeChartPeriod('week', event)">Week</button>
-                        <button class="btn btn-sm btn-outline-primary" onclick="changeChartPeriod('month', event)">Month</button>
-                        <button class="btn btn-sm btn-outline-primary" onclick="changeChartPeriod('year', event)">Year</button>
-                    </div>
-                </div>
-                <canvas id="leadsTrendChart" height="100"></canvas>
-            </div>
-        </div>
-        
-        <div class="col-lg-4">
-            <div class="dashboard-card">
-                <h5 class="mb-4">Leads by Source</h5>
-                <canvas id="leadsBySourceChart" height="250"></canvas>
-                <div class="mt-4">
-                    {% for source in leads_by_source %}
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span>
-                            <span class="badge bg-{{ source.color }} me-2" style="width: 12px; height: 12px;">&nbsp;</span>
-                            {{ source.name }}
-                        </span>
-                        <span class="fw-bold">{{ source.count }}</span>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Recent Activity Row -->
+
+
+
+
+
+      <!-- Recent Activity Row -->
     <div class="row g-4">
         <div class="col-lg-6">
             <div class="dashboard-card">
@@ -226,7 +215,7 @@
                                     </small>
                                 </div>
                                 {% if not followup.is_completed %}
-                                <button class="btn btn-sm btn-success" onclick="completeFollowup({{ followup.id }})">
+                                <button class="btn btn-sm btn-success complete-followup-btn" data-id="{{ followup.id }}">
                                     <i class="fas fa-check"></i>
                                 </button>
                                 {% endif %}
@@ -243,7 +232,10 @@
             </div>
         </div>
     </div>
-    
+
+
+
+
     <!-- Performance Metrics -->
     <div class="row mt-4">
         <div class="col-12">
@@ -278,6 +270,49 @@
             </div>
         </div>
     </div>
+    
+    <!-- Charts Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+            <div class="dashboard-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0">Leads Trend</h5>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-primary active" onclick="changeChartPeriod('week', event)">Week</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="changeChartPeriod('month', event)">Month</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="changeChartPeriod('year', event)">Year</button>
+                    </div>
+                </div>
+                <div class="leads-trend-chart-container">
+                    <canvas id="leadsTrendChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="dashboard-card">
+                <h5 class="mb-4">Leads by Source</h5>
+                <div class="leads-source-chart-container">
+                    <canvas id="leadsBySourceChart"></canvas>
+                </div>
+                <div class="mt-4">
+                    {% for source in leads_by_source %}
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>
+                            <span class="badge bg-{{ source.color }} me-2" style="width: 12px; height: 12px;">&nbsp;</span>
+                            {{ source.name }}
+                        </span>
+                        <span class="fw-bold">{{ source.count }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+  
+    
+    
 </div>
 
 <script>
@@ -305,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: false
@@ -337,6 +372,13 @@ document.addEventListener('DOMContentLoaded', function() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+                padding: { top: 8, right: 8, bottom: 4, left: 4 }
+            },
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
             plugins: {
                 legend: {
                     display: false
@@ -349,6 +391,9 @@ document.addEventListener('DOMContentLoaded', function() {
             scales: {
                 y: {
                     beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    },
                     grid: {
                         display: true,
                         color: 'rgba(0, 0, 0, 0.05)'
@@ -357,6 +402,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 x: {
                     grid: {
                         display: false
+                    },
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 0,
+                        autoSkip: true,
+                        maxTicksLimit: 12
                     }
                 }
             }

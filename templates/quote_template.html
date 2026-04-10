@@ -1,151 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Quote {{ quote.quote_number }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ company.name }} - Delivery Quotation</title>
     <style>
-        @page {
-            size: letter;
-            margin: 2cm;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-        }
-        .header {
-            text-align: center;
-            padding: 20px;
-            background: #2563eb;
-            color: white;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-        .quote-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-        }
-        .company-info, .client-info {
-            width: 48%;
-        }
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        .table th, .table td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        .table th {
-            background: #2563eb;
-            color: white;
-        }
-        .total {
-            text-align: right;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-        .terms {
-            margin-top: 40px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-        .signature {
-            margin-top: 50px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 50px;
-            font-size: 12px;
-            color: #666;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #eef2f5; font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif; padding: 48px 24px; display: flex; justify-content: center; }
+        .quote-wrapper { max-width: 1100px; width: 100%; background: white; border-radius: 28px; box-shadow: 0 20px 35px -12px rgba(0,0,0,.12); overflow: hidden; }
+        .quote-content { padding: 42px 44px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 2px solid #e7edf4; }
+        .logo-placeholder { display: flex; align-items: center; gap: 18px; }
+        .logo-box { width: 80px; height: 80px; background: #1e5f8e; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 12px; text-align: center; line-height: 1.3; box-shadow: 0 5px 12px rgba(0,0,0,.05); }
+        .company-name h2 { font-size: 1.9rem; font-weight: 700; color: #1e5f8e; letter-spacing: -0.3px; }
+        .company-name p { color: #1e5f8e; font-size: 0.85rem; margin-top: 6px; }
+        .quote-badge { text-align: right; }
+        .quote-badge .small-label { font-size: .7rem; text-transform: uppercase; letter-spacing: 1px; color: #5f7f9e; }
+        .quote-badge .quote-num { font-size: 1.5rem; font-weight: 800; color: #1e5f8e; }
+        .details-row { display: flex; gap: 30px; margin: 28px 0 32px; flex-wrap: wrap; }
+        .info-panel { flex: 1; background: #fff; border: 1px solid #dce3ec; border-radius: 20px; padding: 18px 24px; color: #1a1f2c; }
+        .info-panel h4 { font-size: .8rem; text-transform: uppercase; letter-spacing: 1px; color: #1a1f2c; margin-bottom: 14px; font-weight: 600; }
+        .rate-box { background: #fafcff; border: 2px solid #1e5f8e; border-radius: 24px; padding: 22px 28px; margin: 28px 0 32px; box-shadow: 0 2px 8px rgba(0,0,0,.02); }
+        .rate-box h3 { font-size: 1.1rem; font-weight: 700; color: #1e5f8e; margin-bottom: 20px; border-left: 4px solid #1e5f8e; padding-left: 14px; }
+        .rate-row { display: flex; flex-wrap: wrap; align-items: baseline; margin: 18px 0; gap: 12px; font-size: 1rem; }
+        .rate-label { width: 190px; font-weight: 700; color: #1a1f2c; }
+        .rate-dash { border-bottom: 1.5px solid #9fb8d0; flex: 1; min-width: 220px; padding: 8px 0; font-family: monospace; font-size: .95rem; color: #1f2e3a; }
+        .rate-value { font-weight: 600; background: #f4f9fe; padding: 6px 14px; border-radius: 40px; font-size: 1rem; }
+        .quote-table { width: 100%; border-collapse: collapse; margin: 28px 0 18px; font-size: .9rem; }
+        .quote-table th { background: #2c3e50; color: white; padding: 14px 12px; text-align: left; font-weight: 600; }
+        .quote-table td { border-bottom: 1px solid #e2e8f0; padding: 14px 12px; vertical-align: top; color: #1a1f2c; }
+        .custom-section { background: #fefcf7; border-left: 4px solid #1e5f8e; padding: 22px 28px; margin: 32px 0; border-radius: 20px; }
+        .custom-section h3 { font-size: 1rem; margin-bottom: 18px; color: #1a1f2c; font-weight: 700; }
+        .context-block { background: #f8fafc; padding: 18px 24px; border-radius: 20px; margin: 20px 0; font-size: .85rem; color: #1f2e3a; border: 1px solid #e2e8f0; }
+        .terms-box { margin: 32px 0 20px; padding-top: 20px; border-top: 1px solid #e2e8f0; color: #1a1f2c; }
+        .terms-box h4 { margin-bottom: 12px; color: #1a1f2c; }
+        .terms-box ul { list-style: none; padding-left: 0; }
+        .terms-box li { margin-bottom: 8px; padding-left: 22px; position: relative; font-size: .85rem; }
+        .terms-box li::before { content: "-"; color: #1e5f8e; font-weight: bold; position: absolute; left: 6px; }
+        .signatures-area { display: flex; justify-content: space-between; margin: 42px 0 24px; flex-wrap: wrap; gap: 30px; color: #1a1f2c; }
+        .sign-item { flex: 1; min-width: 200px; }
+        .sign-line { border-bottom: 1.5px solid #8aa4bc; margin: 12px 0 8px; width: 100%; padding-top: 10px; }
+        .footer-note { text-align: center; font-size: .7rem; color: #6f8aaa; margin-top: 28px; border-top: 1px solid #e2edf7; padding-top: 20px; }
+        @media (max-width: 700px) { .quote-content { padding: 24px; } .rate-label { width: 100%; } }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>GTA PARCEL DELIVERY</h1>
-        <p>Professional Delivery Services</p>
-    </div>
-    
-    <div class="quote-info">
-        <div class="company-info">
-            <strong>FROM:</strong><br>
-            GTA Parcel Delivery<br>
-            123 Business Ave, Toronto, ON<br>
-            Phone: (416) 555-0123<br>
-            Email: info@gtaparceldelivery.com
+<div class="quote-wrapper">
+    <div class="quote-content">
+        <div class="top-bar">
+            <div class="logo-placeholder">
+                <div class="logo-box">{{ company.name|upper|slice:":7" }}<br>LOGISTICS</div>
+                <div class="company-name">
+                    <h2>{{ company.name }}</h2>
+                    <p>{{ company.address }}</p>
+                    <p>{{ company.phone }} | {{ company.email }}</p>
+                    <p>{{ lead.service_area|default:"Greater Toronto Area (GTA)" }}</p>
+                </div>
+            </div>
+            <div class="quote-badge">
+                <div class="small-label">Quote Number</div>
+                <div class="quote-num">{{ quote.quote_number }}</div>
+                <div class="small-label" style="margin-top: 8px;">Date: {{ date|date:"F d, Y" }}</div>
+                <div class="small-label">Valid until: {{ quote.valid_until|date:"F d, Y" }}</div>
+            </div>
         </div>
-        <div class="client-info">
-            <strong>BILL TO:</strong><br>
-            {{ lead.company_name }}<br>
-            {{ lead.contact_name }}<br>
-            {{ lead.address|linebreaksbr }}<br>
-            Phone: {{ lead.phone }}<br>
-            Email: {{ lead.email }}
+
+        <div class="details-row">
+            <div class="info-panel">
+                <h4>Bill To / Client</h4>
+                <div><strong>Client Name:</strong> {{ lead.contact_name }}</div>
+                <div><strong>Company Name:</strong> {{ lead.company_name }}</div>
+                <div><strong>Address:</strong> {{ lead.address|default:"-" }}</div>
+                <div><strong>Phone / Email:</strong> {{ lead.phone }} / {{ lead.email }}</div>
+                <div><strong>Lead ID / Reference:</strong> #{{ lead.id }}</div>
+            </div>
+            <div class="info-panel">
+                <h4>Service Overview</h4>
+                <div><strong>Business type:</strong> {{ lead.get_business_type_display }}</div>
+                <div><strong>Delivery frequency:</strong> {{ lead.delivery_frequency|default:"Not specified" }}</div>
+                <div><strong>Service area:</strong> {{ lead.service_area|default:"-" }}</div>
+                <div><strong>Typical items:</strong> {{ lead.typical_items|default:"Not specified" }}</div>
+            </div>
+        </div>
+
+        <div class="rate-box">
+            <h3>Delivery Rate & Locations</h3>
+            <div class="rate-row"><span class="rate-label">Pickup Location:</span><span class="rate-dash">{{ lead.address|default:"As discussed with client" }}</span></div>
+            <div class="rate-row"><span class="rate-label">Delivery Location:</span><span class="rate-dash">{{ lead.service_area|default:"As discussed with client" }}</span></div>
+            <div class="rate-row"><span class="rate-label">Total Rate (CAD):</span><span class="rate-dash">${{ quote.amount }}</span><span class="rate-value">all-inclusive / as agreed</span></div>
+        </div>
+
+        <table class="quote-table">
+            <thead>
+                <tr><th>Service Name</th><th>Description</th><th>Cost (CAD)</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Delivery Services</td><td>{{ quote.terms|default:"Business delivery service as agreed." }}</td><td>${{ quote.amount }}</td></tr>
+                <tr><td colspan="2" style="text-align:right; font-weight:700;">Subtotal</td><td>${{ quote.amount }}</td></tr>
+                <tr><td colspan="2" style="text-align:right;">HST (if applicable)</td><td>Included / As applicable</td></tr>
+                <tr><td colspan="2" style="text-align:right; font-weight:800;">Total Amount</td><td style="font-size:1.2rem; font-weight:800;">${{ quote.amount }}</td></tr>
+            </tbody>
+        </table>
+
+        <div class="custom-section">
+            <h3>Additional Delivery Details</h3>
+            <div><strong>Notes:</strong> {{ lead.notes|default:"No additional notes." }}</div>
+        </div>
+
+        <div class="context-block">
+            <strong>About this quote</strong><br>
+            This quotation is generated for {{ lead.company_name }} and can be adjusted before final approval.
+        </div>
+
+        <div class="terms-box">
+            <h4>Terms & Conditions</h4>
+            <ul>
+                <li><strong>Payment terms:</strong> 50% deposit may be required depending on service agreement.</li>
+                <li><strong>Validity:</strong> This quote is valid until {{ quote.valid_until|date:"F d, Y" }}.</li>
+                <li><strong>Scope limitations:</strong> Additional stops, wait time, or oversized items may incur extra charges.</li>
+                <li><strong>Revisions:</strong> Any scope or price changes must be confirmed in writing.</li>
+                <li><strong>Liability:</strong> Proper packaging is required for safe handling.</li>
+            </ul>
+        </div>
+
+        <div class="signatures-area">
+            <div class="sign-item">
+                <div><strong>Authorized Signature ({{ company.name }})</strong></div>
+                <div class="sign-line"></div>
+                <div style="font-size:.7rem;">Name: _________________   Date: ___________</div>
+            </div>
+            <div class="sign-item">
+                <div><strong>Client Signature (Acceptance of Quote)</strong></div>
+                <div class="sign-line"></div>
+                <div style="font-size:.7rem;">Name: _________________   Date: ___________</div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            {{ company.name }} - Questions? {{ company.phone }} or {{ company.email }}<br>
+            This document serves as a commercial offer.
         </div>
     </div>
-    
-    <div style="margin-bottom: 20px;">
-        <strong>Quote #:</strong> {{ quote.quote_number }}<br>
-        <strong>Date:</strong> {{ date|date:"F d, Y" }}<br>
-        <strong>Valid Until:</strong> {{ quote.valid_until|date:"F d, Y" }}
-    </div>
-    
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Service Description</th>
-                <th>Quantity</th>
-                <th>Unit Price</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Delivery Services - {{ lead.get_business_type_display }}</td>
-                <td>1</td>
-                <td>${{ quote.amount|floatformat:2 }}</td>
-                <td>${{ quote.amount|floatformat:2 }}</td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <div class="total">
-        TOTAL AMOUNT: ${{ quote.amount|floatformat:2 }}
-    </div>
-    
-    <div class="terms">
-        <strong>TERMS & CONDITIONS:</strong><br>
-        {{ quote.terms|linebreaks }}
-        <br><br>
-        <strong>DELIVERY REQUIREMENTS:</strong><br>
-        Business Type: {{ lead.get_business_type_display }}<br>
-        Service Area: {{ lead.service_area }}<br>
-        {% if lead.delivery_frequency %}Frequency: {{ lead.delivery_frequency }}{% endif %}<br>
-        {% if lead.typical_items %}Items: {{ lead.typical_items }}{% endif %}
-    </div>
-    
-    <div class="signature">
-        <div>
-            _________________________<br>
-            Authorized Signature
-        </div>
-        <div>
-            _________________________<br>
-            Date
-        </div>
-    </div>
-    
-    <div class="footer">
-        Thank you for choosing GTA Parcel Delivery!<br>
-        This quote is valid for 30 days. For questions, contact us at (416) 555-0123
-    </div>
+</div>
 </body>
 </html>

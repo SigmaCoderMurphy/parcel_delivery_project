@@ -1,14 +1,14 @@
 // Main JavaScript file
 
-// Form validation
+// Form validation (Bootstrap). Skip AJAX lead forms — they use custom validation + loading UI.
 (function() {
     'use strict';
-    
-    // Fetch all forms that need validation
+
     var forms = document.querySelectorAll('.needs-validation');
-    
-    // Loop over them and prevent submission
     Array.prototype.slice.call(forms).forEach(function(form) {
+        if (form.getAttribute('data-lead-ajax') === 'true') {
+            return;
+        }
         form.addEventListener('submit', function(event) {
             if (!form.checkValidity()) {
                 event.preventDefault();
@@ -19,30 +19,31 @@
     });
 })();
 
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
+// Smooth scrolling for anchor links - DISABLED to fix auto-scroll issue
+// This was causing scrolling on href="#" buttons (modals, dropdowns)
+// document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+//     anchor.addEventListener('click', function(e) {
+//         e.preventDefault();
+//         
+//         const target = document.querySelector(this.getAttribute('href'));
+//         if (target) {
+//             target.scrollIntoView({
+//                 behavior: 'smooth',
+//                 block: 'start'
+//             });
+//         }
+//     });
+// });
 
-// Navbar scroll effect
-window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.classList.add('navbar-scrolled');
-    } else {
-        navbar.classList.remove('navbar-scrolled');
-    }
-});
+// Navbar scroll effect - temporarily disabled to test auto-scroll issue
+// window.addEventListener('scroll', function() {
+//     const navbar = document.querySelector('.navbar');
+//     if (window.scrollY > 50) {
+//         navbar.classList.add('navbar-scrolled');
+//     } else {
+//         navbar.classList.remove('navbar-scrolled');
+//     }
+// });
 
 // Phone number formatting
 const phoneInputs = document.querySelectorAll('input[type="tel"]');
@@ -53,14 +54,46 @@ phoneInputs.forEach(input => {
     });
 });
 
-// Loading spinner for forms
-document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('submit', function() {
+// Loading spinner for forms (not for data-lead-ajax — those manage their own button UI).
+document.querySelectorAll('form').forEach(function (form) {
+    if (form.getAttribute('data-lead-ajax') === 'true') {
+        return;
+    }
+    form.addEventListener('submit', function () {
         const submitBtn = this.querySelector('button[type="submit"]');
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+        if (!submitBtn) {
+            return;
         }
+
+        if (typeof this.checkValidity === 'function' && !this.checkValidity()) {
+            return;
+        }
+
+        const requiredFields = this.querySelectorAll('[required]');
+        let allValid = true;
+
+        requiredFields.forEach(function (field) {
+            const value = (field.value || '').trim();
+
+            if (field.tagName === 'SELECT') {
+                if (value === '') allValid = false;
+                return;
+            }
+
+            if (field.type === 'email') {
+                if (value === '' || !field.checkValidity()) allValid = false;
+                return;
+            }
+
+            if (value === '') allValid = false;
+        });
+
+        if (!allValid) {
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
     });
 });
 
@@ -90,24 +123,24 @@ function animateCounter(element, start, end, duration) {
     window.requestAnimationFrame(step);
 }
 
-// Trigger counter animation when element comes into view
-const observerOptions = {
-    threshold: 0.5
-};
+// Trigger counter animation when element comes into view - temporarily disabled
+// const observerOptions = {
+//     threshold: 0.5
+// };
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const counters = entry.target.querySelectorAll('.counter');
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-target'));
-                animateCounter(counter, 0, target, 2000);
-            });
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
+// const observer = new IntersectionObserver((entries) => {
+//     entries.forEach(entry => {
+//         if (entry.isIntersecting) {
+//             const counters = entry.target.querySelectorAll('.counter');
+//             counters.forEach(counter => {
+//                 const target = parseInt(counter.getAttribute('data-target'));
+//                 animateCounter(counter, 0, target, 2000);
+//             });
+//             observer.unobserve(entry.target);
+//         }
+//     });
+// }, observerOptions);
 
-document.querySelectorAll('.stats-section').forEach(section => {
-    observer.observe(section);
-});
+// document.querySelectorAll('.stats-section').forEach(section => {
+//     observer.observe(section);
+// });

@@ -3,13 +3,24 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-4 mb-4">
-                <h5 class="text-white mb-4">GTA Parcel Delivery</h5>
-                <p class="text-white-50">Professional parcel delivery services across the Greater Toronto Area. Fast, reliable, and tailored for businesses.</p>
+                <h5 class="text-white mb-4">{{ site_settings.site_name|default:"Eastern Logistics" }}</h5>
+                <p class="text-white-50">Professional courier and last-mile delivery across Toronto and the GTA. Reliable B2B logistics for local businesses.</p>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    {% if site_settings.facebook_url %}
+                    <a href="{{ site_settings.facebook_url }}" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+                    {% endif %}
+                    {% if site_settings.twitter_url %}
+                    <a href="{{ site_settings.twitter_url }}" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
+                    {% endif %}
+                    {% if site_settings.linkedin_url %}
+                    <a href="{{ site_settings.linkedin_url }}" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+                    {% endif %}
+                    {% if site_settings.instagram_url %}
+                    <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                    {% endif %}
+                    {% if google_business_url_resolved %}
+                    <a href="{{ google_business_url_resolved }}" target="_blank" rel="noopener" aria-label="Google Maps"><i class="fab fa-google"></i></a>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-lg-2 col-md-6 mb-4">
@@ -33,16 +44,19 @@
             <div class="col-lg-3 mb-4">
                 <h6 class="text-white mb-4">Contact Info</h6>
                 <ul class="list-unstyled">
-                    <li class="mb-2 text-white-50"><i class="fas fa-map-marker-alt me-2"></i>123 Business Ave, Toronto, ON</li>
-                    <li class="mb-2"><a href="tel:+14165550123" class="text-white-50 text-decoration-none"><i class="fas fa-phone-alt me-2"></i>(416) 555-0123</a></li>
-                    <li class="mb-2"><a href="mailto:info@gtaparceldelivery.com" class="text-white-50 text-decoration-none"><i class="fas fa-envelope me-2"></i>info@gtaparceldelivery.com</a></li>
+                    <li class="mb-2 text-white-50"><i class="fas fa-map-marker-alt me-2"></i>{{ site_settings.site_address|default:"828 Eastern Ave, Toronto, ON M4L 1A1, Canada" }}</li>
+                    <li class="mb-2"><a href="tel:+14167100361" class="text-white-50 text-decoration-none"><i class="fas fa-phone-alt me-2"></i>{{ site_settings.site_phone|default:"416-710-0361" }}</a></li>
+                    <li class="mb-2"><a href="mailto:{{ site_settings.site_email|default:'support@easternlogistics.app' }}" class="text-white-50 text-decoration-none"><i class="fas fa-envelope me-2"></i>{{ site_settings.site_email|default:"support@easternlogistics.app" }}</a></li>
+                    {% if google_business_url_resolved %}
+                    <li class="mb-2"><a href="{{ google_business_url_resolved }}" target="_blank" rel="noopener" class="text-white-50 text-decoration-none"><i class="fas fa-map-marked-alt me-2"></i>Google Maps / Reviews</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
         <hr class="bg-white opacity-25">
         <div class="row">
             <div class="col-12 text-center">
-                <p class="text-white-50 mb-0">&copy; 2024 GTA Parcel Delivery. All rights reserved.</p>
+                <p class="text-white-50 mb-0">&copy; 2026 {{ site_settings.site_name|default:"Eastern Logistics" }}. All rights reserved.</p>
             </div>
         </div>
     </div>

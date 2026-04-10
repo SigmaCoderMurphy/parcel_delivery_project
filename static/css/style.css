@@ -18,19 +18,56 @@ body {
 }
 
 /* Navigation */
+
 .navbar {
     padding: 1rem 0;
     transition: all 0.3s ease;
+    background: #fff;
+}
+
+.navbar-custom {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-custom .container-fluid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    width: 100%;
 }
 
 .navbar-brand {
-    font-weight: 700;
-    font-size: 1.5rem;
+    font-weight: 800;
+    font-size: 2.1rem !important;
+    letter-spacing: -1px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-center {
+    flex: 1;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.navbar-center .navbar-nav {
+    margin: 0;
+}
+
+.navbar-buttons {
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 .brand-text {
     color: var(--primary-color);
-    font-weight: 800;
+    font-weight: 900;
+    font-size: 2.1rem;
+    letter-spacing: -1px;
 }
 
 .nav-link {
@@ -38,11 +75,28 @@ body {
     color: var(--dark-color) !important;
     margin: 0 0.5rem;
     transition: color 0.3s ease;
+    font-size: 1.35rem !important;
+    font-weight: 700 !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    letter-spacing: 0.01em;
+}
+
+.nav-main-link {
+    font-size: 1.35rem !important;
+    font-weight: 700 !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    letter-spacing: 0.01em;
 }
 
 .nav-link:hover,
 .nav-link.active {
     color: var(--primary-color) !important;
+}
+
+small, .small, .text-muted, .form-text, .form-label, .form-control, .form-select, .alert, .btn, .lead, .card-text, .list-unstyled, .list-group-item, .invalid-feedback, .valid-feedback {
+    font-size: 1.18rem !important;
 }
 
 /* Buttons */
@@ -76,6 +130,115 @@ body {
     transform: translateY(-2px);
 }
 
+/* Alerts & Messages */
+.alert {
+    border-radius: 0.75rem;
+    border: 2px solid;
+    font-size: 1.08rem;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: #d4edda !important;
+    border-color: #10b981 !important;
+    color: #155724 !important;
+}
+
+.alert-danger {
+    background: #f8d7da !important;
+    border-color: #ef4444 !important;
+    color: #721c24 !important;
+}
+
+.alert-warning {
+    background: #fff3cd !important;
+    border-color: #f59e0b !important;
+    color: #856404 !important;
+}
+
+.alert-info {
+    background: #d1ecf1 !important;
+    border-color: #2563eb !important;
+    color: #0c5460 !important;
+}
+
+.alert .btn-close {
+    padding: 0.5rem;
+}
+
+/* Form Validation */
+.form-control, .form-select {
+    font-size: 1.08rem !important;
+    border-radius: 0.5rem;
+    border: 2px solid #e2e8f0;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+}
+
+.form-control.is-invalid, .form-select.is-invalid {
+    border-color: var(--danger-color);
+}
+
+.form-control.is-invalid:focus, .form-select.is-invalid:focus {
+    border-color: var(--danger-color);
+    box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25);
+}
+
+.form-control.is-valid, .form-select.is-valid {
+    border-color: var(--success-color);
+}
+
+.form-control.is-valid:focus, .form-select.is-valid:focus {
+    border-color: var(--success-color);
+    box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25);
+}
+
+.invalid-feedback {
+    display: none;
+    color: var(--danger-color);
+    font-size: 1rem !important;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+.valid-feedback {
+    display: none;
+    color: var(--success-color);
+    font-size: 1rem !important;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+/* Show invalid feedback only when field has is-invalid class or form has was-validated */
+.is-invalid ~ .invalid-feedback,
+.was-validated .form-control.is-invalid ~ .invalid-feedback,
+.was-validated .form-select.is-invalid ~ .invalid-feedback {
+    display: block;
+}
+
+.valid-feedback {
+    display: block;
+    color: var(--success-color);
+    font-size: 1rem !important;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+.form-label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
+    font-size: 1.08rem !important;
+}
+
 /* Hero Section */
 .hero-section {
     padding: 4rem 0;
@@ -97,30 +260,231 @@ body {
 }
 
 /* Service Cards */
+
 .service-card {
-    background: white;
+    background: #f3f4f6;
     border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     transition: all 0.3s ease;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0,0,0,0.05);
+    position: relative;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.service-card .card-body {
+    /* Avoid double padding (both .service-card and Bootstrap .card-body) */
+    padding: 0;
 }
 
 .service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 12px 32px rgba(37,99,235,0.10);
 }
 
 .service-icon {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    width: 72px;
+    height: 72px;
+    background: var(--primary-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.5rem;
-    color: white;
+    margin-bottom: 0.75rem;
+    margin-left: auto;
+    margin-right: auto;
+    align-self: center;
+    color: #fff;
+    font-size: 2rem;
+    box-shadow: none;
+}
+
+/* Scoped Home Services styles */
+.home-services-section .service-card {
+    box-shadow: none;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.home-services-section .service-card h4 {
+    margin-bottom: 0.75rem;
+}
+
+.home-services-section .service-icon {
+    box-shadow: none;
+}
+
+.home-services-section .service-icon i {
+    font-size: 2.25rem;
+}
+
+/* Contact left card styles */
+.contact-details-card {
+    background: #e7eaee;
+    border-radius: 18px;
+    box-shadow: none !important;
+}
+
+.contact-details-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #111827;
+}
+
+.contact-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.contact-info-icon-nocircle {
+    width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 1.4rem;
+}
+
+.contact-info-icon-circle {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.contact-info-label {
+    font-size: 0.95rem;
+    color: #6b7280;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.contact-info-value {
+    font-size: 0.98rem;
+    color: #111827;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.contact-social-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.contact-social-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    text-decoration: none;
+    background: transparent;
+    font-size: 1.15rem;
+}
+
+.contact-social-circle:hover {
+    background: var(--primary-color);
+    color: #fff;
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+}
+
+/* Make tel/mail links blue like screenshot */
+.contact-info-value a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.contact-info-value a:hover {
+    text-decoration: underline;
+}
+
+/* Contact page: both cards same background */
+.contact-details-card,
+.contact-form-card {
+    background: #e7eaee;
+    border-radius: 18px;
+    box-shadow: none !important;
+}
+
+.contact-form-card .form-control,
+.contact-form-card .form-select,
+.contact-form-card textarea {
+    background: #e7eaee;
+    border: 1px solid #cfd6de;
+}
+
+.contact-form-card .form-control:focus,
+.contact-form-card .form-select:focus,
+.contact-form-card textarea:focus {
+    background: #e7eaee;
+}
+
+.contact-map-wrap {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #cfd6de;
+}
+
+.contact-map-canvas {
+    width: 100%;
+    min-height: 280px;
+    height: clamp(280px, 52vh, 480px);
+    background: #e8edf2;
+}
+
+.contact-map-caption {
+    color: #374151;
+}
+
+/* Home page quote form: match service-card light gray */
+#quote-form .card {
+    background: #f3f4f6;
+}
+
+#quote-form .form-control,
+#quote-form .form-select,
+#quote-form textarea {
+    background: #f3f4f6;
+}
+
+.service-card ul {
+    margin: 0 0 1rem 0;
+    padding-left: 0.5rem;
+}
+.service-card ul li {
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    color: var(--success-color);
+    font-weight: 500;
+}
+.service-card ul li i {
+    margin-right: 0.5rem;
+}
+
+.service-toggle-btn {
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+    border-radius: 0.5rem;
+    transition: background 0.2s, color 0.2s;
+}
+.service-toggle-btn:active {
+    background: var(--primary-color);
+    color: #fff;
 }
 
 .service-card h4 {
@@ -188,10 +552,19 @@ body {
 
 /* Trust Badges */
 .trust-badge {
-    padding: 1rem;
+    padding: 1.5rem 1rem;
+    min-height: 150px;
     background: white;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.trust-badge h5 {
+    font-size: 1.35rem;
+    font-weight: 700;
 }
 
 /* Forms */
@@ -349,6 +722,11 @@ body {
 .badge-qualified { background: var(--success-color); }
 .badge-won { background: var(--success-color); }
 .badge-lost { background: var(--danger-color); }
+
+/* Hash navigation: keep contact quote form clear of fixed navbar */
+#contact-quote-form {
+    scroll-margin-top: 5.5rem;
+}
 
 /* Print Styles */
 @media print {

@@ -12,3 +12,10 @@ phonenumbers==8.13.27
 django-celery-results==2.5.1
 redis==5.0.1
 celery==5.3.4
+reportlab==4.0.7
+xhtml2pdf==0.2.11
+django-recaptcha==4.0.0
+brevo-python==4.0.9
+httpx==0.25.2
+gunicorn==22.0.0
+brotli==1.1.0

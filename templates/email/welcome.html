@@ -13,40 +13,47 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Welcome to GTA Parcel Delivery!</h1>
+            <h1>Welcome to Eastern Logistics!</h1>
         </div>
         <div class="content">
             <p>Dear {{ lead.contact_name }},</p>
-            
-            <p>Thank you for choosing GTA Parcel Delivery for your business delivery needs! We're excited to help you streamline your delivery operations.</p>
-            
+
+            <p>Thank you for reaching out to Eastern Logistics. We provide courier and last-mile delivery across Toronto, the GTA, and nearby areas—same-day options, B2B logistics, and straightforward pricing.</p>
+
             <h3>Here's what happens next:</h3>
             <ol>
                 <li>Our team will review your requirements within 1 hour</li>
                 <li>We'll prepare a customized quote based on your needs</li>
-                <li>A delivery specialist will contact you to discuss details</li>
-                <li>We'll schedule your first delivery</li>
+                <li>A specialist will contact you to confirm details</li>
+                <li>We'll schedule your first run when you're ready</li>
             </ol>
-            
-            <p>In the meantime, feel free to:</p>
+
+            <p>In the meantime:</p>
             <ul>
-                <li>Call us at {{ company.phone }} for immediate assistance</li>
-                <li>Visit our website: <a href="{{ company.website }}">{{ company.website }}</a></li>
-                <li>Check out our services on Google Business</li>
+                <li>Call <strong>{{ company.phone }}</strong> for quick questions</li>
+                <li>Email <strong>{{ company.email }}</strong></li>
+                {% if company.maps_url %}
+                <li>Find us on <a href="{{ company.maps_url }}">Google Maps</a> (directions &amp; reviews)</li>
+                {% endif %}
+                {% if company.website %}
+                <li>Website: <a href="{{ company.website }}">{{ company.website }}</a></li>
+                {% endif %}
             </ul>
-            
+
+            {% if company.website %}
             <div style="text-align: center; margin: 30px 0;">
-                <a href="{{ company.website }}" class="button">Learn More About Our Services</a>
+                <a href="{{ company.website }}" class="button">Visit our site</a>
             </div>
-            
-            <p>We look forward to serving your business!</p>
-            
+            {% endif %}
+
+            <p>We look forward to working with you.</p>
+
             <p>Best regards,<br>
-            The GTA Parcel Delivery Team</p>
+            The Eastern Logistics Team</p>
         </div>
         <div class="footer">
-            <p>GTA Parcel Delivery | 123 Business Ave, Toronto, ON | {{ company.phone }}</p>
-            <p>This email was sent to {{ lead.email }}. You received this because you requested a quote.</p>
+            <p>Eastern Logistics | 828 Eastern Ave, Toronto, ON M4L 1A1, Canada | {{ company.phone }}</p>
+            <p>This email was sent to {{ lead.email }} because you requested information.</p>
         </div>
     </div>
 </body>

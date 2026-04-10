@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Our Delivery Services - GTA Parcel Delivery{% endblock %}
+{% block title %}Our Delivery Services - Eastern Logistics{% endblock %}
 
 {% block content %}
 <!-- Page Header -->
@@ -10,104 +10,77 @@
         <h1 class="display-4 fw-bold">Our Delivery Services</h1>
         <p class="lead">Comprehensive delivery solutions for every business need</p>
     </div>
+
 </section>
 
 <!-- Services Detail -->
 <section class="py-5">
     <div class="container">
-        <!-- Retail & E-commerce -->
-        <div class="row mb-5 align-items-center">
-            <div class="col-lg-6">
-                <img src="{% static 'images/retail-delivery.jpg' %}" alt="Retail Delivery" class="img-fluid rounded-3 shadow">
+        <div class="service-list">
+            {% for service in services %}
+            <div class="row align-items-center mb-5 flex-md-row flex-column {% if forloop.counter0|divisibleby:2 %}flex-md-row-reverse{% endif %}">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    {% if service.image %}
+                        <img src="{{ service.image.url }}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                    {% else %}
+                        {% with title_lower=service.title|lower %}
+                        {% if 'retail' in title_lower %}
+                            <picture>
+                                <source srcset="{% static 'images/retail-delivery.webp' %}" type="image/webp">
+                                <img src="{% static 'images/retail-delivery.jpg' %}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                            </picture>
+                        {% elif 'warehouse' in title_lower %}
+                            <picture>
+                                <source srcset="{% static 'images/warehouse-delivery.webp' %}" type="image/webp">
+                                <img src="{% static 'images/warehouse-delivery.jpg' %}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                            </picture>
+                        {% elif 'ecommerce' in title_lower %}
+                            <picture>
+                                <source srcset="{% static 'images/retail-delivery.webp' %}" type="image/webp">
+                                <img src="{% static 'images/retail-delivery.jpg' %}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                            </picture>
+                        {% elif 'pharmacy' in title_lower %}
+                            <picture>
+                                <source srcset="{% static 'images/pharmacy-delivery.webp' %}" type="image/webp">
+                                <img src="{% static 'images/pharmacy-delivery.jpg' %}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                            </picture>
+                        {% elif 'office' in title_lower %}
+                            <picture>
+                                <source srcset="{% static 'images/office-delivery2.webp' %}" type="image/webp">
+                                <img src="{% static 'images/office-delivery2.jpg' %}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                            </picture>
+                        {% else %}
+                            <picture>
+                                <source srcset="{% static 'images/sprinter-van.webp' %}" type="image/webp">
+                                <img src="{% static 'images/sprinter-van.jpg' %}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                            </picture>
+                        {% endif %}
+                        {% endwith %}
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 p-md-4 h-100 d-flex flex-column justify-content-center">
+                        <h3 class="fw-bold mb-2">{{ service.title }}</h3>
+                        <div class="text-muted mb-2">{{ service.subtitle }}</div>
+                        <ul class="list-unstyled text-success mb-3">
+                            {% for line in service.short_description.splitlines %}
+                            {% if line %}<li class="mb-1"><i class="fas fa-check-circle me-2"></i>{{ line }}</li>{% endif %}
+                            {% endfor %}
+                        </ul>
+                        {% if service.full_description %}
+                        <p class="text-muted mb-3">{{ service.full_description|truncatewords:28 }}</p>
+                        {% endif %}
+                        <a href="#quote-form" class="btn btn-primary px-4 py-2 align-self-start">Get {{ service.title }} Quote</a>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-6">
-                <h2 class="fw-bold mb-3">Retail & E-commerce Delivery</h2>
-                <p class="lead text-muted">Fast, reliable delivery for local retailers and online stores</p>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Same-day delivery across GTA</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Real-time tracking for you and your customers</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Flexible pickup schedules</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Competitive volume pricing</li>
-                </ul>
-                <p>Perfect for clothing boutiques, electronics stores, cosmetic shops, and online retailers. Our sprinter vans are ideal for navigating city streets and making multiple stops efficiently.</p>
-                <a href="#quote-form" class="btn btn-primary">Get Retail Quote</a>
+            {% empty %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-info mb-0">No active services available yet. Please add services from the admin panel.</div>
+                </div>
             </div>
-        </div>
-        
-        <!-- Warehouse & Distribution -->
-        <div class="row mb-5 align-items-center flex-row-reverse">
-            <div class="col-lg-6">
-                <img src="{% static 'images/warehouse-delivery.jpg' %}" alt="Warehouse Delivery" class="img-fluid rounded-3 shadow">
-            </div>
-            <div class="col-lg-6">
-                <h2 class="fw-bold mb-3">Warehouse & Distribution</h2>
-                <p class="lead text-muted">Last-mile solutions for warehouses and distribution centers</p>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>12ft to 26ft box trucks available</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Loading/unloading assistance</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Scheduled daily/weekly routes</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Bulk shipment handling</li>
-                </ul>
-                <p>Ideal for warehouses needing reliable distribution to retail locations, businesses, or direct to consumers. We handle merchandise, mid-bulky items, and palletized goods.</p>
-                <a href="#quote-form" class="btn btn-primary">Get Warehouse Quote</a>
-            </div>
-        </div>
-        
-        <!-- Furniture Delivery -->
-        <div class="row mb-5 align-items-center">
-            <div class="col-lg-6">
-                <img src="{% static 'images/furniture-delivery.jpg' %}" alt="Furniture Delivery" class="img-fluid rounded-3 shadow">
-            </div>
-            <div class="col-lg-6">
-                <h2 class="fw-bold mb-3">Furniture Delivery</h2>
-                <p class="lead text-muted">Specialized handling for furniture stores</p>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Two-person delivery teams</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Inside delivery and placement</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Assembly services available</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>White glove service option</li>
-                </ul>
-                <p>We understand that furniture requires extra care. Our teams are trained in proper handling techniques, and our trucks are equipped with furniture blankets and tie-downs to ensure safe transport.</p>
-                <a href="#quote-form" class="btn btn-primary">Get Furniture Quote</a>
-            </div>
-        </div>
-        
-        <!-- Pharmacy Delivery -->
-        <div class="row mb-5 align-items-center flex-row-reverse">
-            <div class="col-lg-6">
-                <img src="{% static 'images/pharmacy-delivery.jpg' %}" alt="Pharmacy Delivery" class="img-fluid rounded-3 shadow">
-            </div>
-            <div class="col-lg-6">
-                <h2 class="fw-bold mb-3">Pharmacy Delivery</h2>
-                <p class="lead text-muted">Secure, compliant delivery for pharmacies</p>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>HIPAA-compliant handling</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Temperature-controlled options</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Express and scheduled services</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Signature and ID verification</li>
-                </ul>
-                <p>We provide secure delivery services for pharmacies, ensuring medications reach patients safely and on time. Our drivers are background-checked and trained in privacy protocols.</p>
-                <a href="#quote-form" class="btn btn-primary">Get Pharmacy Quote</a>
-            </div>
-        </div>
-        
-        <!-- Office & Business -->
-        <div class="row mb-5 align-items-center">
-            <div class="col-lg-6">
-                <img src="{% static 'images/office-delivery2.jpg' %}" alt="Office Delivery" class="img-fluid rounded-3 shadow">
-            </div>
-            <div class="col-lg-6">
-                <h2 class="fw-bold mb-3">Office & Business Delivery</h2>
-                <p class="lead text-muted">Reliable courier services for everyday business needs</p>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Document and package delivery</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Office supply distribution</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Inter-office mail solutions</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Monthly billing options</li>
-                </ul>
-                <p>From legal documents to office supplies, we provide reliable courier services for businesses of all sizes. Set up regular scheduled pickups or request on-demand service as needed.</p>
-                <a href="#quote-form" class="btn btn-primary">Get Business Quote</a>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -126,18 +99,33 @@
                 <div class="card h-100 border-0 shadow-sm overflow-hidden">
                     <div class="ratio ratio-4x3 bg-white">
                         {% if vehicle.image %}
-                        <img src="{{ vehicle.image.url }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ vehicle.name }}" onerror="this.onerror=null;this.src='{% static 'images/sprinter-van.jpg' %}';">
+                            <img src="{{ vehicle.image.url }}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
                         {% else %}
                             {% if vehicle.vehicle_type == 'sprinter' %}
-                        <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" style="object-fit: cover;" alt="{{ vehicle.name }}" onerror="this.onerror=null;this.src='{% static 'images/right_vehicle.jpg' %}';">
+                        <picture>
+                            <source srcset="{% static 'images/sprinter-van.webp' %}" type="image/webp">
+                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        </picture>
                             {% elif vehicle.vehicle_type == 'brightdrop' %}
-                        <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100" style="object-fit: cover;" alt="{{ vehicle.name }}" onerror="this.onerror=null;this.src='{% static 'images/right_vehicle.jpg' %}';">
+                        <picture>
+                            <source srcset="{% static 'images/box-truck14ft.webp' %}" type="image/webp">
+                            <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        </picture>
                             {% elif vehicle.vehicle_type == 'light_box' %}
-                        <img src="{% static 'images/box-truck16ft.jpg' %}" class="w-100 h-100" style="object-fit: cover;" alt="{{ vehicle.name }}" onerror="this.onerror=null;this.src='{% static 'images/right_vehicle.jpg' %}';">
+                        <picture>
+                            <source srcset="{% static 'images/box-truck16ft.webp' %}" type="image/webp">
+                            <img src="{% static 'images/box-truck16ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        </picture>
                             {% elif vehicle.vehicle_type == 'medium_box' %}
-                        <img src="{% static 'images/box-truck26ft.jpg' %}" class="w-100 h-100" style="object-fit: cover;" alt="{{ vehicle.name }}" onerror="this.onerror=null;this.src='{% static 'images/right_vehicle.jpg' %}';">
+                        <picture>
+                            <source srcset="{% static 'images/box-truck26ft.webp' %}" type="image/webp">
+                            <img src="{% static 'images/box-truck26ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        </picture>
                             {% else %}
-                        <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" style="object-fit: cover;" alt="{{ vehicle.name }}" onerror="this.onerror=null;this.src='{% static 'images/right_vehicle.jpg' %}';">
+                        <picture>
+                            <source srcset="{% static 'images/sprinter-van.webp' %}" type="image/webp">
+                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        </picture>
                             {% endif %}
                         {% endif %}
                     </div>
@@ -145,7 +133,7 @@
                     <div class="card-body p-4">
                         <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
                             <h5 class="card-title mb-0">{{ vehicle.name }}</h5>
-                            <span class="badge text-bg-primary">{{ vehicle.get_vehicle_type_display }}</span>
+                            <span class="badge text-bg-primary">{{ vehicle.vehicle_type }}</span>
                         </div>
 
                         <div class="small text-muted mb-3">
@@ -168,10 +156,30 @@
                 </div>
             </div>
             {% empty %}
+
+                           <div class="col-12 col-sm-6 col-lg-3">
+    <div class="card h-100 border-0 shadow-sm overflow-hidden">
+        <div class="ratio ratio-4x3 bg-white">
+            <picture>
+                <source srcset="{% static 'images/Bright.webp' %}" type="image/webp">
+                <img src="{% static 'images/ev-delivery-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="EV Drop Delivery Van">
+            </picture>
+        </div>
+        <div class="card-body p-4">
+            <h5 class="card-title mb-2">EV Bright Drop Delivery Van</h5>
+            <p class="small text-muted mb-1"><strong>Payload Capacity:</strong> 3,500 lbs</p>
+            
+            <p class="small text-muted mb-0"><strong>Cargo Dimensions:</strong> 16ft L x 6ft W x 7ft H</p>
+        </div>
+    </div>
+</div>
             <div class="col-12 col-sm-6 col-lg-3">
                 <div class="card h-100 border-0 shadow-sm overflow-hidden">
                     <div class="ratio ratio-4x3 bg-white">
-                        <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" style="object-fit: cover;" alt="Sprinter High Roof Van" onerror="this.onerror=null;this.src='{% static 'images/right_vehicle.jpg' %}';">
+                        <picture>
+                            <source srcset="{% static 'images/sprinter-van.webp' %}" type="image/webp">
+                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="Sprinter High Roof Van">
+                        </picture>
                     </div>
                     <div class="card-body p-4">
                         <h5 class="card-title mb-2">Sprinter High Roof Van</h5>
@@ -183,7 +191,10 @@
             <div class="col-12 col-sm-6 col-lg-3">
                 <div class="card h-100 border-0 shadow-sm overflow-hidden">
                     <div class="ratio ratio-4x3 bg-white">
-                        <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100" style="object-fit: cover;" alt="Bright Drop 14ft" onerror="this.onerror=null;this.src='{% static 'images/right_vehicle.jpg' %}';">
+                        <picture>
+                            <source srcset="{% static 'images/box-truck14ft.webp' %}" type="image/webp">
+                            <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="Bright Drop 14ft">
+                        </picture>
                     </div>
                     <div class="card-body p-4">
                         <h5 class="card-title mb-2">Bright Drop</h5>
@@ -192,23 +203,13 @@
                     </div>
                 </div>
             </div>
+     
             <div class="col-12 col-sm-6 col-lg-3">
                 <div class="card h-100 border-0 shadow-sm overflow-hidden">
-                    <div class="ratio ratio-4x3 bg-white">
-                        <img src="{% static 'images/box-truck16ft.jpg' %}" class="w-100 h-100" style="object-fit: cover;" alt="Light Duty Box Truck 16ft" onerror="this.onerror=null;this.src='{% static 'images/right_vehicle.jpg' %}';">
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title mb-2">Light Duty Box Truck</h5>
-                        <p class="small text-muted mb-1"><strong>Capacity:</strong> 8,000 lbs</p>
-                        <p class="small text-muted mb-0"><strong>Dimensions:</strong> 16ft L x 8ft W x 8ft H</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-3">
-                <div class="card h-100 border-0 shadow-sm overflow-hidden">
-                    <div class="ratio ratio-4x3 bg-white">
-                        <img src="{% static 'images/box-truck26ft.jpg' %}" class="w-100 h-100" style="object-fit: cover;" alt="Medium Box Truck 26ft" onerror="this.onerror=null;this.src='{% static 'images/right_vehicle.jpg' %}';">
-                    </div>
+                    <picture>
+                        <source srcset="{% static 'images/box-truck26ft.webp' %}" type="image/webp">
+                        <img src="{% static 'images/box-truck26ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="Bright Drop 14ft">
+                    </picture>
                     <div class="card-body p-4">
                         <h5 class="card-title mb-2">Medium Box Truck</h5>
                         <p class="small text-muted mb-1"><strong>Capacity:</strong> 12,000 lbs</p>
@@ -226,7 +227,117 @@
     <div class="container text-center">
         <h2 class="display-5 fw-bold mb-4">Need a Custom Delivery Solution?</h2>
         <p class="lead mb-4">Tell us about your specific requirements and we'll create a tailored plan</p>
-        <a href="#quote-form" class="btn btn-light btn-lg">Get Custom Quote</a>
+        <a href="{% url 'services' %}#services-quote-form" class="btn btn-light btn-lg">Get Custom Quote</a>
+    </div>
+</section>
+
+<!-- Quote Form Section -->
+<section class="py-5" id="quote-form">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-5">
+                        <h3 class="text-center mb-4">Get Your Free Quote Today</h3>
+                        <p class="text-center text-muted mb-4">Tell us about your delivery needs and we'll get back to you within 1 hour</p>
+
+                        <form method="post" action="{% url 'services' %}" class="needs-validation" novalidate id="services-quote-form">
+                            {% csrf_token %}
+                            {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                <p class="mb-0">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="id_company_name" class="form-label">Company Name *</label>
+                                    <input type="text" name="company_name" id="id_company_name" class="form-control" placeholder="Your company name" required>
+                                    <div class="invalid-feedback">Please enter your company name.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_contact_name" class="form-label">Contact Name *</label>
+                                    <input type="text" name="contact_name" id="id_contact_name" class="form-control" placeholder="Your name" required>
+                                    <div class="invalid-feedback">Please enter your name.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_email" class="form-label">Email *</label>
+                                    <input type="email" name="email" id="id_email" class="form-control" placeholder="your.email@example.com" required>
+                                    <div class="invalid-feedback">Please enter a valid email.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_phone" class="form-label">Phone *</label>
+                                    <input type="text" name="phone" id="id_phone" class="form-control" placeholder="416-710-0361" required>
+                                    <div class="invalid-feedback">Please enter your phone number.</div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="id_business_type" class="form-label">Business Type *</label>
+                                    <select name="business_type" id="id_business_type" class="form-select" required>
+                                        <option value="">Select business type</option>
+                                        <option value="ecommerce">E-commerce Seller</option>
+                                        <option value="retail">Small Retailer</option>
+                                        <option value="pharmacy">Pharmacy</option>
+                                        <option value="warehouse">Warehouse</option>
+                                        <option value="furniture">Furniture Store</option>
+                                        <option value="office">Office / Service Provider</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select your business type.</div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="id_address" class="form-label">Business Address *</label>
+                                    <textarea name="address" id="id_address" class="form-control" rows="2" placeholder="Your business address" required></textarea>
+                                    <div class="invalid-feedback">Please enter your business address.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_service_area" class="form-label">Delivery Areas Needed *</label>
+                                    <input type="text" name="service_area" id="id_service_area" class="form-control" placeholder="e.g., Toronto, Mississauga, GTA" required>
+                                    <div class="invalid-feedback">Please enter the service areas you need.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_delivery_frequency" class="form-label">Delivery Frequency *</label>
+                                    <select name="delivery_frequency" id="id_delivery_frequency" class="form-select" required>
+                                        <option value="">Select delivery type</option>
+                                        <option value="on_demand">On Demand</option>
+                                        <option value="daily">Daily</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a delivery type.</div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="id_typical_items" class="form-label">Typical Items to Deliver</label>
+                                    <textarea name="typical_items" id="id_typical_items" class="form-control" rows="2" placeholder="e.g., clothing, electronics, furniture parts..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label for="id_notes" class="form-label">Additional Requirements</label>
+                                    <textarea name="notes" id="id_notes" class="form-control" rows="4" placeholder="Tell us more about your delivery needs..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    {{ form.captcha }}
+                                    {% if form.captcha.errors %}
+                                        <div class="alert alert-danger alert-sm" role="alert">
+                                            {{ form.captcha.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                        <i class="fas fa-paper-plane me-2"></i>Request Quote
+                                    </button>
+                                </div>
+                                <div class="col-12">
+                                    <p class="small text-muted text-center mb-0">
+                                        <i class="fas fa-lock me-1"></i>Your information is secure. We'll respond within 1 hour.
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}

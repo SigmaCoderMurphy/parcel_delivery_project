@@ -1,313 +1,730 @@
 {% extends 'dashboard/dashboard_base.html' %}
 {% load static %}
 
-{% block title %}Lead Details - {{ lead.company_name }} - GTA Parcel Delivery{% endblock %}
+{% block title %}Lead Details - {{ lead.company_name }} | Eastern Logistics{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Enhanced Professional Styling */
+    .lead-header {
+        background: linear-gradient(135deg, #1a1f2e 0%, #0f1119 100%);
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .lead-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 300px;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.1));
+        pointer-events: none;
+    }
+    
+    .lead-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .status-indicator {
+        font-size: 10px;
+    }
+    
+    .status-won { color: #10b981; }
+    .status-lost { color: #ef4444; }
+    .status-pending { color: #f59e0b; }
+    
+    .action-buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    
+    .action-btn {
+        padding: 10px 20px;
+        border-radius: 12px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    /* Enhanced Cards */
+    .info-card {
+        background: white;
+        border-radius: 20px;
+        padding: 24px;
+        height: 100%;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.05);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        border-color: rgba(37, 99, 235, 0.2);
+    }
+    
+    .card-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    
+    .card-icon i {
+        font-size: 24px;
+        color: white;
+    }
+    
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .info-row:last-child {
+        border-bottom: none;
+    }
+    
+    .info-label {
+        font-weight: 500;
+        color: #6b7280;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .info-value {
+        font-weight: 600;
+        color: #1f2937;
+        text-align: right;
+    }
+    
+    /* Timeline Enhancement */
+    .timeline-enhanced {
+        position: relative;
+        padding: 20px 0;
+    }
+    
+    .timeline-enhanced::before {
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(180deg, #2563eb, #10b981);
+    }
+    
+    .timeline-item-enhanced {
+        position: relative;
+        padding-left: 55px;
+        margin-bottom: 25px;
+    }
+    
+    .timeline-badge-enhanced {
+        position: absolute;
+        left: 0;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        z-index: 2;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .timeline-content-enhanced {
+        background: #f9fafb;
+        padding: 16px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    .timeline-content-enhanced:hover {
+        background: #f3f4f6;
+        transform: translateX(5px);
+    }
+    
+    /* Quote Cards */
+    .quote-card {
+        background: linear-gradient(135deg, #f9fafb, #ffffff);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+    }
+    
+    .quote-card:hover {
+        border-color: #2563eb;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1);
+    }
+    
+    .quote-amount {
+        font-size: 28px;
+        font-weight: 800;
+        color: #2563eb;
+    }
+    
+    /* Quick Stats */
+    .quick-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 30px;
+    }
+    
+    .stat-chip {
+        background: white;
+        padding: 16px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .stat-chip-icon {
+        width: 48px;
+        height: 48px;
+        background: #eff6ff;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2563eb;
+        font-size: 24px;
+    }
+    
+    .stat-chip-info h4 {
+        font-size: 24px;
+        font-weight: 800;
+        margin: 0;
+        color: #1f2937;
+    }
+    
+    .stat-chip-info p {
+        margin: 0;
+        font-size: 12px;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Modal Enhancements */
+    .modal-content-custom {
+        border-radius: 20px;
+        border: none;
+        overflow: hidden;
+    }
+    
+    .modal-header-custom {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        color: white;
+        padding: 20px 24px;
+        border: none;
+    }
+    
+    /* Fleet Badge */
+    .fleet-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #fef3c7;
+        color: #d97706;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .lead-header {
+            padding: 20px;
+        }
+        
+        .action-buttons {
+            margin-top: 20px;
+        }
+        
+        .quick-stats {
+            grid-template-columns: 1fr;
+        }
+        
+        .info-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        
+        .info-value {
+            text-align: left;
+        }
+    }
+    
+    /* Animations */
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-slide-in {
+        animation: slideIn 0.5s ease forwards;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <!-- Header with Actions -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <a href="{% url 'leads_list' %}" class="btn btn-outline-secondary me-2">
-                <i class="fas fa-arrow-left"></i> Back to Leads
-            </a>
-            <h2 class="d-inline-block fw-bold ms-2">{{ lead.company_name }}</h2>
-            <span class="badge bg-{{ lead.get_status_color }} ms-2 fs-6">{{ lead.get_status_display }}</span>
-        </div>
-        <div class="btn-group">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateStatusModal">
-                <i class="fas fa-edit me-1"></i>Update Status
-            </button>
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addFollowupModal">
-                <i class="fas fa-clock me-1"></i>Schedule Follow-up
-            </button>
-            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addCommunicationModal">
-                <i class="fas fa-phone me-1"></i>Log Communication
-            </button>
-            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#createQuoteModal">
-                <i class="fas fa-file-invoice me-1"></i>Create Quote
-            </button>
-        </div>
-    </div>
-
-    <!-- Lead Information Cards -->
-    <div class="row">
-        <!-- Contact Information -->
-        <div class="col-md-4 mb-4">
-            <div class="dashboard-card h-100">
-                <h5 class="card-title mb-3">
-                    <i class="fas fa-user-circle text-primary me-2"></i>Contact Information
-                </h5>
-                <table class="table table-sm">
-                    <tr>
-                        <th class="text-muted">Contact Name:</th>
-                        <td>{{ lead.contact_name }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Email:</th>
-                        <td><a href="mailto:{{ lead.email }}">{{ lead.email }}</a></td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Phone:</th>
-                        <td>
-                            <a href="tel:{{ lead.phone }}">{{ lead.phone }}</a>
-                            {% if lead.alternative_phone %}
-                            <br><small class="text-muted">Alt: {{ lead.alternative_phone }}</small>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Website:</th>
-                        <td>
-                            {% if lead.website %}
-                            <a href="{{ lead.website }}" target="_blank">{{ lead.website|truncatechars:30 }}</a>
-                            {% else %}
-                            <span class="text-muted">Not provided</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <!-- Business Information -->
-        <div class="col-md-4 mb-4">
-            <div class="dashboard-card h-100">
-                <h5 class="card-title mb-3">
-                    <i class="fas fa-building text-primary me-2"></i>Business Details
-                </h5>
-                <table class="table table-sm">
-                    <tr>
-                        <th class="text-muted">Business Type:</th>
-                        <td>{{ lead.get_business_type_display }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Address:</th>
-                        <td>{{ lead.address|linebreaks }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Service Area:</th>
-                        <td>{{ lead.service_area }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Delivery Frequency:</th>
-                        <td>{{ lead.delivery_frequency|default:"Not specified" }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <!-- Lead Information -->
-        <div class="col-md-4 mb-4">
-            <div class="dashboard-card h-100">
-                <h5 class="card-title mb-3">
-                    <i class="fas fa-tag text-primary me-2"></i>Lead Details
-                </h5>
-                <table class="table table-sm">
-                    <tr>
-                        <th class="text-muted">Source:</th>
-                        <td><span class="badge bg-info">{{ lead.get_source_display }}</span></td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Assigned To:</th>
-                        <td>{{ lead.assigned_to|default:"Unassigned" }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Created:</th>
-                        <td>{{ lead.created_at|date:"M d, Y H:i" }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Last Contact:</th>
-                        <td>
-                            {% if lead.last_contacted %}
-                            {{ lead.last_contacted|date:"M d, Y" }}
-                            {% else %}
-                            <span class="text-warning">Not contacted yet</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delivery Requirements -->
-    {% if lead.typical_items or lead.monthly_volume %}
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="dashboard-card">
-                <h5 class="card-title mb-3">
-                    <i class="fas fa-truck text-primary me-2"></i>Delivery Requirements
-                </h5>
-                <div class="row">
-                    <div class="col-md-6">
-                        <strong>Typical Items:</strong>
-                        <p>{{ lead.typical_items|default:"Not specified"|linebreaks }}</p>
+<div class="container-fluid px-4 animate-slide-in">
+    
+    <!-- Enhanced Header Section -->
+    <div class="lead-header">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center gap-3 mb-3 flex-wrap">
+                    <div class="lead-status">
+                        <i class="fas fa-circle status-indicator {% if lead.status == 'won' %}status-won{% elif lead.status == 'lost' %}status-lost{% else %}status-pending{% endif %}"></i>
+                        <span>{{ lead.get_status_display }}</span>
                     </div>
-                    <div class="col-md-6">
-                        <strong>Monthly Volume:</strong>
-                        <p>{{ lead.monthly_volume|default:"Not specified" }} deliveries</p>
+                    {% if lead.delivery_frequency %}
+                    <div class="fleet-badge">
+                        <i class="fas fa-calendar-week"></i>
+                        {{ lead.delivery_frequency|title }} Delivery
                     </div>
+                    {% endif %}
+                </div>
+                <h1 class="display-5 fw-bold mb-2">{{ lead.company_name }}</h1>
+                <p class="mb-0 opacity-75">
+                    <i class="fas fa-map-marker-alt me-2"></i>{{ lead.service_area }}
+                </p>
+            </div>
+            <div class="col-lg-4 mt-3 mt-lg-0">
+                <div class="action-buttons justify-content-lg-end">
+                    <button class="action-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateStatusModal">
+                        <i class="fas fa-edit"></i> Update Status
+                    </button>
+                    <a href="{% url 'create_quote' lead.id %}" class="action-btn btn btn-warning">
+                        <i class="fas fa-file-invoice-dollar"></i> Create Quote
+                    </a>
+                    {% if lead.status == 'won' and not lead.google_review_requested %}
+                    <a href="{% url 'request_google_review' lead.id %}" class="action-btn btn btn-success" onclick="return confirm('Send automated Google Review request to {{ lead.email }}?')">
+                        <i class="fab fa-google"></i> Request Review
+                    </a>
+                    {% elif lead.google_review_requested %}
+                    <button class="action-btn btn btn-outline-success" disabled>
+                        <i class="fab fa-google"></i> Review Requested
+                    </button>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
-    {% endif %}
-
-    <!-- Notes -->
-    {% if lead.notes or lead.internal_notes %}
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <div class="dashboard-card">
-                <h5 class="card-title mb-3">
-                    <i class="fas fa-sticky-note text-primary me-2"></i>Notes
-                </h5>
-                <p>{{ lead.notes|default:"No notes"|linebreaks }}</p>
+    
+    <!-- Quick Stats Section -->
+    <div class="quick-stats">
+        <div class="stat-chip">
+            <div class="stat-chip-icon">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="stat-chip-info">
+                <h4>{{ lead.created_at|date:"M d, Y" }}</h4>
+                <p>Lead Created</p>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="dashboard-card">
-                <h5 class="card-title mb-3">
-                    <i class="fas fa-lock text-primary me-2"></i>Internal Notes
-                </h5>
-                <p>{{ lead.internal_notes|default:"No internal notes"|linebreaks }}</p>
+        <div class="stat-chip">
+            <div class="stat-chip-icon">
+                <i class="fas fa-phone-alt"></i>
+            </div>
+            <div class="stat-chip-info">
+                <h4>{{ communications|length }}</h4>
+                <p>Communications</p>
+            </div>
+        </div>
+        <div class="stat-chip">
+            <div class="stat-chip-icon">
+                <i class="fas fa-file-invoice"></i>
+            </div>
+            <div class="stat-chip-info">
+                <h4>{{ quotes|length }}</h4>
+                <p>Quotes</p>
+            </div>
+        </div>
+        <div class="stat-chip">
+            <div class="stat-chip-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-chip-info">
+                <h4>{{ followups|length }}</h4>
+                <p>Follow-ups</p>
             </div>
         </div>
     </div>
+    
+    <!-- Main Content Grid -->
+    <div class="row g-4">
+        <!-- Contact Information Card -->
+        <div class="col-md-6 col-xl-4">
+            <div class="info-card">
+                <div class="card-icon">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h5 class="fw-bold mb-4">Contact Information</h5>
+                
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-user me-2"></i>Contact Name</span>
+                    <span class="info-value">{{ lead.contact_name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-envelope me-2"></i>Email</span>
+                    <span class="info-value">
+                        <a href="mailto:{{ lead.email }}" class="text-decoration-none">{{ lead.email }}</a>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-phone me-2"></i>Phone</span>
+                    <span class="info-value">
+                        <a href="tel:{{ lead.phone }}" class="text-decoration-none fw-bold">{{ lead.phone }}</a>
+                        {% if lead.alternative_phone %}
+                        <br><small class="text-muted">Alt: {{ lead.alternative_phone }}</small>
+                        {% endif %}
+                    </span>
+                </div>
+                {% if lead.website %}
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-globe me-2"></i>Website</span>
+                    <span class="info-value">
+                        <a href="{{ lead.website }}" target="_blank" class="text-decoration-none">{{ lead.website|truncatechars:25 }}</a>
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Business Information Card -->
+        <div class="col-md-6 col-xl-4">
+            <div class="info-card">
+                <div class="card-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h5 class="fw-bold mb-4">Business Details</h5>
+                
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-tag me-2"></i>Business Type</span>
+                    <span class="info-value">
+                        <span class="badge bg-info bg-opacity-10 text-info">
+                            {{ lead.get_business_type_display }}
+                        </span>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-map-pin me-2"></i>Service Area</span>
+                    <span class="info-value">{{ lead.service_area }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-truck me-2"></i>Delivery Frequency</span>
+                    <span class="info-value">{{ lead.delivery_frequency|default:"Not specified"|title }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-address-card me-2"></i>Address</span>
+                    <span class="info-value">{{ lead.address|linebreaksbr|truncatechars:60 }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lead Tracking Card -->
+        <div class="col-md-6 col-xl-4">
+            <div class="info-card">
+                <div class="card-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h5 class="fw-bold mb-4">Lead Tracking</h5>
+                
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-chart-simple me-2"></i>Lead Source</span>
+                    <span class="info-value">
+                        <span class="badge bg-secondary">{{ lead.get_source_display }}</span>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-user-check me-2"></i>Assigned To</span>
+                    <span class="info-value">{{ lead.assigned_to|default:"Unassigned" }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-calendar-plus me-2"></i>Created</span>
+                    <span class="info-value">{{ lead.created_at|date:"M d, Y H:i" }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-clock me-2"></i>Last Contact</span>
+                    <span class="info-value">
+                        {% if lead.last_contacted %}
+                        {{ lead.last_contacted|date:"M d, Y" }}
+                        {% else %}
+                        <span class="text-warning">Not contacted yet</span>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delivery Requirements Section -->
+    {% if lead.typical_items or lead.monthly_volume %}
+    <div class="info-card mt-4">
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <div class="card-icon" style="width: 50px; height: 50px;">
+                <i class="fas fa-boxes"></i>
+            </div>
+            <h5 class="fw-bold mb-0">Delivery Requirements</h5>
+        </div>
+        <div class="row g-4">
+            {% if lead.typical_items %}
+            <div class="col-md-6">
+                <div class="p-3 bg-light rounded-3">
+                    <small class="text-muted text-uppercase d-block mb-2">Typical Items</small>
+                    <p class="mb-0 fw-medium">{{ lead.typical_items|linebreaksbr }}</p>
+                </div>
+            </div>
+            {% endif %}
+            {% if lead.monthly_volume %}
+            <div class="col-md-6">
+                <div class="p-3 bg-light rounded-3">
+                    <small class="text-muted text-uppercase d-block mb-2">Monthly Volume</small>
+                    <p class="mb-0 fw-medium">{{ lead.monthly_volume }} deliveries/month</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
     {% endif %}
-
-    <!-- Timeline -->
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <div class="dashboard-card">
-                <h5 class="card-title mb-3">
-                    <i class="fas fa-history text-primary me-2"></i>Communication History
-                </h5>
-                <div class="timeline">
+    
+    <!-- Notes Section -->
+    {% if lead.notes or lead.internal_notes %}
+    <div class="row mt-4 g-4">
+        {% if lead.notes %}
+        <div class="col-md-6">
+            <div class="info-card">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <i class="fas fa-sticky-note text-primary fs-4"></i>
+                    <h5 class="fw-bold mb-0">Notes</h5>
+                </div>
+                <p class="text-muted">{{ lead.notes|linebreaksbr }}</p>
+            </div>
+        </div>
+        {% endif %}
+        {% if lead.internal_notes %}
+        <div class="col-md-6">
+            <div class="info-card">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <i class="fas fa-lock text-primary fs-4"></i>
+                    <h5 class="fw-bold mb-0">Internal Notes</h5>
+                </div>
+                <p class="text-muted">{{ lead.internal_notes|linebreaksbr }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    <!-- Communication & Follow-ups Timeline -->
+    <div class="row mt-4 g-4">
+        <div class="col-lg-6">
+            <div class="info-card">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fas fa-history text-primary fs-4"></i>
+                        <h5 class="fw-bold mb-0">Communication History</h5>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addCommunicationModal">
+                        <i class="fas fa-plus me-1"></i>Log Communication
+                    </button>
+                </div>
+                <div class="timeline-enhanced">
                     {% for comm in communications %}
-                    <div class="timeline-item">
-                        <div class="timeline-badge bg-{% if comm.direction == 'out' %}primary{% else %}info{% endif %}">
+                    <div class="timeline-item-enhanced">
+                        <div class="timeline-badge-enhanced bg-{% if comm.direction == 'out' %}primary{% else %}info{% endif %}">
                             <i class="fas fa-{% if comm.communication_type == 'call' %}phone{% elif comm.communication_type == 'email' %}envelope{% elif comm.communication_type == 'whatsapp' %}comment{% else %}exchange-alt{% endif %}"></i>
                         </div>
-                        <div class="timeline-content">
-                            <h6>{{ comm.subject }}</h6>
-                            <p>{{ comm.content|truncatechars:100 }}</p>
-                            <small class="text-muted">
-                                {{ comm.created_at|date:"M d, Y H:i" }} by {{ comm.staff_member }}
-                                <span class="badge bg-{% if comm.direction == 'out' %}primary{% else %}info{% endif %} ms-2">
+                        <div class="timeline-content-enhanced">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="fw-bold mb-0">{{ comm.subject }}</h6>
+                                <small class="text-muted">{{ comm.created_at|date:"M d, Y H:i" }}</small>
+                            </div>
+                            <p class="small text-muted mb-2">{{ comm.content|truncatechars:120 }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-user me-1"></i>{{ comm.staff_member }}
+                                </small>
+                                <span class="badge bg-{% if comm.direction == 'out' %}primary{% else %}info{% endif %} bg-opacity-10 text-{% if comm.direction == 'out' %}primary{% else %}info{% endif %}">
                                     {{ comm.get_direction_display }}
                                 </span>
-                            </small>
+                            </div>
                         </div>
                     </div>
                     {% empty %}
-                    <p class="text-muted text-center">No communication history</p>
+                    <div class="text-center py-5">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <p class="text-muted mb-0">No communication history yet</p>
+                        <small class="text-muted">Click "Log Communication" to add the first interaction</small>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
-
-        <div class="col-md-6 mb-4">
-            <div class="dashboard-card">
-                <h5 class="card-title mb-3">
-                    <i class="fas fa-calendar-check text-primary me-2"></i>Scheduled Follow-ups
-                </h5>
-                <div class="timeline">
+        
+        <div class="col-lg-6">
+            <div class="info-card">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fas fa-calendar-check text-primary fs-4"></i>
+                        <h5 class="fw-bold mb-0">Scheduled Follow-ups</h5>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addFollowupModal">
+                        <i class="fas fa-plus me-1"></i>Schedule Follow-up
+                    </button>
+                </div>
+                <div class="timeline-enhanced">
                     {% for followup in followups %}
-                    <div class="timeline-item">
-                        <div class="timeline-badge {% if followup.is_completed %}bg-success{% else %}bg-warning{% endif %}">
+                    <div class="timeline-item-enhanced">
+                        <div class="timeline-badge-enhanced {% if followup.is_completed %}bg-success{% else %}bg-warning{% endif %}">
                             <i class="fas fa-{% if followup.is_completed %}check{% else %}clock{% endif %}"></i>
                         </div>
-                        <div class="timeline-content">
-                            <h6>{{ followup.get_followup_type_display }}</h6>
-                            <p>{{ followup.notes|truncatechars:100 }}</p>
-                            <small class="text-muted">
-                                Scheduled: {{ followup.scheduled_date|date:"M d, Y H:i" }}
-                                {% if followup.is_completed %}
-                                <span class="badge bg-success ms-2">Completed</span>
-                                {% else %}
-                                <button class="btn btn-sm btn-success ms-2" onclick="completeFollowup({{ followup.id }})" type="button">
-                                    Mark Complete
+                        <div class="timeline-content-enhanced">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="fw-bold mb-0">{{ followup.get_followup_type_display }}</h6>
+                                <small class="text-muted">{{ followup.scheduled_date|date:"M d, Y H:i" }}</small>
+                            </div>
+                            <p class="small text-muted mb-2">{{ followup.notes|truncatechars:100 }}</p>
+                            <div class="d-flex justify-content-end">
+                                {% if not followup.is_completed %}
+                                <button class="btn btn-sm btn-success complete-followup-btn" data-followup-id="{{ followup.id }}">
+                                    <i class="fas fa-check me-1"></i>Mark Complete
                                 </button>
+                                {% else %}
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check-circle me-1"></i>Completed {{ followup.completed_date|date:"M d, Y" }}
+                                </span>
                                 {% endif %}
-                            </small>
+                            </div>
                         </div>
                     </div>
                     {% empty %}
-                    <p class="text-muted text-center">No follow-ups scheduled</p>
+                    <div class="text-center py-5">
+                        <i class="fas fa-calendar-week fa-3x text-muted mb-3"></i>
+                        <p class="text-muted mb-0">No follow-ups scheduled</p>
+                        <small class="text-muted">Click "Schedule Follow-up" to add a reminder</small>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Quotes -->
+    
+    <!-- Quotes Section -->
     {% if quotes %}
-    <div class="row">
-        <div class="col-12 mb-4">
-            <div class="dashboard-card">
-                <h5 class="card-title mb-3">
-                    <i class="fas fa-file-invoice-dollar text-primary me-2"></i>Quotes
-                </h5>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Quote #</th>
-                                <th>Amount</th>
-                                <th>Valid Until</th>
-                                <th>Status</th>
-                                <th>Created</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for quote in quotes %}
-                            <tr>
-                                <td>{{ quote.quote_number }}</td>
-                                <td>${{ quote.amount|floatformat:2 }}</td>
-                                <td>{{ quote.valid_until|date:"M d, Y" }}</td>
-                                <td>
-                                    <span class="badge bg-{% if quote.status == 'accepted' %}success{% elif quote.status == 'rejected' %}danger{% elif quote.status == 'sent' %}info{% else %}warning{% endif %}">
-                                        {{ quote.get_status_display }}
-                                    </span>
-                                </td>
-                                <td>{{ quote.created_at|date:"M d, Y" }}</td>
-                                <td>
-                                    {% if quote.pdf_file %}
-                                    <a href="{{ quote.pdf_file.url }}" class="btn btn-sm btn-primary" target="_blank">
-                                        <i class="fas fa-download"></i>
-                                    </a>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+    <div class="info-card mt-4">
+        <div class="d-flex align-items-center gap-2 mb-4">
+            <i class="fas fa-file-invoice-dollar text-primary fs-4"></i>
+            <h5 class="fw-bold mb-0">Quotes</h5>
+        </div>
+        <div class="row g-3">
+            {% for quote in quotes %}
+            <div class="col-md-6 col-xl-4">
+                <div class="quote-card">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <span class="badge bg-{% if quote.status == 'accepted' %}success{% elif quote.status == 'rejected' %}danger{% elif quote.status == 'sent' %}info{% else %}warning{% endif %} mb-2">
+                                {{ quote.get_status_display }}
+                            </span>
+                            <h6 class="mb-0">{{ quote.quote_number }}</h6>
+                        </div>
+                        <div class="quote-amount">${{ quote.amount|floatformat:0 }}</div>
+                    </div>
+                    <div class="small text-muted mb-3">
+                        <i class="fas fa-calendar-alt me-1"></i>Valid until: {{ quote.valid_until|date:"M d, Y" }}
+                    </div>
+                    <div class="d-flex gap-2">
+                        {% if quote.pdf_file %}
+                        <a href="{{ quote.pdf_file.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                            <i class="fas fa-download me-1"></i>PDF
+                        </a>
+                        {% endif %}
+                        {% if quote.status == 'sent' %}
+                        <button class="btn btn-sm btn-outline-success accept-quote-btn" data-quote-id="{{ quote.id }}">
+                            <i class="fas fa-check me-1"></i>Accept
+                        </button>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
     {% endif %}
+    
+    <!-- Back to Leads Button -->
+    <div class="mt-4 text-center">
+        <a href="{% url 'leads_list' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to All Leads
+        </a>
+    </div>
 </div>
 
 <!-- Update Status Modal -->
 <div class="modal fade" id="updateStatusModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-custom">
+            <div class="modal-header modal-header-custom">
                 <h5 class="modal-title">Update Lead Status</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form action="{% url 'update_lead_status' lead.id %}" method="post">
                 {% csrf_token %}
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Current Status: <span class="badge bg-{{ lead.get_status_color }}">{{ lead.get_status_display }}</span></label>
+                <div class="modal-body p-4">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Current Status</label>
+                        <div>
+                            <span class="badge bg-{{ lead.get_status_color }} fs-6">{{ lead.get_status_display }}</span>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">New Status</label>
-                        <select name="status" class="form-select">
+                        <label class="form-label fw-bold">New Status</label>
+                        <select name="status" class="form-select form-select-lg">
                             {% for key, value in lead.LEAD_STATUS %}
                             <option value="{{ key }}" {% if lead.status == key %}selected{% endif %}>{{ value }}</option>
                             {% endfor %}
@@ -315,7 +732,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">Update Status</button>
                 </div>
             </form>
@@ -325,20 +742,20 @@
 
 <!-- Add Follow-up Modal -->
 <div class="modal fade" id="addFollowupModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-custom">
+            <div class="modal-header modal-header-custom">
                 <h5 class="modal-title">Schedule Follow-up</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form method="post">
                 {% csrf_token %}
                 <input type="hidden" name="add_followup" value="1">
-                <div class="modal-body">
+                <div class="modal-body p-4">
                     {{ followup_form.as_p }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">Schedule</button>
                 </div>
             </form>
@@ -348,20 +765,20 @@
 
 <!-- Add Communication Modal -->
 <div class="modal fade" id="addCommunicationModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-custom">
+            <div class="modal-header modal-header-custom">
                 <h5 class="modal-title">Log Communication</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form method="post">
                 {% csrf_token %}
                 <input type="hidden" name="add_communication" value="1">
-                <div class="modal-body">
+                <div class="modal-body p-4">
                     {{ communication_form.as_p }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save Communication</button>
                 </div>
             </form>
@@ -369,31 +786,82 @@
     </div>
 </div>
 
-<style>
-.timeline {
-    position: relative;
-    padding: 20px 0;
-}
-.timeline-item {
-    position: relative;
-    padding-left: 60px;
-    margin-bottom: 30px;
-}
-.timeline-badge {
-    position: absolute;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-}
-.timeline-content {
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
-}
-</style>
 {% endblock %}
+
+{% block extra_js %}
+<script>
+function acceptQuote(quoteId) {
+    if (confirm('Are you sure you want to accept this quote? This will mark the lead as WON.')) {
+        showLoading();
+        fetch(`/dashboard/quotes/${quoteId}/accept/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            hideLoading();
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error accepting quote');
+            }
+        })
+        .catch(error => {
+            hideLoading();
+            alert('Error accepting quote');
+        });
+    }
+}
+
+function completeFollowup(followupId) {
+    if (confirm('Are you sure you want to mark this follow-up as completed?')) {
+        showLoading();
+        fetch(`/dashboard/followups/${followupId}/complete/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            hideLoading();
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error completing follow-up');
+            }
+        })
+        .catch(error => {
+            hideLoading();
+            alert('Error completing follow-up');
+        });
+    }
+}
+
+// Event listeners for buttons with data attributes
+document.addEventListener('DOMContentLoaded', function() {
+    // Complete followup buttons
+    document.querySelectorAll('.complete-followup-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const followupId = this.getAttribute('data-followup-id');
+            completeFollowup(followupId);
+        });
+    });
+
+    // Accept quote buttons
+    document.querySelectorAll('.accept-quote-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const quoteId = this.getAttribute('data-quote-id');
+            acceptQuote(quoteId);
+        });
+    });
+});
+</script>
+{% endblock %}
+
+
+

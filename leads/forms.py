@@ -1,14 +1,64 @@
 from django import forms
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Checkbox
 from .models import Lead, FollowUp, CommunicationLog, Quote
 
 class LeadForm(forms.ModelForm):
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+    
     class Meta:
         model = Lead
-        fields = '__all__'
+        fields = ['company_name', 'contact_name', 'email', 'phone', 'business_type', 'address', 'service_area', 'delivery_frequency', 'typical_items', 'notes']
         widgets = {
-            'notes': forms.Textarea(attrs={'rows': 3}),
-            'internal_notes': forms.Textarea(attrs={'rows': 3}),
-            'address': forms.Textarea(attrs={'rows': 2}),
+            'company_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Your company name',
+                'required': 'required'
+            }),
+            'contact_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Your name',
+                'required': 'required'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'your.email@example.com',
+                'required': 'required'
+            }),
+            'phone': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '416-710-0361',
+                'required': 'required'
+            }),
+            'business_type': forms.Select(attrs={
+                'class': 'form-select',
+                'required': 'required'
+            }),
+            'address': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 2,
+                'placeholder': 'Your business address',
+                'required': 'required'
+            }),
+            'service_area': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'e.g., Toronto, Mississauga, GTA',
+                'required': 'required'
+            }),
+            'delivery_frequency': forms.Select(attrs={
+                'class': 'form-select',
+                'id': 'delivery_frequency'
+            }),
+            'typical_items': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 2,
+                'placeholder': 'e.g., clothing, electronics, furniture parts...'
+            }),
+            'notes': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Tell us more about your delivery needs...'
+            }),
         }
 
 class FollowUpForm(forms.ModelForm):

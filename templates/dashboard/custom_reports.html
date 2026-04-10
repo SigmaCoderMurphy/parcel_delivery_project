@@ -1,0 +1,247 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Custom Reports - Eastern Logistics{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="fw-bold mb-1">Custom Reports</h2>
+                    <p class="text-muted mb-0">Generate customized Excel reports with advanced filtering</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Configuration -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cogs me-2"></i>Report Configuration
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="reportForm" method="GET" action="{% url 'export_leads_excel' %}">
+                        <div class="row g-3">
+                            <!-- Report Type -->
+                            <div class="col-md-6">
+                                <label for="report_type" class="form-label">Report Type</label>
+                                <select class="form-select" id="report_type" name="report_type">
+                                    <option value="standard">Standard Report</option>
+                                    <option value="detailed">Detailed Report</option>
+                                    <option value="analytics">Analytics Report</option>
+                                </select>
+                                <div class="form-text">
+                                    <small class="text-muted">
+                                        <strong>Standard:</strong> Basic lead information<br>
+                                        <strong>Detailed:</strong> All fields including notes and follow-ups<br>
+                                        <strong>Analytics:</strong> Conversion metrics and summary sheet
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Date Range -->
+                            <div class="col-md-6">
+                                <label class="form-label">Date Range</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <input type="date" class="form-control" id="start_date" name="start_date"
+                                               placeholder="Start Date">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="date" class="form-control" id="end_date" name="end_date"
+                                               placeholder="End Date">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Status Filter -->
+                            <div class="col-md-4">
+                                <label for="status" class="form-label">Lead Status</label>
+                                <select class="form-select" id="status" name="status">
+                                    <option value="all">All Statuses</option>
+                                    {% for status in statuses %}
+                                    <option value="{{ status }}">{{ status|title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Business Type Filter -->
+                            <div class="col-md-4">
+                                <label for="business_type" class="form-label">Business Type</label>
+                                <select class="form-select" id="business_type" name="business_type">
+                                    <option value="all">All Types</option>
+                                    {% for type in business_types %}
+                                    <option value="{{ type }}">{{ type|title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Source Filter -->
+                            <div class="col-md-4">
+                                <label for="source" class="form-label">Lead Source</label>
+                                <select class="form-select" id="source" name="source">
+                                    <option value="all">All Sources</option>
+                                    {% for source in sources %}
+                                    <option value="{{ source }}">{{ source|title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-file-excel me-2"></i>Generate Excel Report
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="resetFilters()">
+                                        <i class="fas fa-undo me-2"></i>Reset Filters
+                                    </button>
+                                    <a href="{% url 'reports' %}" class="btn btn-outline-info">
+                                        <i class="fas fa-chart-bar me-2"></i>View Dashboard Reports
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Export Options -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bolt me-2"></i>Quick Export Options
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-file-excel fa-3x text-primary mb-3"></i>
+                                    <h6>All Leads</h6>
+                                    <p class="text-muted small">Complete export of all leads</p>
+                                    <a href="{% url 'export_leads_excel' %}" class="btn btn-primary btn-sm">
+                                        Export All
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card h-100 border-success">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-trophy fa-3x text-success mb-3"></i>
+                                    <h6>Won Leads</h6>
+                                    <p class="text-muted small">Only converted leads</p>
+                                    <a href="{% url 'export_leads_excel' %}?status=won" class="btn btn-success btn-sm">
+                                        Export Won
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card h-100 border-warning">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-clock fa-3x text-warning mb-3"></i>
+                                    <h6>Recent Leads</h6>
+                                    <p class="text-muted small">Leads from last 30 days</p>
+                                    <a href="{% url 'export_leads_excel' %}?start_date={{ start_date|date:'Y-m-d' }}" class="btn btn-warning btn-sm">
+                                        Export Recent
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Types Explanation -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Report Types Explained
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6 class="text-primary">Standard Report</h6>
+                            <ul class="small">
+                                <li>Basic lead information</li>
+                                <li>Contact details</li>
+                                <li>Status and source</li>
+                                <li>Creation date</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-success">Detailed Report</h6>
+                            <ul class="small">
+                                <li>All standard fields</li>
+                                <li>Notes and comments</li>
+                                <li>Follow-up counts</li>
+                                <li>Quote amounts</li>
+                                <li>Last updated dates</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-info">Analytics Report</h6>
+                            <ul class="small">
+                                <li>Conversion metrics</li>
+                                <li>Days since creation</li>
+                                <li>Conversion status</li>
+                                <li>Summary sheet with statistics</li>
+                                <li>Performance analytics</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Set default date range to last 30 days
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
+
+    startDateInput.value = thirtyDaysAgo.toISOString().split('T')[0];
+    endDateInput.value = today.toISOString().split('T')[0];
+});
+
+function resetFilters() {
+    document.getElementById('reportForm').reset();
+    // Reset date range to last 30 days
+    const today = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+
+    document.getElementById('start_date').value = thirtyDaysAgo.toISOString().split('T')[0];
+    document.getElementById('end_date').value = today.toISOString().split('T')[0];
+}
+</script>
+{% endblock %}

@@ -21,7 +21,8 @@ def generate_and_save_quote_pdf(lead, quote):
     """
     try:
         generator = QuoteGenerator(lead, quote)
-        pdf_filename = generator.generate_pdf_reportlab()
+        # Prefer the HTML template PDF so business-specific quote layout is used.
+        pdf_filename = generator.generate_pdf_html() or generator.generate_pdf_reportlab()
         
         if pdf_filename:
             quote.pdf_file = pdf_filename

@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}About Us - GTA Parcel Delivery{% endblock %}
+{% block title %}About Us - Eastern Logistics{% endblock %}
 
 {% block content %}
 <!-- Page Header -->
 <section class="page-header bg-primary text-white py-5">
     <div class="container">
-        <h1 class="display-4 fw-bold">About GTA Parcel Delivery</h1>
+        <h1 class="display-4 fw-bold">About Eastern Logistics</h1>
         <p class="lead">Your trusted partner for local delivery services</p>
     </div>
 </section>
@@ -18,9 +18,11 @@
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <h2 class="fw-bold mb-4">Our Story</h2>
-                <p class="lead">Founded in 2024, GTA Parcel Delivery was created to fill a gap in the local delivery market.</p>
+                <p class="lead">Eastern Logistics is a professional courier and transportation company serving Toronto, the GTA, and surrounding areas.</p>
                 <p>We noticed that businesses in the Greater Toronto Area needed a reliable, flexible delivery partner that could handle everything from small parcels to furniture, without the complexity and high minimums of national carriers.</p>
                 <p>Starting with just two sprinter vans, we've grown to a diverse fleet of vehicles serving hundreds of businesses across the GTA. Our focus remains the same: provide exceptional service, reliable delivery, and personalized attention to every client.</p>
+            
+                
                 <div class="row mt-4">
                     <div class="col-6">
                         <div class="stat-box text-center p-3 bg-light rounded">
@@ -33,11 +35,28 @@
                             <h3 class="fw-bold text-primary">20+</h3>
                             <p class="mb-0">Fleet Vehicles</p>
                         </div>
+
                     </div>
+                    <div class="col-6">
+                        <div class="stat-box text-center p-3 bg-light rounded">
+                            <h3 class="fw-bold text-primary">10+</h3>
+                            <p class="mb-0">Cities Covered in GTA</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-box text-center p-3 bg-light rounded">
+                            <h3 class="fw-bold text-primary">200+</h3>
+                            <p class="mb-0">Businesses Served</p>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
             <div class="col-lg-6">
-                <img src="{% static 'images/about-us.jpeg' %}" alt="About Us" class="img-fluid rounded-3 shadow">
+                <picture>
+                    <source srcset="{% static 'images/office-delivery.webp' %}" type="image/webp">
+                    <img src="{% static 'images/about-us.jpeg' %}" alt="About Us - Eastern Logistics team and delivery operations" class="img-fluid rounded-3 shadow" loading="lazy" decoding="async">
+                </picture>
             </div>
         </div>
     </div>
@@ -47,7 +66,7 @@
 <section class="py-5 bg-light">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold">Why Choose GTA Parcel Delivery?</h2>
+            <h2 class="display-5 fw-bold">Why Choose Eastern Logistics?</h2>
             <p class="lead text-muted">The advantages of partnering with us</p>
         </div>
         
@@ -111,59 +130,7 @@
 </section>
 
 <!-- Team Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold">Our Leadership Team</h2>
-            <p class="lead text-muted">Experienced professionals dedicated to your success</p>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card text-center">
-                    <img src="{% static 'images/team-1.jpg' %}" class="card-img-top rounded-circle mx-auto mt-4" style="width: 150px; height: 150px; object-fit: cover;" alt="Team Member">
-                    <div class="card-body">
-                        <h5 class="card-title">John Smith</h5>
-                        <p class="text-primary">Founder & CEO</p>
-                        <p class="card-text">15+ years in logistics and supply chain management. Former operations manager at major courier company.</p>
-                        <div class="social-links">
-                            <a href="#"><i class="fab fa-linkedin"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card text-center">
-                    <img src="{% static 'images/team-1.jpg' %}" class="card-img-top rounded-circle mx-auto mt-4" style="width: 150px; height: 150px; object-fit: cover;" alt="Team Member">
-                    <div class="card-body">
-                        <h5 class="card-title">Sarah Johnson</h5>
-                        <p class="text-primary">Operations Director</p>
-                        <p class="card-text">Expert in fleet management and route optimization. Ensures your deliveries are always on time.</p>
-                        <div class="social-links">
-                            <a href="#"><i class="fab fa-linkedin"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card text-center">
-                    <img src="{% static 'images/team-1.jpg' %}" class="card-img-top rounded-circle mx-auto mt-4" style="width: 150px; height: 150px; object-fit: cover;" alt="Team Member">
-                    <div class="card-body">
-                        <h5 class="card-title">Mike Chen</h5>
-                        <p class="text-primary">Customer Success Manager</p>
-                        <p class="card-text">Dedicated to ensuring clients get the best possibe service and support from our years of delivery industry experience.</p>
-                        <div class="social-links">
-                            <a href="#"><i class="fab fa-linkedin"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <!-- Testimonials -->
 {% if testimonials %}

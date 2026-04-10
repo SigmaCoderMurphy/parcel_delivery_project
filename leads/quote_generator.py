@@ -9,7 +9,6 @@ from reportlab.lib.units import inch
 from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from django.conf import settings
 from django.template.loader import render_to_string
-from xhtml2pdf import pisa
 import uuid
 
 class QuoteGenerator:
@@ -38,7 +37,7 @@ class QuoteGenerator:
             spaceAfter=30
         )
         
-        story.append(Paragraph("GTA PARCEL DELIVERY", header_style))
+        story.append(Paragraph(getattr(settings, "SITE_NAME", "Eastern Logistics").upper(), header_style))
         
         # Quote Info
         info_style = ParagraphStyle(
@@ -122,20 +121,27 @@ class QuoteGenerator:
     
     def generate_pdf_html(self):
         """Generate PDF using HTML template"""
+        # `xhtml2pdf` is only needed for the HTML->PDF path. Keep it optional so
+        # ReportLab-based generation still works when `xhtml2pdf` isn't installed.
+        try:
+            from xhtml2pdf import pisa
+        except ModuleNotFoundError:
+            return None
+
         context = {
             'quote': self.quote,
             'lead': self.lead,
             'company': {
-                'name': 'GTA Parcel Delivery',
-                'phone': '+1 (416) 555-0123',
-                'email': 'info@gtaparceldelivery.com',
-                'address': '123 Business Ave, Toronto, ON',
-                'website': 'www.gtaparceldelivery.com'
+                'name': getattr(settings, 'SITE_NAME', 'Eastern Logistics'),
+                'phone': getattr(settings, 'SITE_PHONE', '416-710-0361'),
+                'email': getattr(settings, 'SITE_EMAIL', 'shahzaibsadiq256@gmail.com'),
+                'address': getattr(settings, 'SITE_ADDRESS', '828 Eastern Ave, Toronto, ON M4L 1A1, Canada'),
+                'website': getattr(settings, 'SITE_URL', ''),
             },
             'date': datetime.now(),
         }
-        
-        html_string = render_to_string('quotes/quote_template.html', context)
+
+        html_string = render_to_string('quote_template.html', context)
         
         filename = f"quotes/quote_{self.quote_number}.pdf"
         filepath = os.path.join(settings.MEDIA_ROOT, filename)

@@ -23,6 +23,9 @@
     'use strict';
     var forms = document.querySelectorAll('.needs-validation');
     Array.prototype.slice.call(forms).forEach(function(form) {
+        if (form.getAttribute('data-lead-ajax') === 'true') {
+            return;
+        }
         form.addEventListener('submit', function(event) {
             if (!form.checkValidity()) {
                 event.preventDefault();
