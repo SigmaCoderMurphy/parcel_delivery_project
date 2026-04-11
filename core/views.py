@@ -174,3 +174,13 @@ def user_logout(request):
     logout(request)
     messages.success(request, 'You have been successfully logged out.')
     return redirect('home')
+
+
+def handler404(request, exception):
+    """Production-safe 404 (no stack traces in templates)."""
+    return render(request, "404.html", status=404)
+
+
+def handler500(request):
+    """Production-safe 500 (no exception details leaked to clients)."""
+    return render(request, "500.html", status=500)

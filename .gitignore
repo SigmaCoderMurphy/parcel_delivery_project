@@ -1,10 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
 
-
-
-
+# Virtual environments
 .venv/
 venv/
-__pycache__/
-*.pyc
-db.sqlite3
+env/
+
+# Optional: keep SQLite/media outside repo (Namecheap)
+private/
+
+# Django / local secrets (never commit real secrets)
 .env
+.env.local
+.env.*.local
+*.local
+
+# Database (use PostgreSQL etc. on the server)
+db.sqlite3
+db.sqlite3-journal
+
+# Collected static + user uploads (regenerate on server)
+staticfiles/
+media/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Vercel CLI local
+.vercel

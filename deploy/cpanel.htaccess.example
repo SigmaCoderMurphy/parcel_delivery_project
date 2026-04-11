@@ -1,0 +1,13 @@
+# Copy relevant rules into the .htaccess for the document root that faces the public web.
+# Adjust paths to match your Namecheap account layout.
+
+# Disable directory listing
+Options -Indexes
+
+# Block direct web access to SQLite if a copy ever lands under public_html by mistake
+<FilesMatch "\.(sqlite3|db|sqlite)$">
+    Require all denied
+</FilesMatch>
+
+# If you map /static/ to staticfiles/ via Apache instead of WhiteNoise-only, ensure
+# FollowSymLinks matches your host policy (Namecheap often allows this in subdirs).

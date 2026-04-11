@@ -1,7 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.db.models import Q, Count, Sum, F, Avg
 from django.utils import timezone
@@ -9,26 +7,13 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db import models
 from datetime import datetime, timedelta
-from functools import wraps
 from django.contrib.auth.models import User
 from django.conf import settings as django_settings
 from django.core.management import call_command
 import csv
 import io
 
-
-def staff_required(view_func):
-    """
-    Custom decorator that requires staff access and redirects non-staff to access_denied page
-    """
-    @wraps(view_func)
-    def _wrapped_view(request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('admin:login')
-        if not request.user.is_staff:
-            return redirect('access_denied')
-        return view_func(request, *args, **kwargs)
-    return _wrapped_view
+from core.decorators import staff_required, superuser_required
 from .models import Lead, FollowUp, CommunicationLog, Quote, CallLog, ScheduledEmail
 from .source_utils import apply_source_filter, grouped_leads_by_source
 from .forms import LeadForm, FollowUpForm, CommunicationLogForm, QuoteForm
@@ -582,6 +567,16 @@ def add_call_log(request, pk):
 def twilio_call_webhook(request):
     """Handle incoming Twilio calls for tracking"""
     if request.method == 'POST':
+        token = getattr(django_settings, "TWILIO_AUTH_TOKEN", "") or ""
+        if token:
+            from twilio.request_validator import RequestValidator
+
+            public_url = (django_settings.TWILIO_WEBHOOK_PUBLIC_URL or "").strip() or request.build_absolute_uri()
+            signature = request.META.get("HTTP_X_TWILIO_SIGNATURE", "") or ""
+            validator = RequestValidator(token)
+            if not validator.validate(public_url, request.POST, signature):
+                return JsonResponse({"error": "forbidden"}, status=403)
+
         call_data = {
             'call_sid': request.POST.get('CallSid'),
             'caller_number': request.POST.get('From'),
@@ -1106,7 +1101,7 @@ def dashboard_settings(request):
     return render(request, 'dashboard/settings.html', context)
 
 
-@staff_required
+@superuser_required
 def dashboard_toggle_user_active(request, user_id):
     """Enable/disable a user from the settings page."""
     from django.contrib.auth.models import User
@@ -1260,7 +1255,7 @@ def dashboard_save_email_template(request):
     return redirect('dashboard_settings')
 
 
-@staff_required
+@superuser_required
 def dashboard_backup_database(request):
     """Create and download a JSON backup of the database."""
     if request.method != 'GET':
@@ -1288,7 +1283,7 @@ def dashboard_backup_database(request):
     return response
 
 
-@staff_required
+@superuser_required
 def dashboard_restore_database(request):
     """Restore database from an uploaded JSON backup."""
     if request.method != 'POST' or 'backup_file' not in request.FILES:
