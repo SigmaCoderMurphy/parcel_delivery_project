@@ -24,14 +24,22 @@ ALLOWED_HOSTS = [
     h.strip()
     for h in config(
         "ALLOWED_HOSTS",
-        default="localhost,127.0.0.1",
+        default="easternlogistics.app,www.easternlogistics.app,localhost,127.0.0.1",
     ).split(",")
     if h.strip()
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     origin.strip()
-    for origin in config("CSRF_TRUSTED_ORIGINS", default="").split(",")
+    for origin in config(
+        "CSRF_TRUSTED_ORIGINS",
+        default=(
+            "https://easternlogistics.app,"
+            "https://www.easternlogistics.app,"
+            "http://localhost,"
+            "http://127.0.0.1"
+        ),
+    ).split(",")
     if origin.strip()
 ]
 
@@ -173,7 +181,7 @@ SITE_EMAIL = "support@easternlogistics.app"
 SITE_ADDRESS = "828 Eastern Ave, Toronto, ON M4L 1A1, Canada"
 SERVICE_AREA = "Greater Toronto Area (GTA)"
 SITE_GOOGLE_BUSINESS_URL = "https://maps.app.goo.gl/gEr1qAS8g4DRXYkNA?g_st=aw"
-SITE_URL = config("SITE_URL", default="http://127.0.0.1:8000")
+SITE_URL = config("SITE_URL", default="https://easternlogistics.app")
 STAFF_WHATSAPP_NUMBER = config("STAFF_WHATSAPP_NUMBER", default="")
 ADMIN_URL = config("ADMIN_URL", default="admin/")
 
