@@ -14,20 +14,22 @@
 
         <!-- Navigation Menu -->
         <div class="collapse navbar-collapse" id="navbarMain">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-3">
-                <li class="nav-item">
-                    <a class="nav-link nav-main-link {% if active_page == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-main-link {% if active_page == 'services' %}active{% endif %}" href="{% url 'services' %}">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-main-link {% if active_page == 'about' %}active{% endif %}" href="{% url 'about' %}">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-main-link {% if active_page == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
-                </li>
-            </ul>
+            <div class="navbar-center">
+                <ul class="navbar-nav mb-2 mb-lg-0 gap-3">
+                    <li class="nav-item">
+                        <a class="nav-link nav-main-link {% if active_page == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-main-link {% if active_page == 'services' %}active{% endif %}" href="{% url 'services' %}">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-main-link {% if active_page == 'about' %}active{% endif %}" href="{% url 'about' %}">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-main-link {% if active_page == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                </ul>
+            </div>
             
             <!-- Action Buttons -->
             <div class="navbar-buttons d-flex align-items-center gap-2">

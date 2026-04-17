@@ -41,12 +41,12 @@
             <div class="col-lg-6">
                 <picture>
                     <source
-                        srcset="{% static 'images/Bright Drop EV.webp' %} 800w, {% static 'images/Bright Drop EV.webp' %} 1600w"
+                        srcset="{% static 'images/bright_drop_ev.webp' %} 800w, {% static 'images/bright_drop_ev.webp' %} 1600w"
                         sizes="(min-width: 1024px) 50vw, 100vw"
                         type="image/webp">
                     <img
-                        src="{% static 'images/Bright Drop EV.jpg' %}"
-                        srcset="{% static 'images/Bright Drop EV.jpg' %} 800w, {% static 'images/Bright Drop EV.jpg' %} 1600w"
+                        src="{% static 'images/bright_drop_ev.webp' %}"
+                        srcset="{% static 'images/bright_drop_ev.jpg' %} 800w, {% static 'images/bright_drop_ev.webp' %} 1600w"
                         sizes="(min-width: 1024px) 50vw, 100vw"
                         alt="Courier and parcel delivery van in the Greater Toronto Area"
                         class="img-fluid rounded-3 shadow media-cover"
@@ -230,15 +230,15 @@
                         <img src="{{ vehicle.image.url }}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                         {% else %}
                             {% if vehicle.vehicle_type == 'sprinter' %}
-                        <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
+                        <img src="{% static 'images/sprinter-van.webp' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                             {% elif vehicle.vehicle_type == 'brightdrop' %}
-                        <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
+                        <img src="{% static 'images/box-truck14ft.webp' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                             {% elif vehicle.vehicle_type == 'light_box' %}
-                        <img src="{% static 'images/box-truck16ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
+                        <img src="{% static 'images/box-truck16ft.webp' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                             {% elif vehicle.vehicle_type == 'medium_box' %}
-                        <img src="{% static 'images/box-truck26ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
+                        <img src="{% static 'images/box-truck26ft.webp' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                             {% else %}
-                        <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
+                        <img src="{% static 'images/sprinter-van.webp' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                             {% endif %}
                         {% endif %}
                     </div>
@@ -274,7 +274,7 @@
         <div class="ratio ratio-4x3 bg-white">
             <picture>
                 <source srcset="{% static 'images/Bright.webp' %}" type="image/webp">
-                <img src="{% static 'images/ev-delivery-van.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="EV Drop Delivery Van">
+                <img src="{% static 'images/Bright.webp' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="EV Drop Delivery Van">
             </picture>
         </div>
         <div class="card-body p-4">
@@ -290,7 +290,7 @@
                     <div class="ratio ratio-4x3 bg-white">
                         <picture>
                             <source srcset="{% static 'images/sprinter-van.webp' %}" type="image/webp">
-                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="Sprinter High Roof Van">
+                            <img src="{% static 'images/sprinter-van.webp' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="Sprinter High Roof Van">
                         </picture>
                     </div>
                     <div class="card-body p-4">
@@ -305,7 +305,7 @@
                     <div class="ratio ratio-4x3 bg-white">
                         <picture>
                             <source srcset="{% static 'images/box-truck16ft.webp' %}" type="image/webp">
-                            <img src="{% static 'images/box-truck16ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="Box Truck 16ft">
+                            <img src="{% static 'images/box-truck16ft.webp' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="Box Truck 16ft">
                         </picture>
                     </div>
                     <div class="card-body p-4">
@@ -319,8 +319,8 @@
                 <div class="card h-100 border-0 shadow-sm overflow-hidden">
                     <div class="ratio ratio-4x3 bg-white">
                         <picture>
-                            <source srcset="{% static 'images/Box Truck 26ft.webp' %}" type="image/webp">
-                            <img src="{% static 'images/Box Truck 26ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="Box Truck 26ft">
+                            <source srcset="{% static 'images/box_truck_26ft.webp' %}" type="image/webp">
+                            <img src="{% static 'images/box_truck_26ft.webp' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="Box Truck 26ft">
                         </picture>
                     </div>
                     <div class="card-body p-4">

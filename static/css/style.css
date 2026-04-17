@@ -123,6 +123,7 @@ h6 {
     flex: 1;
     display: flex !important;
     justify-content: center !important;
+    width: 100%;
 }
 
 .navbar-center .navbar-nav {
@@ -132,6 +133,11 @@ h6 {
 .navbar-buttons {
     flex-shrink: 0;
     white-space: nowrap;
+}
+
+.navbar-collapse {
+    width: 100%;
+    padding-top: 0.75rem;
 }
 
 .brand-text {
@@ -932,6 +938,33 @@ iframe {
     .public-section .row.g-4 > .col-md-4 {
         flex: 0 0 50%;
         width: 50%;
+    }
+}
+
+@media (min-width: 992px) {
+    .navbar-collapse {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 0;
+    }
+
+    .navbar-center {
+        justify-content: center !important;
+        min-width: 0;
+    }
+
+    .navbar-center .navbar-nav {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: auto;
+        text-align: center;
+    }
+
+    .navbar-buttons {
+        margin-left: auto;
     }
 }
 
