@@ -107,6 +107,7 @@ h6 {
     justify-content: space-between;
     gap: 2rem;
     width: 100%;
+    flex-wrap: nowrap;
 }
 
 .navbar-brand {
@@ -117,6 +118,9 @@ h6 {
     flex-shrink: 0;
     display: flex;
     align-items: center;
+    min-width: 0;
+    max-width: calc(100% - 3.5rem);
+    overflow: hidden;
 }
 
 .navbar-center {
@@ -138,6 +142,15 @@ h6 {
 .navbar-collapse {
     width: 100%;
     padding-top: 0.75rem;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .brand-text {
@@ -145,6 +158,9 @@ h6 {
     font-weight: 900;
     font-size: clamp(1.35rem, 2vw, 2.1rem);
     letter-spacing: -1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .nav-link {
@@ -785,15 +801,22 @@ iframe {
     gap: 0.75rem;
     padding-left: 1rem !important;
     padding-right: 1rem !important;
+    flex-wrap: nowrap;
 }
 
 .navbar-toggler {
     z-index: 1200;
+    margin-left: auto;
+    flex-shrink: 0;
 }
 
 .navbar-nav {
     width: 100%;
     text-align: left;
+}
+
+.navbar-collapse:not(.show) {
+    display: none !important;
 }
 
 .nav-link,
@@ -947,6 +970,15 @@ iframe {
         align-items: center;
         justify-content: space-between;
         padding-top: 0;
+        position: static;
+        top: auto;
+        left: auto;
+        right: auto;
+        background: transparent;
+        border-top: 0;
+        box-shadow: none;
+        padding-left: 0;
+        padding-right: 0;
     }
 
     .navbar-center {
