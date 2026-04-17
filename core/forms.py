@@ -7,6 +7,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
+from urllib.parse import urlparse
 
 from .models import SiteSettings
 
@@ -55,6 +56,28 @@ class CustomPasswordResetForm(DjangoPasswordResetForm):
 		extra_email_context=None,
 		**kwargs,
 	):
+		# Ensure production emails point to the correct domain even if Django Sites
+		# isn't configured on the server.
+		if not domain_override:
+			override = getattr(settings, "PASSWORD_RESET_DOMAIN", "") or ""
+			if override:
+				domain_override = override
+			else:
+				site_url = (getattr(settings, "SITE_URL", "") or "").strip()
+				if site_url:
+					try:
+						parsed = urlparse(site_url)
+						if parsed.netloc:
+							domain_override = parsed.netloc
+					except Exception:
+						pass
+
+		# Prefer https for password reset links in production.
+		if request is not None:
+			use_https = bool(getattr(request, "is_secure", lambda: False)())
+		if getattr(settings, "DEBUG", True) is False:
+			use_https = True
+
 		if extra_email_context is None:
 			extra_email_context = {}
 

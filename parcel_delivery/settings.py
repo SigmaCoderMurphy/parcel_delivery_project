@@ -9,9 +9,14 @@ terminates at the host proxy.
 import os
 from pathlib import Path
 
-from decouple import config
+from decouple import AutoConfig
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load `.env` from the project root (next to `manage.py`), not from the process cwd.
+# Passenger/cPanel often start the app with cwd = $HOME or `/`, which breaks email
+# and other secrets if we rely on default decouple behavior.
+config = AutoConfig(search_path=str(BASE_DIR))
 
 # -----------------------------------------------------------------------------
 # Core
@@ -19,6 +24,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY", default="django-insecure-local-dev-only-change-me")
 
 DEBUG = config("DEBUG", default=True, cast=bool)
+
+# -----------------------------------------------------------------------------
+# Feature flags / env toggles
+# -----------------------------------------------------------------------------
+# Controlled email automation:
+# - Welcome email on public lead form submission (optional).
+# - Other automatic notifications default off in all environments so production
+#   never spams a non-existent mailbox (e.g. support@ used only as SMTP/from).
+SEND_WELCOME_EMAIL = config("SEND_WELCOME_EMAIL", default=True, cast=bool)
+SEND_ADMIN_LEAD_EMAIL = config("SEND_ADMIN_LEAD_EMAIL", default=False, cast=bool)
+SEND_WHATSAPP_LEAD_ALERT = config("SEND_WHATSAPP_LEAD_ALERT", default=False, cast=bool)
+SEND_BREVO_CONFIRMATION = config("SEND_BREVO_CONFIRMATION", default=False, cast=bool)
+
+# -----------------------------------------------------------------------------
+# Celery (async tasks)
+# -----------------------------------------------------------------------------
+CELERY_BROKER_URL = config("CELERY_BROKER_URL", default="redis://127.0.0.1:6379/0")
+CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND", default=CELERY_BROKER_URL)
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = "America/Toronto"
+CELERY_TASK_IGNORE_RESULT = True
 
 ALLOWED_HOSTS = [
     h.strip()
@@ -61,11 +89,11 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     # "import_export",  # optional; enable if openpyxl/Python versions match
     "django_recaptcha",
-    "core",
+    "core.apps.CoreConfig",
     "leads",
 ]
 
-SITE_ID = 1
+SITE_ID = config("SITE_ID", default=1, cast=int)
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -162,14 +190,37 @@ LOGIN_REDIRECT_URL = "/dashboard/"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = config(
+    "EMAIL_BACKEND",
+    default="django.core.mail.backends.smtp.EmailBackend",
+)
 EMAIL_HOST = config("EMAIL_HOST", default="smtp.zoho.com")
 EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
+EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False, cast=bool)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default=EMAIL_HOST_USER or "webmaster@localhost")
-SERVER_EMAIL = DEFAULT_FROM_EMAIL
+# Display name + address (RFC 5322). Zoho/Gmail must match an existing sender mailbox.
+_DEFAULT_ADDR = "support@easternlogistics.app"
+_DEFAULT_FROM = f"Eastern Logistics <{_DEFAULT_ADDR}>"
+DEFAULT_FROM_EMAIL = config(
+    "DEFAULT_FROM_EMAIL",
+    default=(
+        f"Eastern Logistics <{EMAIL_HOST_USER}>"
+        if EMAIL_HOST_USER and "@" in EMAIL_HOST_USER
+        else _DEFAULT_FROM
+    ),
+)
+# From-address for server/error messages (can match DEFAULT_FROM_EMAIL).
+SERVER_EMAIL = config("SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
+EMAIL_TIMEOUT = config("EMAIL_TIMEOUT", default=20, cast=int)
+
+# Optional copy of new-lead notifications (only if SEND_ADMIN_LEAD_EMAIL=True).
+# Use a real inbox (e.g. staff@gmail.com). Do not use a display-only address.
+LEAD_NOTIFICATION_TO_EMAIL = config("LEAD_NOTIFICATION_TO_EMAIL", default="").strip()
+
+# Optional: password reset can override the domain in emails (recommended in production)
+PASSWORD_RESET_DOMAIN = config("PASSWORD_RESET_DOMAIN", default="").strip()
 
 TWILIO_ACCOUNT_SID = config("TWILIO_ACCOUNT_SID", default="")
 TWILIO_AUTH_TOKEN = config("TWILIO_AUTH_TOKEN", default="")
@@ -194,6 +245,8 @@ MAP_SERVICE_RADIUS_METERS = config("MAP_SERVICE_RADIUS_METERS", default=35000, c
 
 RECAPTCHA_PUBLIC_KEY = config("RECAPTCHA_PUBLIC_KEY", default="")
 RECAPTCHA_PRIVATE_KEY = config("RECAPTCHA_PRIVATE_KEY", default="")
+RECAPTCHA_REQUIRED_SCORE = config("RECAPTCHA_REQUIRED_SCORE", default=0.0, cast=float)
+RECAPTCHA_VERIFY_REQUEST_TIMEOUT = config("RECAPTCHA_VERIFY_REQUEST_TIMEOUT", default=10, cast=int)
 
 # Passenger / cPanel: SSL often terminates at Apache; Django sees HTTP internally.
 BEHIND_TLS_PROXY = config("BEHIND_TLS_PROXY", default=False, cast=bool)
@@ -256,9 +309,37 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "verbose" if not DEBUG else "simple",
         },
+        **(
+            {
+                "file": {
+                    "class": "logging.FileHandler",
+                    "filename": str((BASE_DIR / "logs" / "django.log").resolve()),
+                    "formatter": "verbose",
+                }
+            }
+            if not DEBUG
+            else {}
+        ),
+    },
+    "loggers": {
+        # SMTP failures, connection issues, and backend errors
+        "django.core.mail": {
+            "handlers": ["console"] + (["file"] if not DEBUG else []),
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "core.utils": {
+            "handlers": ["console"] + (["file"] if not DEBUG else []),
+            "level": "INFO",
+            "propagate": False,
+        },
     },
     "root": {
-        "handlers": ["console"],
+        "handlers": (["console", "file"] if not DEBUG else ["console"]),
         "level": "INFO",
     },
 }
+
+# Ensure log directory exists in production
+if not DEBUG:
+    (BASE_DIR / "logs").mkdir(parents=True, exist_ok=True)

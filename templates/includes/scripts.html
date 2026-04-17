@@ -17,25 +17,7 @@
 <script src="{% static 'js/dashboard.js' %}"></script>
 {% endif %}
 
-<!-- Form validation -->
-<script>
-(function() {
-    'use strict';
-    var forms = document.querySelectorAll('.needs-validation');
-    Array.prototype.slice.call(forms).forEach(function(form) {
-        if (form.getAttribute('data-lead-ajax') === 'true') {
-            return;
-        }
-        form.addEventListener('submit', function(event) {
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-        }, false);
-    });
-})();
-</script>
+<!-- Form validation: handled in static/js/main.js (single listener avoids double handling) -->
 
 <!-- Google Analytics (add your tracking ID) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>

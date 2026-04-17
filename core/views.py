@@ -2,16 +2,22 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.conf import settings as django_settings
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Service, Fleet, Testimonial, FAQ
 from .service_defaults import ensure_default_services
-from leads.models import Lead
 from leads.forms import LeadForm
 from leads.source_utils import canonical_source
-from .utils import send_lead_notification
 import logging
 
+from django.db import transaction
+
 logger = logging.getLogger(__name__)
+
+
+def _wants_json(request):
+    accept = (request.headers.get("Accept", "") or "").lower()
+    requested_with = (request.headers.get("X-Requested-With", "") or "").lower()
+    return "application/json" in accept or requested_with == "xmlhttprequest"
 
 
 def handle_lead_form_submission(request, source='website'):
@@ -32,15 +38,30 @@ def handle_lead_form_submission(request, source='website'):
             lead = form.save(commit=False)
             lead.source = canonical_source(source)
             lead.save()
-            
-            # Send notifications in background (non-blocking)
-            # Use try-except to not block form submission if notifications fail
-            try:
-                send_lead_notification(lead)
-            except Exception as e:
-                logger.warning(f"Notification failed for lead {lead.id}: {str(e)}")
-            
+
+            # Queue welcome email after commit; never block HTTP response on SMTP.
+            def _enqueue_welcome_email():
+                try:
+                    from .tasks import send_welcome_email_task
+                    send_welcome_email_task.delay(lead.id)
+                except Exception:
+                    logger.exception("Failed to enqueue welcome email for lead=%s", lead.id)
+
+            transaction.on_commit(_enqueue_welcome_email)
+
             return True, lead
+        # Production debugging: capture validation failures (including reCAPTCHA)
+        try:
+            logger.info(
+                "Lead form invalid",
+                extra={
+                    "source": source,
+                    "path": request.path,
+                    "errors": form.errors.get_json_data(),
+                },
+            )
+        except Exception:
+            logger.info("Lead form invalid (unable to serialize errors)")
         return False, form
     else:
         return False, LeadForm()
@@ -57,8 +78,24 @@ def home(request):
     form_valid, result = handle_lead_form_submission(request, source='website')
     
     if form_valid:
+        if _wants_json(request):
+            return JsonResponse({
+                "ok": True,
+                "message": "Thank you for your interest! We will contact you shortly.",
+                "redirect_url": "/thank-you/",
+            })
         messages.success(request, 'Thank you for your interest! We will contact you shortly.')
         return redirect('thank_you')
+    if request.method == "POST" and _wants_json(request):
+        form = result if isinstance(result, LeadForm) else LeadForm()
+        return JsonResponse(
+            {
+                "ok": False,
+                "message": "Please correct the highlighted fields and try again.",
+                "errors": form.errors,
+            },
+            status=400,
+        )
     
     form = result if isinstance(result, LeadForm) else LeadForm()
     
@@ -84,8 +121,24 @@ def services(request):
     form_valid, result = handle_lead_form_submission(request, source='services_page')
     
     if form_valid:
+        if _wants_json(request):
+            return JsonResponse({
+                "ok": True,
+                "message": "Thank you for your interest! We will contact you shortly.",
+                "redirect_url": "/thank-you/",
+            })
         messages.success(request, 'Thank you for your interest! We will contact you shortly.')
         return redirect('thank_you')
+    if request.method == "POST" and _wants_json(request):
+        form = result if isinstance(result, LeadForm) else LeadForm()
+        return JsonResponse(
+            {
+                "ok": False,
+                "message": "Please correct the highlighted fields and try again.",
+                "errors": form.errors,
+            },
+            status=400,
+        )
     
     form = result if isinstance(result, LeadForm) else LeadForm()
     
@@ -118,8 +171,24 @@ def contact(request):
     form_valid, result = handle_lead_form_submission(request, source='contact_form')
     
     if form_valid:
+        if _wants_json(request):
+            return JsonResponse({
+                "ok": True,
+                "message": "Thank you for contacting us! We will get back to you soon.",
+                "redirect_url": "/thank-you/",
+            })
         messages.success(request, 'Thank you for contacting us! We will get back to you soon.')
         return redirect('thank_you')
+    if request.method == "POST" and _wants_json(request):
+        form = result if isinstance(result, LeadForm) else LeadForm()
+        return JsonResponse(
+            {
+                "ok": False,
+                "message": "Please correct the highlighted fields and try again.",
+                "errors": form.errors,
+            },
+            status=400,
+        )
     
     form = result if isinstance(result, LeadForm) else LeadForm()
     

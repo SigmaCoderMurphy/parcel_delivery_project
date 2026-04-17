@@ -5,7 +5,7 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-section">
+<section class="hero-section public-section">
     <div class="container">
         <div class="row min-vh-80 align-items-center">
             <div class="col-lg-6 hero-content">
@@ -15,7 +15,7 @@
                 <p class="lead mb-4">
                     Professional delivery services for businesses. Same-day delivery, fleet of sprinter vans to box trucks. Serving Toronto, Mississauga, Brampton, and all GTA.
                 </p>
-                <div class="d-flex gap-3 mb-4">
+                <div class="d-flex gap-3 mb-4 hero-points">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-check-circle text-success me-2"></i>
                         <span>Same Day Delivery</span>
@@ -29,7 +29,7 @@
                         <span>Business Pricing</span>
                     </div>
                 </div>
-                <div class="d-flex gap-3">
+                <div class="d-flex gap-3 hero-actions">
                     <a href="#quote-form" class="btn btn-primary btn-lg">
                         <i class="fas fa-calculator me-2"></i>Get Instant Quote
                     </a>
@@ -40,8 +40,20 @@
             </div>
             <div class="col-lg-6">
                 <picture>
-                    <source srcset="{% static 'images/hero-delivery2.webp' %}" type="image/webp">
-                    <img src="{% static 'images/hero-delivery2.jpg' %}" alt="Courier and parcel delivery van in the Greater Toronto Area" class="img-fluid rounded-3 shadow" fetchpriority="high" decoding="async" width="800" height="600">
+                    <source
+                        srcset="{% static 'images/Bright Drop EV.webp' %} 800w, {% static 'images/Bright Drop EV.webp' %} 1600w"
+                        sizes="(min-width: 1024px) 50vw, 100vw"
+                        type="image/webp">
+                    <img
+                        src="{% static 'images/Bright Drop EV.jpg' %}"
+                        srcset="{% static 'images/Bright Drop EV.jpg' %} 800w, {% static 'images/Bright Drop EV.jpg' %} 1600w"
+                        sizes="(min-width: 1024px) 50vw, 100vw"
+                        alt="Courier and parcel delivery van in the Greater Toronto Area"
+                        class="img-fluid rounded-3 shadow media-cover"
+                        fetchpriority="high"
+                        decoding="async"
+                        width="800"
+                        height="600">
                 </picture>
             </div>
         </div>
@@ -49,7 +61,7 @@
 </section>
 
 <!-- Trust Badges -->
-<section class="py-4 bg-light">
+<section class="py-4 bg-light public-section">
     <div class="container">
         <div class="text-center mb-4">
             <h2 class="display-6 fw-bold mb-2">Why Businesses Trust Us</h2>
@@ -85,7 +97,7 @@
 </section>
 
 <!-- Services Section -->
-<section class="py-5 home-services-section">
+<section class="py-5 home-services-section public-section">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="display-5 fw-bold">Our Delivery Services</h2>
@@ -202,7 +214,7 @@
 </section>
 
 <!-- Fleet Section -->
-<section class="py-5 bg-light">
+<section class="py-5 bg-light public-section">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="display-5 fw-bold">Our Delivery Fleet</h2>
@@ -215,18 +227,18 @@
                 <div class="card h-100 border-0 shadow-sm overflow-hidden">
                     <div class="ratio ratio-4x3 bg-white">
                         {% if vehicle.image %}
-                        <img src="{{ vehicle.image.url }}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        <img src="{{ vehicle.image.url }}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                         {% else %}
                             {% if vehicle.vehicle_type == 'sprinter' %}
-                        <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                             {% elif vehicle.vehicle_type == 'brightdrop' %}
-                        <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                             {% elif vehicle.vehicle_type == 'light_box' %}
-                        <img src="{% static 'images/box-truck16ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        <img src="{% static 'images/box-truck16ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                             {% elif vehicle.vehicle_type == 'medium_box' %}
-                        <img src="{% static 'images/box-truck26ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        <img src="{% static 'images/box-truck26ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                             {% else %}
-                        <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                        <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                             {% endif %}
                         {% endif %}
                     </div>
@@ -262,14 +274,14 @@
         <div class="ratio ratio-4x3 bg-white">
             <picture>
                 <source srcset="{% static 'images/Bright.webp' %}" type="image/webp">
-                <img src="{% static 'images/ev-delivery-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="EV Drop Delivery Van">
+                <img src="{% static 'images/ev-delivery-van.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="EV Drop Delivery Van">
             </picture>
         </div>
         <div class="card-body p-4">
             <h5 class="card-title mb-2">EV Bright Drop Delivery Van</h5>
-            <p class="small text-muted mb-1"><strong>Payload Capacity:</strong> 3,500 lbs</p>
+            <p class="small text-muted mb-1"><strong>Capacity:</strong> 3,500 lbs</p>
             
-            <p class="small text-muted mb-0"><strong>Cargo Dimensions:</strong> 16ft L x 6ft W x 7ft H</p>
+            <p class="small text-muted mb-0"><strong>Dimensions:</strong> 16ft L x 6ft W x 7ft H</p>
         </div>
     </div>
 </div>
@@ -278,7 +290,7 @@
                     <div class="ratio ratio-4x3 bg-white">
                         <picture>
                             <source srcset="{% static 'images/sprinter-van.webp' %}" type="image/webp">
-                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="Sprinter High Roof Van">
+                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="Sprinter High Roof Van">
                         </picture>
                     </div>
                     <div class="card-body p-4">
@@ -292,14 +304,14 @@
                 <div class="card h-100 border-0 shadow-sm overflow-hidden">
                     <div class="ratio ratio-4x3 bg-white">
                         <picture>
-                            <source srcset="{% static 'images/box-truck14ft.webp' %}" type="image/webp">
-                            <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="Bright Drop 14ft">
+                            <source srcset="{% static 'images/box-truck16ft.webp' %}" type="image/webp">
+                            <img src="{% static 'images/box-truck16ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="Box Truck 16ft">
                         </picture>
                     </div>
                     <div class="card-body p-4">
-                        <h5 class="card-title mb-2">Bright Drop</h5>
+                        <h5 class="card-title mb-2">Box Truck 16ft</h5>
                         <p class="small text-muted mb-1"><strong>Capacity:</strong> 5,000 lbs</p>
-                        <p class="small text-muted mb-0"><strong>Dimensions:</strong> 14ft L x 7ft W x 7ft H</p>
+                        <p class="small text-muted mb-0"><strong>Dimensions:</strong> 16ft L x 7ft W x 7ft H</p>
                     </div>
                 </div>
             </div>
@@ -307,14 +319,14 @@
                 <div class="card h-100 border-0 shadow-sm overflow-hidden">
                     <div class="ratio ratio-4x3 bg-white">
                         <picture>
-                            <source srcset="{% static 'images/box-truck16ft.webp' %}" type="image/webp">
-                            <img src="{% static 'images/box-truck16ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="Light Duty Box Truck 16ft">
+                            <source srcset="{% static 'images/Box Truck 26ft.webp' %}" type="image/webp">
+                            <img src="{% static 'images/Box Truck 26ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="Box Truck 26ft">
                         </picture>
                     </div>
                     <div class="card-body p-4">
-                        <h5 class="card-title mb-2">Light Duty Box Truck</h5>
+                        <h5 class="card-title mb-2">Box Truck 26ft</h5>
                         <p class="small text-muted mb-1"><strong>Capacity:</strong> 8,000 lbs</p>
-                        <p class="small text-muted mb-0"><strong>Dimensions:</strong> 16ft L x 8ft W x 8ft H</p>
+                        <p class="small text-muted mb-0"><strong>Dimensions:</strong> 26ft L x 8ft W x 8ft H</p>
                     </div>
                 </div>
             </div>
@@ -325,7 +337,7 @@
 </section>
 
 <!-- Lead Capture Form -->
-<section class="py-5" id="quote-form">
+<section class="py-5 public-section" id="quote-form">
     <div class="container">
         <div class="text-center mb-4">
             <h2 class="display-6 fw-bold">Contact Us</h2>
@@ -333,11 +345,11 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="card shadow-lg border-0">
+                <div class="card shadow-lg border-0 quote-form-card">
                     <div class="card-body p-5">
                         <h3 class="text-center mb-4">Get Your Free Quote Today</h3>
                         <p class="text-center text-muted mb-4">Tell us about your delivery needs and we'll get back to you within 1 hour</p>
-                        <form method="post" action="{% url 'home' %}" class="needs-validation" novalidate id="home-form">
+                        <form method="post" action="{% url 'home' %}" class="needs-validation public-lead-form" novalidate id="home-form" data-lead-ajax="true">
                             {% csrf_token %}
                             <div class="row g-3">
                                 <div class="col-md-6">
@@ -433,7 +445,7 @@
 </section>
 
 <!-- Testimonials -->
-<section class="py-5 bg-light">
+<section class="py-5 bg-light public-section">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="display-5 fw-bold">What Our Clients Say</h2>
@@ -534,7 +546,7 @@
 </section>
 
 <!-- FAQ Section -->
-<section class="py-5">
+<section class="py-5 public-section">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="display-5 fw-bold">Frequently Asked Questions</h2>
@@ -545,11 +557,11 @@
             <div class="col-lg-8">
                 <div class="accordion" id="faqAccordion">
                     <div class="accordion-item">
-                        <h2 class="accordion-header">
+                        <h3 class="accordion-header">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
                                 What areas do you serve?
                             </button>
-                        </h2>
+                        </h3>
                         <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
                                 We serve the entire Greater Toronto Area (GTA) including Toronto, Mississauga, Brampton, Vaughan, Markham, Richmond Hill, Oakville, Burlington, and surrounding areas.
@@ -558,11 +570,11 @@
                     </div>
                     
                     <div class="accordion-item">
-                        <h2 class="accordion-header">
+                        <h3 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
                                 What types of vehicles do you have?
                             </button>
-                        </h2>
+                        </h3>
                         <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
                                 We have a diverse fleet including Sprinter high roof vans (12ft), Bright Drop (14ft), light duty box trucks (16ft), and 26ft box trucks for larger loads.
@@ -571,11 +583,11 @@
                     </div>
                     
                     <div class="accordion-item">
-                        <h2 class="accordion-header">
+                        <h3 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
                                 Do you offer same-day delivery?
                             </button>
-                        </h2>
+                        </h3>
                         <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
                                 Yes! We offer same-day delivery for most areas in GTA. Place your order before 11 AM for same-day delivery.
@@ -584,11 +596,11 @@
                     </div>
                     
                     <div class="accordion-item">
-                        <h2 class="accordion-header">
+                        <h3 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
                                 What items can you deliver?
                             </button>
-                        </h2>
+                        </h3>
                         <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
                                 We deliver merchandise, mid-bulky items, beverages, clothing, cosmetics, and furniture (unassembled). We do not handle cold chain items requiring refrigeration.
@@ -597,11 +609,11 @@
                     </div>
                     
                     <div class="accordion-item">
-                        <h2 class="accordion-header">
+                        <h3 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
                                 How do I get a quote?
                             </button>
-                        </h2>
+                        </h3>
                         <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
                                 Fill out our quick quote form above, call us at 416-710-0361, or message us on WhatsApp. We'll get back to you within 1 hour.
@@ -615,11 +627,11 @@
 </section>
 
 <!-- CTA Section -->
-<section class="py-5 bg-primary text-white">
+<section class="py-5 bg-primary text-white public-section">
     <div class="container text-center">
         <h2 class="display-5 fw-bold mb-4">Ready to Streamline Your Deliveries?</h2>
         <p class="lead mb-4">Join hundreds of GTA businesses who trust us with their deliveries</p>
-        <div class="d-flex justify-content-center gap-3">
+        <div class="d-flex justify-content-center gap-3 cta-actions">
             <a href="#quote-form" class="btn btn-light btn-lg">
                 <i class="fas fa-calculator me-2"></i>Get Started Today
             </a>

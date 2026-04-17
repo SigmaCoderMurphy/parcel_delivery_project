@@ -24,7 +24,7 @@ except ImportError as e:
     generate_and_save_quote_pdf = None
     send_quote_pdf_email = None
     _pdf_import_error = str(e)
-from core.utils import send_email_notification, send_admin_notification
+from core.utils import send_email_notification
 import json
 import uuid
 
@@ -1629,6 +1629,9 @@ def request_google_review(request, pk):
     from core.models import SiteSettings
 
     lead = get_object_or_404(Lead, pk=pk)
+    if not (lead.email or "").strip():
+        messages.error(request, "This lead has no email address to send a review request to.")
+        return redirect('lead_detail', pk=lead.pk)
 
     ss = SiteSettings.objects.first()
     review_link = (
@@ -1638,19 +1641,37 @@ def request_google_review(request, pk):
     ) or getattr(django_settings, "SITE_GOOGLE_BUSINESS_URL", "")
 
     subject = f"Thank you for choosing {django_settings.SITE_NAME}!"
-    message = f"""Hi {lead.contact_name},
 
-Thank you for trusting {django_settings.SITE_NAME} with your logistics needs. We appreciate your business.
+    context = {
+        "lead": lead,
+        "review_link": review_link,
+        "company": {
+            "name": getattr(django_settings, "SITE_NAME", "Eastern Logistics"),
+            "phone": getattr(django_settings, "SITE_PHONE", ""),
+            "email": getattr(django_settings, "SITE_EMAIL", ""),
+            "website": getattr(django_settings, "SITE_URL", ""),
+        },
+    }
 
-If you have a moment, a quick Google review helps other GTA businesses find us:
+    try:
+        from django.template.loader import render_to_string
+        from django.utils.html import strip_tags
 
-{review_link}
+        html_message = render_to_string("email/review_request.html", context)
+        message = strip_tags(html_message)
+    except Exception:
+        # Fallback to plaintext if template rendering fails
+        message = (
+            f"Hi {lead.contact_name},\n\n"
+            f"Thank you for trusting {django_settings.SITE_NAME} with your logistics needs.\n\n"
+            f"If you have a moment, a quick Google review helps other GTA businesses find us:\n\n"
+            f"{review_link}\n\n"
+            f"Best regards,\n"
+            f"The {django_settings.SITE_NAME} Team\n"
+        )
+        html_message = None
 
-Best regards,
-The {django_settings.SITE_NAME} Team
-"""
-    
-    email_sent = send_email_notification(subject, message, lead.email)
+    email_sent = send_email_notification(subject, message, lead.email, html_message=html_message)
     
     if email_sent:
         # Log communication

@@ -5,7 +5,7 @@
 
 {% block content %}
 <!-- Page Header -->
-<section class="page-header bg-primary text-white py-5">
+<section class="page-header page-header-public bg-primary text-white py-5">
     <div class="container">
         <h1 class="display-4 fw-bold">Our Delivery Services</h1>
         <p class="lead">Comprehensive delivery solutions for every business need</p>
@@ -14,45 +14,45 @@
 </section>
 
 <!-- Services Detail -->
-<section class="py-5">
+<section class="py-5 public-section">
     <div class="container">
         <div class="service-list">
             {% for service in services %}
             <div class="row align-items-center mb-5 flex-md-row flex-column {% if forloop.counter0|divisibleby:2 %}flex-md-row-reverse{% endif %}">
                 <div class="col-md-6 mb-3 mb-md-0">
                     {% if service.image %}
-                        <img src="{{ service.image.url }}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                        <img src="{{ service.image.url }}" class="img-fluid rounded shadow service-media-main" alt="{{ service.title }}" loading="lazy" width="1200" height="675">
                     {% else %}
                         {% with title_lower=service.title|lower %}
                         {% if 'retail' in title_lower %}
-                            <picture>
+                            <picture class="service-media-wrap">
                                 <source srcset="{% static 'images/retail-delivery.webp' %}" type="image/webp">
-                                <img src="{% static 'images/retail-delivery.jpg' %}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                                <img src="{% static 'images/retail-delivery.jpg' %}" class="img-fluid rounded shadow service-media" alt="{{ service.title }}" loading="lazy">
                             </picture>
                         {% elif 'warehouse' in title_lower %}
-                            <picture>
+                            <picture class="service-media-wrap">
                                 <source srcset="{% static 'images/warehouse-delivery.webp' %}" type="image/webp">
-                                <img src="{% static 'images/warehouse-delivery.jpg' %}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                                <img src="{% static 'images/warehouse-delivery.jpg' %}" class="img-fluid rounded shadow service-media" alt="{{ service.title }}" loading="lazy">
                             </picture>
                         {% elif 'ecommerce' in title_lower %}
-                            <picture>
+                            <picture class="service-media-wrap">
                                 <source srcset="{% static 'images/retail-delivery.webp' %}" type="image/webp">
-                                <img src="{% static 'images/retail-delivery.jpg' %}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                                <img src="{% static 'images/retail-delivery.jpg' %}" class="img-fluid rounded shadow service-media" alt="{{ service.title }}" loading="lazy">
                             </picture>
                         {% elif 'pharmacy' in title_lower %}
-                            <picture>
+                            <picture class="service-media-wrap">
                                 <source srcset="{% static 'images/pharmacy-delivery.webp' %}" type="image/webp">
-                                <img src="{% static 'images/pharmacy-delivery.jpg' %}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                                <img src="{% static 'images/pharmacy-delivery.jpg' %}" class="img-fluid rounded shadow service-media" alt="{{ service.title }}" loading="lazy">
                             </picture>
                         {% elif 'office' in title_lower %}
-                            <picture>
+                            <picture class="service-media-wrap">
                                 <source srcset="{% static 'images/office-delivery2.webp' %}" type="image/webp">
-                                <img src="{% static 'images/office-delivery2.jpg' %}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                                <img src="{% static 'images/office-delivery2.jpg' %}" class="img-fluid rounded shadow service-media" alt="{{ service.title }}" loading="lazy">
                             </picture>
                         {% else %}
-                            <picture>
+                            <picture class="service-media-wrap">
                                 <source srcset="{% static 'images/sprinter-van.webp' %}" type="image/webp">
-                                <img src="{% static 'images/sprinter-van.jpg' %}" class="img-fluid rounded shadow" alt="{{ service.title }}" loading="lazy" style="width:100%; max-height:320px; object-fit:cover;">
+                                <img src="{% static 'images/sprinter-van.jpg' %}" class="img-fluid rounded shadow service-media" alt="{{ service.title }}" loading="lazy">
                             </picture>
                         {% endif %}
                         {% endwith %}
@@ -70,7 +70,7 @@
                         {% if service.full_description %}
                         <p class="text-muted mb-3">{{ service.full_description|truncatewords:28 }}</p>
                         {% endif %}
-                        <a href="#quote-form" class="btn btn-primary px-4 py-2 align-self-start">Get {{ service.title }} Quote</a>
+                        <a href="#quote-form" class="btn btn-primary px-4 py-2 align-self-start w-sm-auto w-100">Get {{ service.title }} Quote</a>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
 </section>
 
 <!-- Fleet Showcase -->
-<section class="py-5 bg-light">
+<section class="py-5 bg-light public-section">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="display-5 fw-bold">Our Delivery Fleet</h2>
@@ -99,32 +99,32 @@
                 <div class="card h-100 border-0 shadow-sm overflow-hidden">
                     <div class="ratio ratio-4x3 bg-white">
                         {% if vehicle.image %}
-                            <img src="{{ vehicle.image.url }}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                            <img src="{{ vehicle.image.url }}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                         {% else %}
                             {% if vehicle.vehicle_type == 'sprinter' %}
                         <picture>
                             <source srcset="{% static 'images/sprinter-van.webp' %}" type="image/webp">
-                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                         </picture>
                             {% elif vehicle.vehicle_type == 'brightdrop' %}
                         <picture>
                             <source srcset="{% static 'images/box-truck14ft.webp' %}" type="image/webp">
-                            <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                            <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                         </picture>
                             {% elif vehicle.vehicle_type == 'light_box' %}
                         <picture>
                             <source srcset="{% static 'images/box-truck16ft.webp' %}" type="image/webp">
-                            <img src="{% static 'images/box-truck16ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                            <img src="{% static 'images/box-truck16ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                         </picture>
                             {% elif vehicle.vehicle_type == 'medium_box' %}
                         <picture>
                             <source srcset="{% static 'images/box-truck26ft.webp' %}" type="image/webp">
-                            <img src="{% static 'images/box-truck26ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                            <img src="{% static 'images/box-truck26ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                         </picture>
                             {% else %}
                         <picture>
                             <source srcset="{% static 'images/sprinter-van.webp' %}" type="image/webp">
-                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="{{ vehicle.name }}">
+                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="{{ vehicle.name }}">
                         </picture>
                             {% endif %}
                         {% endif %}
@@ -162,7 +162,7 @@
         <div class="ratio ratio-4x3 bg-white">
             <picture>
                 <source srcset="{% static 'images/Bright.webp' %}" type="image/webp">
-                <img src="{% static 'images/ev-delivery-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="EV Drop Delivery Van">
+                <img src="{% static 'images/ev-delivery-van.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="EV Drop Delivery Van">
             </picture>
         </div>
         <div class="card-body p-4">
@@ -178,7 +178,7 @@
                     <div class="ratio ratio-4x3 bg-white">
                         <picture>
                             <source srcset="{% static 'images/sprinter-van.webp' %}" type="image/webp">
-                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="Sprinter High Roof Van">
+                            <img src="{% static 'images/sprinter-van.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="Sprinter High Roof Van">
                         </picture>
                     </div>
                     <div class="card-body p-4">
@@ -193,7 +193,7 @@
                     <div class="ratio ratio-4x3 bg-white">
                         <picture>
                             <source srcset="{% static 'images/box-truck14ft.webp' %}" type="image/webp">
-                            <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="Bright Drop 14ft">
+                            <img src="{% static 'images/box-truck14ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="Bright Drop 14ft">
                         </picture>
                     </div>
                     <div class="card-body p-4">
@@ -208,7 +208,7 @@
                 <div class="card h-100 border-0 shadow-sm overflow-hidden">
                     <picture>
                         <source srcset="{% static 'images/box-truck26ft.webp' %}" type="image/webp">
-                        <img src="{% static 'images/box-truck26ft.jpg' %}" class="w-100 h-100" loading="lazy" style="object-fit: cover;" alt="Bright Drop 14ft">
+                        <img src="{% static 'images/box-truck26ft.jpg' %}" class="w-100 h-100 media-cover" loading="lazy" width="640" height="480" alt="Medium Box Truck 26ft">
                     </picture>
                     <div class="card-body p-4">
                         <h5 class="card-title mb-2">Medium Box Truck</h5>
@@ -223,7 +223,7 @@
 </section>
 
 <!-- CTA Section -->
-<section class="py-5 bg-primary text-white">
+<section class="py-5 bg-primary text-white public-section">
     <div class="container text-center">
         <h2 class="display-5 fw-bold mb-4">Need a Custom Delivery Solution?</h2>
         <p class="lead mb-4">Tell us about your specific requirements and we'll create a tailored plan</p>
@@ -232,7 +232,7 @@
 </section>
 
 <!-- Quote Form Section -->
-<section class="py-5" id="quote-form">
+<section class="py-5 public-section" id="quote-form">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -241,7 +241,7 @@
                         <h3 class="text-center mb-4">Get Your Free Quote Today</h3>
                         <p class="text-center text-muted mb-4">Tell us about your delivery needs and we'll get back to you within 1 hour</p>
 
-                        <form method="post" action="{% url 'services' %}" class="needs-validation" novalidate id="services-quote-form">
+                        <form method="post" action="{% url 'services' %}" class="needs-validation public-lead-form" novalidate id="services-quote-form" data-lead-ajax="true">
                             {% csrf_token %}
                             {% if form.non_field_errors %}
                             <div class="alert alert-danger">

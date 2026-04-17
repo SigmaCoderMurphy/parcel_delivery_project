@@ -386,6 +386,80 @@
                 margin-left: 0 !important;
             }
         }
+
+        /* Additional responsive overrides for tablet/mobile */
+        .dashboard-main,
+        .dashboard-content,
+        .dashboard-card,
+        .stat-card {
+            min-width: 0;
+        }
+
+        .dashboard-content {
+            padding: clamp(1rem, 2.4vw, 1.875rem);
+        }
+
+        .dashboard-navbar {
+            padding: clamp(0.65rem, 1.5vw, 1rem) clamp(1rem, 3vw, 1.875rem);
+        }
+
+        .dashboard-card,
+        .stat-card {
+            padding: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table th,
+        .table td {
+            white-space: nowrap;
+        }
+
+        .sidebar-header img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        @media (max-width: 991.98px) {
+            .dashboard-sidebar {
+                width: min(280px, 88vw);
+                transform: translateX(-100%);
+            }
+
+            .dashboard-sidebar.active {
+                transform: translateX(0);
+                box-shadow: 0 0 0 100vmax rgba(15, 23, 42, 0.4);
+            }
+
+            .dashboard-main {
+                margin-left: 0;
+            }
+
+            .dashboard-navbar .dashboard-actions {
+                margin-left: auto;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .dashboard-content {
+                padding: 1rem;
+            }
+
+            .dashboard-navbar .btn-group {
+                width: 100%;
+            }
+
+            .dashboard-navbar .btn-group > .btn {
+                width: 100%;
+            }
+
+            .modal-dialog {
+                margin: 0.75rem;
+            }
+        }
     </style>
     
     {% block extra_css %}{% endblock %}

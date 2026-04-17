@@ -54,22 +54,25 @@ def send_email_notification(subject, message, recipient_email, html_message=None
         return True
         
     except Exception as e:
-        logger.error(f"Failed to send email to {recipient_email}: {str(e)}")
+        logger.exception("Failed to send email to %s: %s", recipient_email, e)
         return False
 
 
 def send_admin_notification(subject, message):
     """
-    Send notification to admin email
-    
-    Args:
-        subject: Email subject
-        message: Email message
-    
-    Returns:
-        bool: True if sent successfully
+    Send a new-lead copy to an operations inbox.
+
+    Uses LEAD_NOTIFICATION_TO_EMAIL only (not SITE_EMAIL), so a public contact
+    address used in the site footer can differ from the Zoho mailbox used for SMTP.
     """
-    return send_email_notification(subject, message, settings.SITE_EMAIL)
+    recipient = (getattr(settings, "LEAD_NOTIFICATION_TO_EMAIL", None) or "").strip()
+    if not recipient:
+        logger.warning(
+            "New-lead admin email skipped: set LEAD_NOTIFICATION_TO_EMAIL when "
+            "SEND_ADMIN_LEAD_EMAIL=True."
+        )
+        return False
+    return send_email_notification(subject, message, recipient)
 
 
 def send_lead_notification(lead):
@@ -86,41 +89,68 @@ def send_lead_notification(lead):
     Returns:
         dict: {'admin_email': bool, 'whatsapp': bool, 'customer_confirmation': bool}
     """
+    results = {
+        "welcome_email": False,
+        "admin_email": False,
+        "whatsapp": False,
+        "customer_confirmation": False,
+    }
+
     try:
-        # Send email to admin - fail silently to not block form submission
-        subject = f'New Lead: {lead.company_name}'
-        message = f"""New lead received from {lead.company_name}
-Contact: {lead.contact_name}
-Phone: {lead.phone}
-Email: {lead.email}
-Business Type: {lead.get_business_type_display()}
-Service Area: {lead.service_area}"""
-        
-        admin_email_sent = send_admin_notification(subject, message)
-        
-        # Send WhatsApp silently - don't block if it fails
-        whatsapp_sent = False
-        try:
-            whatsapp_sent = send_whatsapp_notification(lead)
-        except Exception as e:
-            logger.warning(f"WhatsApp notification failed for lead {lead.id}: {str(e)}")
-        
-        # Send customer confirmation email via Brevo - don't block if it fails
-        customer_confirmation_sent = False
-        try:
-            from leads.brevo_service import send_lead_confirmation_email
-            customer_confirmation_sent = send_lead_confirmation_email(lead)
-        except Exception as e:
-            logger.warning(f"Brevo confirmation email failed for lead {lead.id}: {str(e)}")
-        
-        return {
-            'admin_email': admin_email_sent,
-            'whatsapp': whatsapp_sent,
-            'customer_confirmation': customer_confirmation_sent
-        }
+        # 1) Welcome email (ONLY automatic email intended for customers)
+        if getattr(settings, "SEND_WELCOME_EMAIL", True):
+            try:
+                from leads.email_automation import EmailFollowUpSystem
+
+                results["welcome_email"] = bool(
+                    EmailFollowUpSystem(lead).send_welcome_email()
+                )
+                if not results["welcome_email"]:
+                    logger.error(
+                        "Welcome email not delivered for lead id=%s to=%s. "
+                        "Confirm `.env` lives in the project root, EMAIL_HOST_USER / "
+                        "EMAIL_HOST_PASSWORD are set on the server, and outbound SMTP "
+                        "(port %s) is allowed by the host.",
+                        lead.id,
+                        lead.email,
+                        getattr(settings, "EMAIL_PORT", ""),
+                    )
+            except Exception as e:
+                logger.exception("Welcome email failed for lead %s: %s", lead.id, e)
+
+        # 2) Admin lead email (disabled by default in production)
+        if getattr(settings, "SEND_ADMIN_LEAD_EMAIL", False):
+            subject = f"New Lead: {lead.company_name}"
+            message = (
+                f"New lead received from {lead.company_name}\n"
+                f"Contact: {lead.contact_name}\n"
+                f"Phone: {lead.phone}\n"
+                f"Email: {lead.email}\n"
+                f"Business Type: {lead.get_business_type_display()}\n"
+                f"Service Area: {lead.service_area}"
+            )
+            results["admin_email"] = bool(send_admin_notification(subject, message))
+
+        # 3) WhatsApp (disabled by default in production)
+        if getattr(settings, "SEND_WHATSAPP_LEAD_ALERT", False):
+            try:
+                results["whatsapp"] = bool(send_whatsapp_notification(lead))
+            except Exception as e:
+                logger.warning(f"WhatsApp notification failed for lead {lead.id}: {str(e)}")
+
+        # 4) Brevo confirmation (disabled by default in production)
+        if getattr(settings, "SEND_BREVO_CONFIRMATION", False):
+            try:
+                from leads.brevo_service import send_lead_confirmation_email
+                results["customer_confirmation"] = bool(send_lead_confirmation_email(lead))
+            except Exception as e:
+                logger.warning(f"Brevo confirmation email failed for lead {lead.id}: {str(e)}")
+
+        return results
+
     except Exception as e:
         logger.error(f"Lead notification error for {lead.id}: {str(e)}")
-        return {'admin_email': False, 'whatsapp': False, 'customer_confirmation': False}
+        return results
 
 
 def send_whatsapp_notification(lead):

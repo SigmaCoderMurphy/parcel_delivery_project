@@ -3,7 +3,7 @@
 <html lang="en-CA">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}Eastern Logistics - Courier &amp; Delivery GTA{% endblock %}</title>
     <link rel="canonical" href="{{ request.build_absolute_uri }}">
     
@@ -12,6 +12,7 @@
     <meta name="keywords" content="{% block meta_keywords %}courier Toronto, parcel delivery GTA, same day delivery Toronto, local courier near me, Leslieville courier{% endblock %}">
     <meta name="author" content="Eastern Logistics">
     <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#2563eb">
     
     <!-- Open Graph -->
     <meta property="og:title" content="{% block og_title %}Eastern Logistics - Courier &amp; Delivery GTA{% endblock %}">
@@ -39,6 +40,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
     <!-- Google Fonts (display=swap helps LCP / CLS) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
@@ -49,8 +52,12 @@
     {% endif %}
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
     <!-- Header -->
-    {% include 'includes/header.html' %}
+    <header role="banner">
+        {% include 'includes/header.html' %}
+    </header>
     
     <!-- Messages -->
     {% if messages %}
@@ -65,10 +72,14 @@
     {% endif %}
     
     <!-- Main Content -->
-    {% block content %}{% endblock %}
+    <main id="main-content" tabindex="-1">
+        {% block content %}{% endblock %}
+    </main>
     
     <!-- Footer -->
-    {% include 'includes/footer.html' %}
+    <footer role="contentinfo">
+        {% include 'includes/footer.html' %}
+    </footer>
     
     <!-- Deferred: order preserved — jQuery, then Bootstrap, then site JS -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>

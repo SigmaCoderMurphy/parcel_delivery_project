@@ -18,10 +18,15 @@ urlpatterns = [
         auth_views.PasswordResetView.as_view(
             template_name='registration/password_reset_form.html',
             email_template_name='registration/password_reset_email.txt',
+            html_email_template_name='registration/password_reset_email.html',
             subject_template_name='registration/password_reset_subject.txt',
             success_url=reverse_lazy('password_reset_done'),
             form_class=CustomPasswordResetForm,
-            from_email=getattr(settings, "SITE_EMAIL", getattr(settings, "DEFAULT_FROM_EMAIL", "")),
+            from_email=getattr(settings, "DEFAULT_FROM_EMAIL", None)
+            or getattr(settings, "SITE_EMAIL", ""),
+            extra_email_context={
+                "site_url": getattr(settings, "SITE_URL", ""),
+            },
         ),
         name='admin_password_reset',
     ),
